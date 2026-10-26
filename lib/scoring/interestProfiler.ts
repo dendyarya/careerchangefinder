@@ -104,7 +104,10 @@ export function matchCareersByJobZone(scores: RiasecScores, careers: CareerInter
 
 /** Interest fit 0-1 for our combined ranking (r below 0 counts as 0). */
 export function interestFit(scores: RiasecScores, riasec: Record<string, number>): number {
-  const r = pearson(RIASEC.map((L) => scores[L]), RIASEC.map((L) => riasec[L] ?? 0));
+  const r = pearson(
+    RIASEC.map((L) => scores[L]),
+    RIASEC.map((L) => riasec[L] ?? 0),
+  );
   return r === null ? 0 : Math.max(0, r);
 }
 

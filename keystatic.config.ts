@@ -1,0 +1,67 @@
+import { collection, config, fields } from "@keystatic/core";
+
+/**
+ * Keystatic CMS for Guides articles.
+ * - Local mode while developing (files are written straight into content/guides).
+ * - GitHub mode everywhere else: each save is a commit to the repo. Only GitHub users with
+ *   write access to dendyarya/careerchangefinder (a private repo) can sign in.
+ *   In production /keystatic is also behind Cloudflare Access (runbook: Keamanan website).
+ */
+export default config({
+  storage:
+    process.env.NODE_ENV === "development" && process.env.KEYSTATIC_GITHUB !== "1"
+      ? { kind: "local" }
+      : { kind: "github", repo: { owner: "dendyarya", name: "careerchangefinder" } },
+  ui: { brand: { name: "Career Change Finder" } },
+  collections: {
+    guides: collection({
+      label: "Guides",
+      slugField: "title",
+      path: "content/guides/*",
+      format: { contentField: "body" },
+      entryLayout: "content",
+      columns: ["title", "category", "publishedAt"],
+      schema: {
+        title: fields.slug({
+          name: { label: "Title", validation: { isRequired: true, length: { min: 10, max: 70 } } },
+          slug: { label: "Slug", description: "Lowercase words joined by hyphens. Becomes /guides/[slug]." },
+        }),
+        description: fields.text({
+          label: "Meta description",
+          description: "70–160 characters. Shown in Google results.",
+          multiline: true,
+          validation: { isRequired: true, length: { min: 70, max: 160 } },
+        }),
+        author: fields.text({
+          label: "Author",
+          defaultValue: "Career Change Finder Editorial Team",
+          validation: { isRequired: true },
+        }),
+        publishedAt: fields.date({ label: "Published", validation: { isRequired: true } }),
+        updatedAt: fields.date({ label: "Updated" }),
+        category: fields.select({
+          label: "Category",
+          options: [
+            { label: "Career change", value: "career-change" },
+            { label: "Choosing a major", value: "choosing-a-major" },
+          ],
+          defaultValue: "career-change",
+        }),
+        heroImage: fields.image({
+          label: "Hero image",
+          description: "1600×900 JPG or WebP. Use images you own or that are free to use.",
+          directory: "public/images/guides",
+          publicPath: "/images/guides/",
+        }),
+        heroImageAlt: fields.text({ label: "Hero image alt text" }),
+        draft: fields.checkbox({ label: "Draft (not published)", defaultValue: true }),
+        body: fields.mdx({
+          label: "Body",
+          options: {
+            image: { directory: "public/images/guides", publicPath: "/images/guides/" },
+          },
+        }),
+      },
+    }),
+  },
+});

@@ -18,3 +18,7 @@ data/raw/onet/
 .env.*
 !.env.example
 .DS_Store
+
+# local env and generated
+.env.local
+next-env.d.ts

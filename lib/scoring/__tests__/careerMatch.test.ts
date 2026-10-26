@@ -4,12 +4,16 @@ import attrs from "@/data/tests/career-attributes.json";
 import { careerMatchScore, rankCareers, readAnswers, type CareerAttrs, type CmAnswers } from "../careerMatch";
 
 const DONT = (q: (typeof cm.questions)[number]) => q.options.findIndex((o) => "target" in o && o.target === null);
-const allDont = (): CmAnswers =>
-  Object.fromEntries(cm.questions.map((q) => [q.id, "filter" in q ? 3 : DONT(q)]));
+const allDont = (): CmAnswers => Object.fromEntries(cm.questions.map((q) => [q.id, "filter" in q ? 3 : DONT(q)]));
 
 const career = (code: string, jz: number, a: Record<string, number | null>): CareerAttrs => ({
-  code, slug: code, title: code, job_zone: jz, median: 50000,
-  riasec: { R: 1, I: 2, A: 3, S: 4, E: 1, C: 1 }, attrs: a,
+  code,
+  slug: code,
+  title: code,
+  job_zone: jz,
+  median: 50000,
+  riasec: { R: 1, I: 2, A: 3, S: 4, E: 1, C: 1 },
+  attrs: a,
 });
 const S_HIGH = { R: 10, I: 20, A: 30, S: 40, E: 10, C: 10 };
 

@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/* Design tokens: docs/design-tokens.md (B v4 · Clear Path) */
+@theme {
+  --color-primary: #1d62af;
+  --color-accent: #1d91f1;
+  --color-ink: #0e2a4d;
+  --color-slate: #394662;
+  --color-muted: #55627a;
+  --color-ice: #f5fafd;
+  --color-mist: #e1ecf4;
+  --color-sky: #cfe6ff;
+  --color-field-border: #8fa4bc;
+  --color-gain: #12805c;
+  --color-loss: #c4242b;
+  --color-panel: #eef5fc;
+  --color-footer-text: #d6e2ef;
+  --color-footer-muted: #c3d2e3;
+  --color-footer-link: #8cc8ff;
+  --color-footer-rule: #2a4466;
+
+  --font-display: var(--font-space-grotesk), "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
+
+  --text-small: 15px;
+  --text-small--line-height: 1.5;
+  --text-ui: 17px;
+  --text-ui--line-height: 1.2;
+  --text-body: 18px;
+  --text-body--line-height: 1.65;
+  --text-lead: 20px;
+  --text-lead--line-height: 1.6;
+  --text-h3: 22px;
+  --text-h3--line-height: 1.2;
+  --text-h2: clamp(30px, 4vw, 42px);
+  --text-h2--line-height: 1.08;
+  --text-h1: clamp(40px, 6vw, 70px);
+  --text-h1--line-height: 1.02;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 28px;
+
+  --shadow-sm: 0 8px 22px rgba(14, 42, 77, 0.12);
+  --shadow-md: 0 2px 4px rgba(14, 42, 77, 0.05), 0 16px 36px rgba(14, 42, 77, 0.12);
+  --shadow-primary: 0 18px 40px rgba(29, 98, 175, 0.14);
+  --shadow-panel: 0 24px 48px rgba(14, 42, 77, 0.18);
+
+  --breakpoint-md: 761px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: #ffffff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.65;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  a {
+    color: var(--color-primary);
+  }
+  a:hover {
+    color: var(--color-ink);
+  }
+  /* focus ring on every focusable element (design tokens: focus-ring) */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--color-sky);
+    border-radius: 6px;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

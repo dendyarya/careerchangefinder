@@ -86,6 +86,11 @@ def slugify(title: str) -> str:
     return base
 
 
+def slugify_full(title: str) -> str:
+    base = title.replace("&", " and ").lower()
+    return re.sub(r"[^a-z0-9]+", "-", base).strip("-")
+
+
 def pearson_matrix(a: pd.DataFrame, b: pd.DataFrame) -> pd.DataFrame:
     cols = a.columns.intersection(b.columns)
     A = a[cols].astype(float)
@@ -156,9 +161,15 @@ def main() -> None:
         return {**w, "is_group": bool(group)}
 
     # slugs
+    # Short slug from the part before the first comma. If several titles share that short slug,
+    # all of them use the full title (no one gets the ambiguous short form). Code suffix only as a last resort.
+    short = {c: slugify(t) for c, t in titles.items()}
+    counts = {}
+    for v in short.values():
+        counts[v] = counts.get(v, 0) + 1
     slugs, used = {}, set()
     for code in sorted(titles):
-        s = slugify(titles[code])
+        s = short[code] if counts[short[code]] == 1 else slugify_full(titles[code])
         if s in used:
             s = f"{s}-{code[:7].replace('-', '')}{code[8:]}"
         used.add(s)

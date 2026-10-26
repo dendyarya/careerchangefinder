@@ -1,0 +1,5 @@
+data/
+docs/data-report.md
+.next/
+node_modules/
+package-lock.json

@@ -25,12 +25,20 @@ describe("Big Five scoring (5 answer patterns)", () => {
   });
   it("2. all 'Very Accurate': +keyed count x5 plus -keyed count x1", () => {
     expect(scores(answer(() => 5))).toEqual({
-      extraversion: 30, agreeableness: 34, conscientiousness: 34, "emotional-stability": 18, openness: 38,
+      extraversion: 30,
+      agreeableness: 34,
+      conscientiousness: 34,
+      "emotional-stability": 18,
+      openness: 38,
     });
   });
   it("3. all 'Very Inaccurate'", () => {
     expect(scores(answer(() => 1))).toEqual({
-      extraversion: 30, agreeableness: 26, conscientiousness: 26, "emotional-stability": 42, openness: 22,
+      extraversion: 30,
+      agreeableness: 26,
+      conscientiousness: 26,
+      "emotional-stability": 42,
+      openness: 22,
     });
   });
   it("4. agree with every +keyed item, disagree with every -keyed item: 50, high", () => {
@@ -42,7 +50,14 @@ describe("Big Five scoring (5 answer patterns)", () => {
     expect(Object.values(r).every((f) => f.score === 10 && f.band === "low" && f.position === 0)).toBe(true);
   });
   it("band edges", () => {
-    expect([band(10), band(23), band(24), band(36), band(37), band(50)]).toEqual(["low", "low", "medium", "medium", "high", "high"]);
+    expect([band(10), band(23), band(24), band(36), band(37), band(50)]).toEqual([
+      "low",
+      "low",
+      "medium",
+      "medium",
+      "high",
+      "high",
+    ]);
   });
   it("scores only two factors with their 20 items (College Major Quiz)", () => {
     const ids = itemsFor(["openness", "conscientiousness"]);

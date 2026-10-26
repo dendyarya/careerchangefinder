@@ -82,8 +82,15 @@ export function rankCareers(scores: RiasecScores, p: CmPrefs, careers: CareerAtt
     const interest = interestFit(scores, c.riasec) * 100;
     const match = careerMatchScore(p, c);
     const score = match === null ? interest : INTEREST_WEIGHT * interest + (1 - INTEREST_WEIGHT) * match;
-    out.push({ code: c.code, slug: c.slug, title: c.title, job_zone: c.job_zone,
-      score: Math.min(99, Math.round(score)), interest: Math.round(interest), careerMatch: match === null ? null : Math.round(match) });
+    out.push({
+      code: c.code,
+      slug: c.slug,
+      title: c.title,
+      job_zone: c.job_zone,
+      score: Math.min(99, Math.round(score)),
+      interest: Math.round(interest),
+      careerMatch: match === null ? null : Math.round(match),
+    });
   }
   out.sort((a, b) => b.score - a.score || b.interest - a.interest || a.title.localeCompare(b.title));
   return out.slice(0, topN);

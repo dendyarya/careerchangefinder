@@ -6,6 +6,7 @@ Written separately from build.py so a bug in the build is not copied here.
 import glob
 import json
 import pathlib
+import re
 import sys
 
 import openpyxl
@@ -52,6 +53,15 @@ def num(v):
 
 
 occ = {o["code"]: o for o in json.loads((P / "occupations.json").read_text())}
+
+print("Slugs ...")
+_sl = [o["slug"] for o in occ.values()]
+bump("slugs", len(_sl))
+if len(set(_sl)) != len(_sl):
+    err("duplicate slugs")
+for o in occ.values():
+    if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", o["slug"]):
+        err(f"{o['code']} bad slug {o['slug']}")
 
 # ---------------------------------------------------------------- O*NET
 print("O*NET occupation data ...")

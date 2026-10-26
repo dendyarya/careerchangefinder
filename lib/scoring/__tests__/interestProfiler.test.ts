@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 import ip from "@/data/tests/interest-profiler.json";
-import { fitLabel, matchCareersByJobZone, scoreInterestProfiler, type IpAnswer, type IpAnswers } from "../interestProfiler";
+import {
+  fitLabel,
+  matchCareersByJobZone,
+  scoreInterestProfiler,
+  type IpAnswer,
+  type IpAnswers,
+} from "../interestProfiler";
 import { pearson } from "../stats";
 
 const answer = (f: (item: (typeof ip.items)[number]) => IpAnswer): IpAnswers =>
@@ -13,7 +19,12 @@ describe("Interest Profiler data", () => {
     expect(ip.scale.map((s) => s.label)).toEqual(["Strongly Dislike", "Dislike", "Unsure", "Like", "Strongly Like"]);
   });
   it("starts with the official sequence (two items per area, R-I-A-S-E-C)", () => {
-    expect(ip.items.slice(0, 12).map((i) => i.area).join("")).toBe("RRIIAASSEECC");
+    expect(
+      ip.items
+        .slice(0, 12)
+        .map((i) => i.area)
+        .join(""),
+    ).toBe("RRIIAASSEECC");
     expect(ip.items[0]!.text).toBe("Build kitchen cabinets");
   });
 });

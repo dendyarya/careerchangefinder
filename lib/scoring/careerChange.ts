@@ -23,5 +23,10 @@ export function scoreCareerChange(answers: CcAnswers): CcResult {
   }
   const level = q.scoring.levels.find((l) => points >= l.min && points <= l.max);
   if (!level) throw new Error(`Career Change Quiz: no level for ${points}`);
-  return { points, max: q.questions.length * 3, level: { id: level.id, title: level.title, summary: level.summary, next_step: level.next_step }, tips };
+  return {
+    points,
+    max: q.questions.length * 3,
+    level: { id: level.id, title: level.title, summary: level.summary, next_step: level.next_step },
+    tips,
+  };
 }

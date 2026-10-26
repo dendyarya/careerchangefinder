@@ -1,6 +1,6 @@
 # Data report
 
-Built: 2026-10-26T13:17:38+00:00
+Built: 2026-10-26T17:04:57+00:00
 
 Sources: O*NET 31.0 (August 2026), BLS OEWS May 2025, NCES CIP 2020 to SOC 2018 crosswalk
 
