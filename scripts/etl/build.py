@@ -258,7 +258,18 @@ def main() -> None:
         rel_bonus[(r["O*NET-SOC Code"], r["Related O*NET-SOC Code"])] = C.RELATED_TIER_BONUS.get(r["Relatedness Tier"], 0)
 
     t_jz = np.array([jz.get(t) or 0 for t in codes])
-    t_pay = np.array([float(occ_wage[t]["median"]) if not thin[t] else np.nan for t in codes])
+    def usable_pay(code):
+        w = occ_wage.get(code)
+        if not w or not w["median"]:
+            return None
+        if w["is_group"] and not C.GROUP_WAGE_IN_PAY_CHANGE:
+            return None
+        return w["median"]
+
+    # Penalty pay: a group wage still counts against big drops (no bonus exists, so an
+    # inflated group wage cannot push a career up). It is never shown as "pay change".
+    t_pay = np.array([float(occ_wage[t]["median"]) if (not thin[t] and occ_wage.get(t) and occ_wage[t]["median"]) else np.nan
+                      for t in codes])
     t_thin = np.array([thin[t] for t in codes])
     t_heavy = np.array([any(t.startswith(p) for p in C.HEAVY_LICENSE_PREFIXES) for t in codes])
     t_minor = np.array([t[:4] for t in codes])
@@ -274,8 +285,7 @@ def main() -> None:
         return max(set(z), key=z.count) if z else None
 
     def src_pay(src):
-        ws_ = [(occ_wage[m]["median"], occ_wage[m]["employment"] or 1) for m in members_of(src)
-               if occ_wage.get(m) and occ_wage[m]["median"]]
+        ws_ = [(usable_pay(m), occ_wage[m]["employment"] or 1) for m in members_of(src) if usable_pay(m)]
         if not ws_:
             return None
         return int(round(sum(a * b for a, b in ws_) / sum(b for _, b in ws_)))
@@ -317,7 +327,7 @@ def main() -> None:
                 "code": t, "slug": slugs[t], "title": titles[t],
                 "match": int(max(0, min(99, round(float(score[i]))))),
                 "median": w["median"],
-                "pay_change_pct": None if not spay else int(round((w["median"] - spay) / spay * 100)),
+                "pay_change_pct": None if (not spay or not usable_pay(t)) else int(round((usable_pay(t) - spay) / spay * 100)),
                 "job_zone": tz, "education_label": C.JOB_ZONE_LABEL.get(tz),
                 "wage_is_group": w["is_group"], "wage_source_title": w["bls_title"],
                 "skill_gaps": [g for g, v in gaps.items() if v >= 0.25][:3],
@@ -423,7 +433,8 @@ def main() -> None:
     dump(OUT / "indexes" / "soc_major_group.json", idx_g)
     contact = sorted([o for o in good if o["contact_with_others"] is not None], key=lambda o: o["contact_with_others"])
     dump(OUT / "indexes" / "least_contact.json", [o["code"] for o in contact])
-    pay_sorted = sorted(good, key=lambda o: -(o["wage"]["median"] or 0))
+    # group wages are left out of pay rankings (Gate 2A)
+    pay_sorted = sorted([o for o in good if not o["wage"]["is_group"]], key=lambda o: -(o["wage"]["median"] or 0))
     dump(OUT / "indexes" / "highest_pay.json", [o["code"] for o in pay_sorted])
 
     dump(OUT / "search-index.json", [{"s": o["slug"], "t": o["title"], "a": o["alt_titles"][:8]} for o in good])
@@ -434,6 +445,9 @@ def main() -> None:
         "attribution": C.ATTRIBUTION,
         "weights": C.WEIGHTS, "job_zone_up_penalty": C.JOB_ZONE_UP_PENALTY,
         "job_zone_down_penalty": C.JOB_ZONE_DOWN_PENALTY,
+        "pay_drop": {"free_pct": C.PAY_DROP_FREE_PCT, "points_per_pct": C.PAY_DROP_POINTS_PER_PCT,
+                     "max_penalty": C.PAY_DROP_MAX_PENALTY},
+        "group_wage_in_pay_change": C.GROUP_WAGE_IN_PAY_CHANGE,
         "counts": {"occupations": len(occupations), "not_thin": len(good), "majors": len(majors),
                    "transitions": len(list((OUT / "transitions").glob("*.json"))),
                    "wage_files": len(list((OUT / "wages").glob("*.json"))), "hubs": len(C.HUBS)},

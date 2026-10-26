@@ -1,6 +1,6 @@
 # Data report
 
-Built: 2026-10-26T12:05:10+00:00
+Built: 2026-10-26T12:52:52+00:00
 
 Sources: O*NET 31.0 (August 2026), BLS OEWS May 2025, NCES CIP 2020 to SOC 2018 crosswalk
 
@@ -37,7 +37,13 @@ Sources: O*NET 31.0 (August 2026), BLS OEWS May 2025, NCES CIP 2020 to SOC 2018 
     "2": 8,
     "3": 15,
     "4": 20
-  }
+  },
+  "pay_drop": {
+    "free_pct": 10,
+    "points_per_pct": 0.6,
+    "max_penalty": 25
+  },
+  "group_wage_in_pay_change": false
 }
 ```
 
@@ -51,14 +57,14 @@ Match = our estimate (0–99). Pay change vs. the source job's median. "Group" =
 |---|---|---|---|---|---|---|
 | 1 | Instructional Coordinators | 81 | $77,440 | +16% | Usually needs a graduate degree |  |
 | 2 | Training and Development Specialists | 78 | $69,280 | +4% | Usually needs a bachelor's degree |  |
-| 3 | Child, Family, and School Social Workers | 78 | $59,550 | −11% | Usually needs a bachelor's degree |  |
+| 3 | Child, Family, and School Social Workers | 77 | $59,550 | −11% | Usually needs a bachelor's degree |  |
 | 4 | Recreational Therapists | 76 | $61,960 | −7% | Usually needs a bachelor's degree |  |
 | 5 | Health Education Specialists | 76 | $64,070 | −4% | Usually needs a bachelor's degree |  |
 | 6 | Educational, Guidance, and Career Counselors and Advisors | 75 | $64,330 | −4% | Usually needs a graduate degree |  |
-| 7 | Community Health Workers | 75 | $51,850 | −22% | Usually needs a bachelor's degree |  |
-| 8 | Music Therapists | 74 | $77,930 | +17% | Usually needs a bachelor's degree | Group: Therapists, All Other |
-| 9 | Mental Health and Substance Abuse Social Workers | 74 | $60,280 | −10% | Usually needs a graduate degree |  |
-| 10 | Directors, Religious Activities and Education | 74 | $52,100 | −22% | Usually needs a bachelor's degree |  |
+| 7 | Music Therapists | 74 | $77,930 | — | Usually needs a bachelor's degree | Group: Therapists, All Other |
+| 8 | Mental Health and Substance Abuse Social Workers | 74 | $60,280 | −10% | Usually needs a graduate degree |  |
+| 9 | Probation Officers and Correctional Treatment Specialists | 73 | $66,270 | −1% | Usually needs a bachelor's degree |  |
+| 10 | Low Vision Therapists, Orientation and Mobility Specialists, and Vision Rehabilitation Therapists | 73 | $100,330 | — | Usually needs a graduate degree | Group: Occupational Therapists |
 
 Similar roles in the same field: Kindergarten Teachers, Except Special Education (98), Special Education Teachers, Secondary School (96), Adult Basic Education, Adult Secondary Education, and English as a Second Language Instructors (96), Special Education Teachers, Middle School (93), Career/Technical Education Teachers, Middle School (90)
 
@@ -66,35 +72,35 @@ Similar roles in the same field: Kindergarten Teachers, Except Special Education
 
 | # | Career | Match | Median pay | Pay change | Education | Note |
 |---|---|---|---|---|---|---|
-| 1 | Occupational Therapy Assistants | 75 | $72,300 | −26% | Usually needs vocational training or an associate degree |  |
-| 2 | Physical Therapist Assistants | 75 | $68,380 | −30% | Usually needs vocational training or an associate degree |  |
-| 3 | Adapted Physical Education Specialists | 74 | $76,580 | −21% | Usually needs a bachelor's degree | Group: Special Education Teachers, All Other |
-| 4 | Paramedics | 73 | $60,600 | −38% | Usually needs vocational training or an associate degree |  |
-| 5 | Midwives | 73 | $65,790 | −33% | Usually needs a graduate degree | Group: Healthcare Practitioners and Technical Workers, All Other |
-| 6 | Athletic Trainers | 71 | $62,520 | −36% | Usually needs a graduate degree |  |
-| 7 | Coroners | 71 | $80,730 | −17% | Usually needs vocational training or an associate degree | Group: Compliance Officers |
-| 8 | Special Education Teachers, Secondary School | 70 | $74,260 | −24% | Usually needs a bachelor's degree |  |
-| 9 | Genetic Counselors | 70 | $100,040 | +3% | Usually needs a graduate degree |  |
-| 10 | Clinical Research Coordinators | 70 | $167,220 | +71% | Usually needs a bachelor's degree | Group: Natural Sciences Managers |
+| 1 | Genetic Counselors | 70 | $100,040 | +3% | Usually needs a graduate degree |  |
+| 2 | Clinical Research Coordinators | 70 | $167,220 | — | Usually needs a bachelor's degree | Group: Natural Sciences Managers |
+| 3 | Health Specialties Teachers, Postsecondary | 69 | $107,310 | +10% | Usually needs a graduate degree |  |
+| 4 | Adapted Physical Education Specialists | 68 | $76,580 | — | Usually needs a bachelor's degree | Group: Special Education Teachers, All Other |
+| 5 | Occupational Therapy Assistants | 68 | $72,300 | −26% | Usually needs vocational training or an associate degree |  |
+| 6 | Coroners | 67 | $80,730 | — | Usually needs vocational training or an associate degree | Group: Compliance Officers |
+| 7 | Medical Dosimetrists | 66 | $147,470 | +51% | Usually needs a bachelor's degree |  |
+| 8 | Physical Therapist Assistants | 66 | $68,380 | −30% | Usually needs vocational training or an associate degree |  |
+| 9 | Magnetic Resonance Imaging Technologists | 66 | $95,480 | −2% | Usually needs vocational training or an associate degree |  |
+| 10 | Nuclear Medicine Technologists | 66 | $101,370 | +4% | Usually needs vocational training or an associate degree |  |
 
-Similar roles in the same field: Critical Care Nurses (95), Acute Care Nurses (94), Licensed Practical and Licensed Vocational Nurses (88), Nurse Practitioners (87), Nurse Midwives (86)
+Similar roles in the same field: Critical Care Nurses (95), Acute Care Nurses (94), Nurse Practitioners (87), Nurse Midwives (86), Clinical Nurse Specialists (85)
 
 ### Former Accountants (baseline median $83,680)
 
 | # | Career | Match | Median pay | Pay change | Education | Note |
 |---|---|---|---|---|---|---|
-| 1 | Treasurers and Controllers | 92 | $166,570 | +99% | Usually needs a bachelor's degree | Group: Financial Managers |
+| 1 | Treasurers and Controllers | 92 | $166,570 | — | Usually needs a bachelor's degree | Group: Financial Managers |
 | 2 | Financial Managers | 92 | $166,570 | +99% | Usually needs a bachelor's degree |  |
 | 3 | Compensation, Benefits, and Job Analysis Specialists | 86 | $78,210 | −7% | Usually needs a bachelor's degree |  |
-| 4 | Bookkeeping, Accounting, and Auditing Clerks | 85 | $50,670 | −39% | Usually needs vocational training or an associate degree |  |
-| 5 | Management Analysts | 84 | $101,860 | +22% | Usually needs a bachelor's degree |  |
-| 6 | Securities, Commodities, and Financial Services Sales Agents | 82 | $78,660 | −6% | Usually needs a bachelor's degree |  |
-| 7 | Brokerage Clerks | 82 | $65,750 | −21% | Usually needs vocational training or an associate degree |  |
-| 8 | Actuaries | 82 | $130,000 | +55% | Usually needs a bachelor's degree |  |
-| 9 | Document Management Specialists | 81 | $116,580 | +39% | Usually needs a bachelor's degree | Group: Computer Occupations, All Other |
-| 10 | Claims Adjusters, Examiners, and Investigators | 80 | $78,000 | −7% | Usually needs a bachelor's degree |  |
+| 4 | Management Analysts | 84 | $101,860 | +22% | Usually needs a bachelor's degree |  |
+| 5 | Securities, Commodities, and Financial Services Sales Agents | 82 | $78,660 | −6% | Usually needs a bachelor's degree |  |
+| 6 | Actuaries | 82 | $130,000 | +55% | Usually needs a bachelor's degree |  |
+| 7 | Document Management Specialists | 81 | $116,580 | — | Usually needs a bachelor's degree | Group: Computer Occupations, All Other |
+| 8 | Claims Adjusters, Examiners, and Investigators | 80 | $78,000 | −7% | Usually needs a bachelor's degree |  |
+| 9 | Purchasing Managers | 79 | $148,080 | +77% | Usually needs a bachelor's degree |  |
+| 10 | Compliance Managers | 79 | $141,900 | — | Usually needs a bachelor's degree | Group: Managers, All Other |
 
-Similar roles in the same field: Financial Examiners (93), Budget Analysts (92), Credit Analysts (91), Personal Financial Advisors (88), Tax Preparers (87)
+Similar roles in the same field: Financial Examiners (93), Budget Analysts (92), Credit Analysts (91), Personal Financial Advisors (88), Insurance Underwriters (83)
 
 ### Former Retail Workers (baseline median $34,291)
 
@@ -119,16 +125,16 @@ Similar roles in the same field: Counter and Rental Clerks (91), Parts Salespers
 |---|---|---|---|---|---|---|
 | 1 | First-Line Supervisors of Police and Detectives | 84 | $106,040 | +39% | Usually needs a high school diploma |  |
 | 2 | First-Line Supervisors of Correctional Officers | 80 | $77,970 | +2% | Usually needs vocational training or an associate degree |  |
-| 3 | Coroners | 79 | $80,730 | +6% | Usually needs vocational training or an associate degree | Group: Compliance Officers |
-| 4 | Public Safety Telecommunicators | 77 | $53,040 | −30% | Usually needs a high school diploma |  |
-| 5 | First-Line Supervisors of Firefighting and Prevention Workers | 77 | $93,530 | +23% | Usually needs vocational training or an associate degree |  |
-| 6 | Compliance Officers | 75 | $80,730 | +6% | Usually needs a bachelor's degree |  |
-| 7 | Security Guards | 75 | $38,020 | −50% | Usually needs a high school diploma |  |
-| 8 | Private Detectives and Investigators | 75 | $51,220 | −33% | Usually needs vocational training or an associate degree |  |
-| 9 | Fire Inspectors and Investigators | 74 | $75,920 | 0% | Usually needs vocational training or an associate degree |  |
-| 10 | Flight Attendants | 74 | $63,580 | −17% | Usually needs a high school diploma |  |
+| 3 | Coroners | 79 | $80,730 | — | Usually needs vocational training or an associate degree | Group: Compliance Officers |
+| 4 | First-Line Supervisors of Firefighting and Prevention Workers | 77 | $93,530 | +23% | Usually needs vocational training or an associate degree |  |
+| 5 | Compliance Officers | 75 | $80,730 | +6% | Usually needs a bachelor's degree |  |
+| 6 | Fire Inspectors and Investigators | 74 | $75,920 | 0% | Usually needs vocational training or an associate degree |  |
+| 7 | Air Traffic Controllers | 72 | $148,080 | +94% | Usually needs vocational training or an associate degree |  |
+| 8 | Flight Attendants | 70 | $63,580 | −17% | Usually needs a high school diploma |  |
+| 9 | Probation Officers and Correctional Treatment Specialists | 70 | $66,270 | −13% | Usually needs a bachelor's degree |  |
+| 10 | Insurance Appraisers, Auto Damage | 68 | $78,240 | +3% | Usually needs vocational training or an associate degree |  |
 
-Similar roles in the same field: Transit and Railroad Police (94), Bailiffs (92), Detectives and Criminal Investigators (90), Customs and Border Protection Officers (87), Correctional Officers and Jailers (83)
+Similar roles in the same field: Transit and Railroad Police (94), Detectives and Criminal Investigators (90), Customs and Border Protection Officers (87), Bailiffs (85), Police Identification and Records Officers (81)
 
 ## Thin occupations (noindex, not in sitemap)
 

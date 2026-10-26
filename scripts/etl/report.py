@@ -23,7 +23,7 @@ def main():
              "| Item | Count |", "|---|---|"]
     for k, v in meta["counts"].items():
         lines.append(f"| {k} | {v:,} |")
-    lines += ["", "## Score settings", "", "```json", json.dumps({k: meta[k] for k in ("weights", "job_zone_up_penalty", "job_zone_down_penalty")}, indent=2), "```", ""]
+    lines += ["", "## Score settings", "", "```json", json.dumps({k: meta[k] for k in ("weights", "job_zone_up_penalty", "job_zone_down_penalty", "pay_drop", "group_wage_in_pay_change")}, indent=2), "```", ""]
 
     lines += ["## Sample transitions (top 10 per hub)", "",
               "Match = our estimate (0–99). Pay change vs. the source job's median. "

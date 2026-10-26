@@ -21,10 +21,14 @@ RELATED_TIER_BONUS = {"Primary-Short": 1.0, "Primary-Long": 0.7, "Supplemental":
 JOB_ZONE_UP_PENALTY = {1: 5, 2: 15, 3: 25, 4: 30}   # target needs N zones more prep
 JOB_ZONE_DOWN_PENALTY = {1: 3, 2: 8, 3: 15, 4: 20}  # step down in level
 
-# Pay drops hurt a career change: beyond -20%, lose 0.3 points per extra %, max 15.
-PAY_DROP_FREE_PCT = 20
-PAY_DROP_POINTS_PER_PCT = 0.3
-PAY_DROP_MAX_PENALTY = 15
+# Pay drops hurt a career change: beyond -10%, lose 0.6 points per extra %, max 25.
+# (Gate 2A: raised from 20% / 0.3 / 15 so Nurse targets are not dominated by big pay cuts.)
+PAY_DROP_FREE_PCT = 10
+PAY_DROP_POINTS_PER_PCT = 0.6
+PAY_DROP_MAX_PENALTY = 25
+# Gate 2A: a pay figure for a broader BLS group is shown with a label, but it is
+# never used for "pay change" or for the pay-drop penalty.
+GROUP_WAGE_IN_PAY_CHANGE = False
 
 TOP_N = 25
 
