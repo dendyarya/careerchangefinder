@@ -84,6 +84,20 @@ export interface Transitions {
   members: { code: string; title: string; slug: string }[];
   top: TransitionItem[];
   similar_in_field: TransitionItem[];
+  /** 20 most similar careers by pure profile similarity (no bonus or penalties); occupations only */
+  similar?: SimilarItem[];
+  into?: { code: string; slug: string; title: string; match: number; median: number | null }[];
+}
+export interface SimilarItem {
+  code: string;
+  slug: string;
+  title: string;
+  similarity: number;
+  median: number | null;
+  wage_is_group: boolean;
+  pay_change_pct: number | null;
+  job_zone: number | null;
+  same_field: boolean;
 }
 export interface HubData extends Transitions {
   slug: string;

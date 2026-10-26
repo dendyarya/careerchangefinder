@@ -100,3 +100,6 @@ ATTRIBUTION = {
     "nces": "Majors: U.S. Department of Education, Institute of Education Sciences, "
             "CIP 2020 to SOC 2018 crosswalk.",
 }
+
+# "Jobs similar to" pages: number of most similar careers by pure profile similarity
+SIMILAR_N = 20

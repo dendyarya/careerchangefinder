@@ -396,6 +396,28 @@ for f in glob.glob(str(P / "transitions" / "*.json")) + glob.glob(str(P / "hubs"
                 err(f"{f} {t['code']} pay change {t['pay_change_pct']} != {exp}")
         if not 0 <= t["match"] <= 99:
             err(f"{f} match out of range")
+    prev = 100
+    for t in d.get("similar", []) if "hubs" not in f else []:
+        bump("similar-job items")
+        o = occ[t["code"]]
+        if o["thin"] or t["code"] == d["code"]:
+            err(f"{f} similar: thin or self {t['code']}")
+        if t["median"] != o["wage"]["median"] or t["job_zone"] != o["job_zone"] or t["title"] != o["title"] or t["slug"] != o["slug"]:
+            err(f"{f} similar {t['code']} fields differ from occupations.json")
+        if t["wage_is_group"] != o["wage"]["is_group"]:
+            err(f"{f} similar {t['code']} group flag differs")
+        if t["wage_is_group"]:
+            if t["pay_change_pct"] is not None:
+                err(f"{f} similar {t['code']} group wage used in pay change")
+        elif base:
+            exp = int(round((t["median"] - base) / base * 100))
+            if t["pay_change_pct"] != exp:
+                err(f"{f} similar {t['code']} pay change {t['pay_change_pct']} != {exp}")
+        if not 0 <= t["similarity"] <= prev:
+            err(f"{f} similar list not sorted or out of range at {t['code']}")
+        prev = t["similarity"]
+    if "hubs" not in f and len(d.get("similar", [])) != 20:
+        err(f"{f} has {len(d.get('similar', []))} similar jobs, expected 20")
 _tops = {}
 for f in glob.glob(str(P / "transitions" / "*.json")):
     d = json.loads(pathlib.Path(f).read_text())

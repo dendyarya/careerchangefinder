@@ -54,6 +54,29 @@ Hub pages (teachers, nurses, and others) use the average profile of the member o
 - **FAQ:** answers are built from the numbers in the table; no outside figures.
 - **One page per job:** when a popular page covers a single occupation (for example Registered Nurses → Jobs for Former Nurses), the occupation page redirects to it.
 
+## "Jobs similar to …" pages
+
+The 20 careers with the highest **profile similarity** (step 1 of the match score only): the same weighted correlation of transferable skills, knowledge, work activities and interests, shown as a percentage. There is no related-occupation bonus and no preparation or pay penalty, because this page answers "which jobs are most alike", not "where should I move". Licensed professions are included. "Same group" means the same SOC minor group (first three digits of the SOC code, e.g. 29-1).
+
+- **Similar jobs that pay more:** careers from the 20 with a higher BLS median pay that usually need no more preparation (Job Zone at or below the current job's). Group wages are never compared.
+- **Similar jobs that need less preparation:** careers from the 20 with a lower Job Zone.
+- **Jobs that can lead here:** careers whose career-change top 25 includes this job (the career-change match score is shown).
+
+## Career listings ("Careers by …")
+
+Every list uses careers with a full page only. The rule is printed on each page.
+
+| List | Who is included | Order |
+|---|---|---|
+| Industry (22) | SOC major group (first two digits) | BLS employment, highest first |
+| Education (4) | Most common required education reported to O*NET: no degree = categories 1–2, certificate or associate = 3–5, bachelor's = 6–7, master's = 8 | BLS median pay (group wages last) |
+| Personality: introverts, extroverts, detail-oriented, hate routine, competitive, low stress, high pressure | Percentile of an O*NET Work Context or Work Styles value (Contact With Others, Attention to Detail + Dependability, Importance of Repeating Same Tasks, Level of Competition, Time Pressure). "Low" lists use Job Zone 3+ only | That value, then pay; top 50 |
+| Personality: creative, hands-on, helping people | O*NET interest score (Artistic, Realistic, Social, 1–7) | That score, then pay; top 50 |
+| Holland code (6) | Careers whose highest interest score is that area | That score |
+| Salary (2) | Careers with their own BLS median (no group wages); "without a degree" adds education categories 1–2 | BLS median pay; top 50 |
+
+Every listing and every "Jobs similar to" row is re-checked against the data after each build (`scripts/qa/check_pages_vs_data.py`), with the listing order recomputed from the rules above.
+
 ## Career Change Tool
 
 The same data as the pages above. Filters: extra education (any, none, up to a certificate or associate, up to a bachelor's degree) and pay (any, no drop bigger than 10%, pays more). Careers with only a broader BLS group wage are left out of the pay filters.

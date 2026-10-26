@@ -366,10 +366,25 @@ def main() -> None:
                 "skill_imp": {k: round(float(skills_im.at[t, k]), 2) for k in top_src.index if k in skills_im.columns and pd.notna(skills_im.at[t, k])},
             }
             bucket.append(item)
+        # "Jobs similar to" pages: pure profile similarity (step 1 only: no related bonus, no
+        # preparation or pay penalties), so this list answers "which jobs are most alike".
+        sim = base_df.loc[src].values
+        sim_keep = ~t_thin & ~np.isin(codes, mem)
+        similar = []
+        for i in [i for i in np.argsort(-sim, kind="stable") if sim_keep[i]][:C.SIMILAR_N]:
+            t = codes[i]
+            w = occ_wage[t]
+            similar.append({
+                "code": t, "slug": slugs[t], "title": titles[t],
+                "similarity": int(max(0, min(99, round(float(sim[i]))))),
+                "median": w["median"], "wage_is_group": w["is_group"],
+                "pay_change_pct": None if (not spay or not usable_pay(t)) else int(round((usable_pay(t) - spay) / spay * 100)),
+                "job_zone": jz.get(t), "same_field": bool(same[i]),
+            })
         return {"baseline_median": spay, "job_zone": szone,
                 "source_skills": [{"name": k, "value": round(float(v), 2)} for k, v in top_src.items()],
                 "members": [{"code": m, "title": titles[m], "slug": slugs[m]} for m in mem],
-                "top": out[:C.TOP_N], "similar_in_field": field[:10]}
+                "top": out[:C.TOP_N], "similar_in_field": field[:10], "similar": similar}
 
     # ------------------------------------------------ write
     if OUT.exists():
