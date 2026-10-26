@@ -452,6 +452,14 @@ def main() -> None:
         dump(OUT / "hubs" / f"{key}.json", {"slug": key, **h, **data})
     dump(OUT / "hubs.json", hub_out)
 
+    # full transferable-skill importance vectors (Transferable Skills Finder)
+    skill_vec = {}
+    for code in titles:
+        if code in skills_im.index:
+            row = skills_im.loc[code].dropna()
+            skill_vec[slugs[code]] = {k: round(float(v), 2) for k, v in row.items()}
+    dump(OUT / "skills.json", skill_vec)
+
     print("Writing majors and indexes ...")
     majors = {}
     for soc, lst in soc_to_majors.items():

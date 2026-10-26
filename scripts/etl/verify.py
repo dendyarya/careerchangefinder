@@ -350,6 +350,19 @@ for m in json.loads((P / "majors.json").read_text()):
             err(f"major {m['cip']} career {c} not linked in crosswalk")
 
 # ---------------------------------------------------------------- transitions
+print("Skill vectors ...")
+_ts = {}
+for r in rows(ONET / "Transferable Skills.xlsx"):
+    if r.get("Scale ID") == "IM":
+        _ts[(r["O*NET-SOC Code"], r["Element Name"])] = float(r["Data Value"])
+_slug2code = {o["slug"]: c for c, o in occ.items()}
+for slug, vec in json.loads((P / "skills.json").read_text()).items():
+    c = _slug2code.get(slug)
+    for name, v in vec.items():
+        bump("skill vector values")
+        if c is None or abs(_ts.get((c, name), -9) - v) > 0.006:
+            err(f"skills.json {slug} {name} {v}")
+
 print("Transitions arithmetic and rules ...")
 ts_im = {}
 for r in rows(ONET / "Transferable Skills.xlsx"):
