@@ -255,6 +255,16 @@ for c, o in occ.items():
         if v["label"] != cat_label.get((el, sc, v["category"])):
             err(f"{c} {key} label {v['label']!r} != {cat_label.get((el, sc, v['category']))!r}")
 
+print("Education distribution ...")
+for c, o in occ.items():
+    d = dist.get((c, "Required Level of Education", "RL"), {})
+    for e in o.get("education_dist", []):
+        bump("education shares")
+        if abs(d.get(e["category"], -1) - e["pct"]) > 0.051 or e["label"] != cat_label.get(("Required Level of Education", "RL", e["category"])):
+            err(f"{c} education {e} != source")
+    if o.get("education_dist") is not None and len(o["education_dist"]) != sum(1 for v in d.values() if v > 0):
+        err(f"{c} education categories missing")
+
 print("Thin flags ...")
 for c, o in occ.items():
     bump("thin flags")
@@ -373,6 +383,15 @@ for f in glob.glob(str(P / "transitions" / "*.json")) + glob.glob(str(P / "hubs"
                 err(f"{f} {t['code']} pay change {t['pay_change_pct']} != {exp}")
         if not 0 <= t["match"] <= 99:
             err(f"{f} match out of range")
+_tops = {}
+for f in glob.glob(str(P / "transitions" / "*.json")):
+    d = json.loads(pathlib.Path(f).read_text())
+    _tops[d["code"]] = ({t["code"]: t["match"] for t in d["top"]}, d.get("into", []))
+for code, (_, into) in _tops.items():
+    for x in into:
+        bump("into links")
+        if _tops.get(x["code"], ({}, []))[0].get(code) != x["match"]:
+            err(f"{code} into {x['code']} match {x['match']} not in source's top list")
 
 print()
 for k, v in checked.items():

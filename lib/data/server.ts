@@ -60,6 +60,7 @@ export interface Occupation {
   knowledge: { name: string; value: number }[];
   work_styles: string[];
   majors: { cip: string; title: string }[];
+  education_dist: { category: number; label: string | null; pct: number }[];
 }
 export interface TransitionItem {
   code: string;

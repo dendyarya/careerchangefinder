@@ -222,6 +222,15 @@ def main() -> None:
                                          else "A certification can help" if c >= 2.5 else None)
         return out
 
+    def education_dist(code):
+        """Share of workers by required education level (O*NET Education, RL categories), in category order."""
+        if code not in edu_idx.groups:
+            return []
+        e = edu_idx.get_group(code)
+        e = e[(e["Element Name"] == "Required Level of Education") & (e["Scale ID"] == "RL")].sort_values("Category")
+        return [{"category": int(r["Category"]), "label": labels.get(("Required Level of Education", "RL", int(r["Category"]))),
+                 "pct": round(float(r["Data Value"]), 1)} for _, r in e.iterrows() if float(r["Data Value"]) > 0]
+
     wc_cx = wc[(wc["Scale ID"] == "CX") & (wc["Element Name"].isin(list(C.DOWNSIDE_FACTORS) + ["Contact With Others"]))]
     wc_cx = wc_cx.pivot_table(index="O*NET-SOC Code", columns="Element Name", values="Data Value", aggfunc="mean")
 
@@ -393,6 +402,7 @@ def main() -> None:
             "riasec": {letters[k]: round(float(v), 2) for k, v in r.items()},
             "wage": None if not w else {k: w[k] for k in ("median", "p10", "p25", "p75", "p90", "employment", "is_group", "bls_code", "bls_title", "top_coded")},
             "first_step": first_step(code),
+            "education_dist": education_dist(code),
             "downsides": downsides(code),
             "contact_with_others": None if code not in wc_cx.index or pd.isna(wc_cx.at[code, "Contact With Others"]) else round(float(wc_cx.at[code, "Contact With Others"]), 2),
             "tasks": top_tasks.get(code, [])[:8],
@@ -425,10 +435,16 @@ def main() -> None:
             dump(OUT / "wages" / f"{slugs[code]}.json", {"code": code, "bls_code": code[:7], "states": states[code[:7]]})
 
     print("Writing transitions ...")
-    for code in codes:
-        if thin[code]:
-            continue
-        dump(OUT / "transitions" / f"{slugs[code]}.json", {"code": code, "title": titles[code], **transitions(code)})
+    all_tr = {code: transitions(code) for code in codes if not thin[code]}
+    # reverse index: for each career, the jobs whose top 25 include it (best match first)
+    into = {}
+    for src, d in all_tr.items():
+        for t in d["top"]:
+            into.setdefault(t["code"], []).append({"code": src, "slug": slugs[src], "title": titles[src], "match": t["match"],
+                                                   "median": occ_wage[src]["median"] if occ_wage.get(src) else None})
+    for code, d in all_tr.items():
+        d["into"] = sorted(into.get(code, []), key=lambda x: (-x["match"], x["title"]))[:10]
+        dump(OUT / "transitions" / f"{slugs[code]}.json", {"code": code, "title": titles[code], **d})
     hub_out = {}
     for key, h in C.HUBS.items():
         data = transitions(f"hub:{key}")
