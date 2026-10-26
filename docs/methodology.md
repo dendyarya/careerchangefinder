@@ -42,7 +42,25 @@ Hub pages (teachers, nurses, and others) use the average profile of the member o
 
 - Pay is the BLS annual median for the matching SOC code. State pages use the BLS state file.
 - **Group wages.** Some O*NET occupations share one BLS code with others, such as Clinical Research Coordinators within *Natural Sciences Managers*. Their pay is shown with the label "Pay for the broader BLS group: …". Group pay is **never** used for the "pay change" percentage or in pay rankings. It counts only for the pay-drop penalty, so an inflated group figure cannot raise a career's score.
-- BLS does not publish exact figures for some very high wages (shown as "#" in the BLS files). We mark these as top-coded and show the BLS wording, not a number.
+- BLS can withhold exact figures for very high wages ("#" in its files). The May 2025 file has none for detailed occupations. If a later release has them, we mark the career as top-coded and show the BLS wording instead of a number.
+- **Pay change** is (target median − your job's median) ÷ your job's median, rounded to a whole percent. Colors follow the sign: +3% or more green, −3% or less red; the + or − sign is always shown.
+
+## What each "Jobs for Former …" page shows
+
+- **Table:** the 25 best matches in score order (10 shown first). "Extra education" compares Job Zones: "None" when the target usually needs no more preparation than your job; otherwise the target's level (high school diploma, certificate or associate, bachelor's degree, graduate degree).
+- **Skills you enjoy:** your job's 8 most important transferable skills (O*NET importance). Picking skills re-orders the list by 60% skill match + 40% the average importance of the picked skills in each target job. The skill match number does not change.
+- **Skills to learn:** the skill gaps that appear most often across the top 10 matches. A gap is a transferable skill whose importance in the target is at least 0.25 points higher than in your job.
+- **Top 3 moves, up close:** the most common education level and its share of workers, the extra preparation if the Job Zone is higher, a certification note (O*NET Job-Related Professional Certification importance: 3.5+ "often expected", 2.5–3.5 "can help"), on-the-job training, and the hard parts (below).
+- **FAQ:** answers are built from the numbers in the table; no outside figures.
+- **One page per job:** when a popular page covers a single occupation (for example Registered Nurses → Jobs for Former Nurses), the occupation page redirects to it.
+
+## Career Change Tool
+
+The same data as the pages above. Filters: extra education (any, none, up to a certificate or associate, up to a bachelor's degree) and pay (any, no drop bigger than 10%, pays more). Careers with only a broader BLS group wage are left out of the pay filters.
+
+## Big Five test and trait pages
+
+Scoring and the trait-to-career mapping are described in full on the tests page (docs/tests.md). In short: each trait is linked to two O*NET Work Styles, and careers are ranked by how much those styles matter in the job. Lists for the low end of a trait include only careers that usually need training (Job Zone 3+).
 
 ## Other fields
 
