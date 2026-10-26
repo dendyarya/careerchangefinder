@@ -1,4 +1,22 @@
+import fs from "node:fs";
 import type { NextConfig } from "next";
+
+// Occupations that are the only member of a "Jobs for Former" hub redirect to the hub (no duplicate pages).
+function hubRedirects() {
+  const hubs = JSON.parse(fs.readFileSync("data/processed/hubs.json", "utf8")) as Record<string, { codes: string[] }>;
+  const occ = JSON.parse(fs.readFileSync("data/processed/occupations.json", "utf8")) as {
+    code: string;
+    slug: string;
+  }[];
+  const slugOf = new Map(occ.map((o) => [o.code, o.slug]));
+  return Object.entries(hubs)
+    .filter(([, h]) => h.codes.length === 1 && slugOf.has(h.codes[0]!))
+    .map(([hub, h]) => ({
+      source: `/career-change/from-${slugOf.get(h.codes[0]!)}`,
+      destination: `/career-change/from-${hub}`,
+      permanent: true,
+    }));
+}
 
 // Security headers (runbook: "Keamanan website", part 3). CSP is a baseline here;
 // it is tightened in Tahap 8 once the ad, analytics and consent scripts are known.
@@ -43,6 +61,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   agentRules: false,
   reactStrictMode: true,
+  async redirects() {
+    return hubRedirects();
+  },
   async headers() {
     return [
       { source: "/:path*", headers: [...common, { key: "Content-Security-Policy", value: csp }] },

@@ -333,11 +333,24 @@ for m in json.loads((P / "majors.json").read_text()):
 
 # ---------------------------------------------------------------- transitions
 print("Transitions arithmetic and rules ...")
+ts_im = {}
+for r in rows(ONET / "Transferable Skills.xlsx"):
+    if r.get("Scale ID") == "IM":
+        ts_im[(r["O*NET-SOC Code"], r["Element Name"])] = float(r["Data Value"])
 for f in glob.glob(str(P / "transitions" / "*.json")) + glob.glob(str(P / "hubs" / "*.json")):
     d = json.loads(pathlib.Path(f).read_text())
     base = d["baseline_median"]
+    if "hubs" not in f:
+        for sk in d["source_skills"]:
+            bump("source skills")
+            if abs(ts_im.get((d["code"], sk["name"]), -9) - sk["value"]) > 0.006:
+                err(f"{f} source skill {sk['name']} {sk['value']}")
     for t in d["top"] + d["similar_in_field"]:
         bump("transition items")
+        for name, v in t.get("skill_imp", {}).items():
+            bump("target skill values")
+            if abs(ts_im.get((t["code"], name), -9) - v) > 0.006:
+                err(f"{f} {t['code']} skill {name} {v} != {ts_im.get((t['code'], name))}")
         o = occ[t["code"]]
         if o["thin"]:
             err(f"{f} thin target {t['code']}")

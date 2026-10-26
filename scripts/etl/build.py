@@ -310,6 +310,8 @@ def main() -> None:
         szone = src_jz(src)
         spay = src_pay(src)
         skill_src = src_frames["skills"].loc[src]
+        # the source's 8 most important transferable skills (used by the "Skills you enjoy" re-rank)
+        top_src = skill_src.dropna().sort_values(ascending=False).head(8)
         score = base_df.loc[src].values.copy()
         score += 100 * C.WEIGHTS["related"] * np.array([max((rel_bonus.get((m, t), 0) for m in mem), default=0) for t in codes])
         if szone:
@@ -342,9 +344,13 @@ def main() -> None:
                 "wage_is_group": w["is_group"], "wage_source_title": w["bls_title"],
                 "skill_gaps": [g for g, v in gaps.items() if v >= 0.25][:3],
                 "holland": holland.get(t),
+                "skill_imp": {k: round(float(skills_im.at[t, k]), 2) for k in top_src.index if k in skills_im.columns and pd.notna(skills_im.at[t, k])},
             }
             bucket.append(item)
-        return {"baseline_median": spay, "job_zone": szone, "top": out[:C.TOP_N], "similar_in_field": field[:10]}
+        return {"baseline_median": spay, "job_zone": szone,
+                "source_skills": [{"name": k, "value": round(float(v), 2)} for k, v in top_src.items()],
+                "members": [{"code": m, "title": titles[m], "slug": slugs[m]} for m in mem],
+                "top": out[:C.TOP_N], "similar_in_field": field[:10]}
 
     # ------------------------------------------------ write
     if OUT.exists():
