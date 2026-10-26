@@ -69,6 +69,10 @@ Optional: register the use at https://www.onetcenter.org/register.
 
 We do not use the name "NEO", MBTI types, or any clinical wording.
 
+**Careers per trait (result pages, our mapping):** each trait is linked to two O*NET 31.0 Work Styles (Impact scale, as percentiles across careers): Extraversion = Social Orientation + Leadership Orientation; Agreeableness = Cooperation + Empathy; Conscientiousness = Attention to Detail + Dependability; Emotional Stability = Stress Tolerance + Self-Control; Openness = Intellectual Curiosity + Innovation. High pages list the 15 careers with the highest values. Low pages list the 15 lowest among careers that usually need training (Job Zone 3+), so the list is not only entry-level work. Built by `scripts/etl/build_tests.py` into `data/tests/trait-pages.json`.
+
+**Results screen:** leads with the highest-scoring trait (if every score is below the middle, the most extreme one). Results can be shared as `#s=E-A-C-ES-O` in the URL hash, which never reaches our server.
+
 ## 3. College Major Quiz
 
 - Uses all 60 Interest Profiler items, plus the 20 IPIP items for Openness and Conscientiousness.
