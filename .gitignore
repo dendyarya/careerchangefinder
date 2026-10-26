@@ -1,0 +1,20 @@
+# dependencies and builds
+node_modules/
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+
+# python
+__pycache__/
+*.pyc
+.venv/
+
+# large raw data, re-downloaded by scripts/etl/download.py
+data/raw/onet/
+
+# env and local files
+.env
+.env.*
+!.env.example
+.DS_Store
