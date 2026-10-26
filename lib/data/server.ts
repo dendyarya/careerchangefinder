@@ -146,7 +146,8 @@ export function displayName(title: string): string {
   if (!title.includes(",")) return title;
   if (!dupShort) {
     const counts = new Map<string, number>();
-    for (const o of occupations().filter((x) => !x.thin)) {
+    // count every occupation (thin ones get noindex profiles too), so no two pages share a name
+    for (const o of occupations()) {
       const s = o.title.split(",")[0]!.trim();
       counts.set(s, (counts.get(s) ?? 0) + 1);
     }

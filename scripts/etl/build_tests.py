@@ -29,6 +29,7 @@ CX_ATTRS = {
     "hazard": ["Exposed to Hazardous Conditions", "Exposed to Hazardous Equipment"],
     "freedom": ["Freedom to Make Decisions"],
     "repetition": ["Importance of Repeating Same Tasks"],
+    "competition": ["Level of Competition"],
 }
 # category share (CTP, 0-100): attribute id -> (element, category)
 CTP_ATTRS = {
