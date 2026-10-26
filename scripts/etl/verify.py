@@ -201,17 +201,13 @@ for c, o in occ.items():
 ws_vals = {}
 for r in rows(ONET / "Work Styles.xlsx"):
     ws_vals.setdefault(r["Scale ID"], {}).setdefault(r["O*NET-SOC Code"], {})[r["Element Name"]] = float(r["Data Value"])
-ws_scale = next(iter(ws_vals))
 for c, o in occ.items():
-    src = ws_vals[ws_scale].get(c, {})
-    for s in o["work_styles"]:
-        bump("work styles")
-        if s not in src:
-            err(f"{c} work style not in source: {s}")
-    if o["work_styles"]:
-        low = min(src[s] for s in o["work_styles"] if s in src)
-        if any(v > low + 0.006 for n, v in src.items() if n not in o["work_styles"]):
-            err(f"{c} work styles: a higher-rated style was left out")
+    dr = ws_vals.get("DR", {}).get(c, {})
+    wi = ws_vals.get("WI", {}).get(c, {})
+    exp = sorted([n for n, v in dr.items() if v > 0], key=lambda n: (-dr[n], -wi.get(n, 0)))[:5]
+    bump("work styles", len(o["work_styles"]))
+    if o["work_styles"] != exp:
+        err(f"{c} work styles {o['work_styles']} != expected {exp}")
 for c, o in occ.items():
     if o["contact_with_others"] is not None:
         bump("contact with others")

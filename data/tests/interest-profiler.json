@@ -1,0 +1,380 @@
+{
+ "name": "O*NET Interest Profiler Short Form",
+ "version": "Short Form (computerized, 5-point)",
+ "source_url": "https://www.onetcenter.org/IPSF.html",
+ "source_files": [
+  "data/raw/tests/Interest_Profiler.pdf"
+ ],
+ "manual_url": "https://www.onetcenter.org/reports/IP_Manual.html",
+ "license": {
+  "name": "CC BY-ND 4.0",
+  "url": "https://creativecommons.org/licenses/by-nd/4.0/",
+  "terms_url": "https://www.onetcenter.org/license_tools.html",
+  "attribution": "This page includes information from the O*NET Career Exploration Tools by the U.S. Department of Labor, Employment and Training Administration (USDOL/ETA). Used under the CC BY-ND 4.0 license. O*NET® is a trademark of USDOL/ETA."
+ },
+ "instructions": "Read each work activity and decide how you would feel about doing it. Do not think about how much education or training is needed or how much money you would make.",
+ "scale": [
+  {
+   "value": 0,
+   "label": "Strongly Dislike"
+  },
+  {
+   "value": 1,
+   "label": "Dislike"
+  },
+  {
+   "value": 2,
+   "label": "Unsure"
+  },
+  {
+   "value": 3,
+   "label": "Like"
+  },
+  {
+   "value": 4,
+   "label": "Strongly Like"
+  }
+ ],
+ "areas": {
+  "R": "Realistic",
+  "I": "Investigative",
+  "A": "Artistic",
+  "S": "Social",
+  "E": "Enterprising",
+  "C": "Conventional"
+ },
+ "scoring": {
+  "method": "sum per area",
+  "range": [
+   0,
+   40
+  ],
+  "manual_ref": "IP Manual (2021), Chapter 3, Automated Scoring Systems",
+  "occupation_link": {
+   "method": "Pearson correlation between the person's six scores and the occupation's O*NET Interest profile (OI)",
+   "manual_ref": "IP Manual (2021), Chapter 7",
+   "fit": [
+    {
+     "label": "Best Fit",
+     "min_r": 0.729,
+     "note": "p < .05, one-tailed, N = 6"
+    },
+    {
+     "label": "Great Fit",
+     "min_r": 0.608,
+     "note": "p < .10, one-tailed, N = 6"
+    },
+    {
+     "label": "Good Fit",
+     "min_r": 0.0
+    }
+   ],
+   "group_by": "job_zone",
+   "target_per_job_zone": 10
+  },
+  "all_strongly_dislike_message": "You answered \"strongly dislike\" to all questions. Your results may not reflect your interests. Please consider retaking the Interest Profiler at a different time."
+ },
+ "item_order_note": "Items keep the official Short Form wording. Order: two items per area in the sequence R, I, A, S, E, C, repeated five times, following the item sequence of the official form.",
+ "items": [
+  {
+   "id": 1,
+   "text": "Build kitchen cabinets",
+   "area": "R"
+  },
+  {
+   "id": 2,
+   "text": "Lay brick or tile",
+   "area": "R"
+  },
+  {
+   "id": 3,
+   "text": "Develop a new medicine",
+   "area": "I"
+  },
+  {
+   "id": 4,
+   "text": "Study ways to reduce water pollution",
+   "area": "I"
+  },
+  {
+   "id": 5,
+   "text": "Write books or plays",
+   "area": "A"
+  },
+  {
+   "id": 6,
+   "text": "Play a musical instrument",
+   "area": "A"
+  },
+  {
+   "id": 7,
+   "text": "Teach an individual an exercise routine",
+   "area": "S"
+  },
+  {
+   "id": 8,
+   "text": "Help people with personal or emotional problems",
+   "area": "S"
+  },
+  {
+   "id": 9,
+   "text": "Buy and sell stocks and bonds",
+   "area": "E"
+  },
+  {
+   "id": 10,
+   "text": "Manage a retail store",
+   "area": "E"
+  },
+  {
+   "id": 11,
+   "text": "Develop a spreadsheet using computer software",
+   "area": "C"
+  },
+  {
+   "id": 12,
+   "text": "Proofread records or forms",
+   "area": "C"
+  },
+  {
+   "id": 13,
+   "text": "Repair household appliances",
+   "area": "R"
+  },
+  {
+   "id": 14,
+   "text": "Raise fish in a fish hatchery",
+   "area": "R"
+  },
+  {
+   "id": 15,
+   "text": "Conduct chemical experiments",
+   "area": "I"
+  },
+  {
+   "id": 16,
+   "text": "Study the movement of planets",
+   "area": "I"
+  },
+  {
+   "id": 17,
+   "text": "Compose or arrange music",
+   "area": "A"
+  },
+  {
+   "id": 18,
+   "text": "Draw pictures",
+   "area": "A"
+  },
+  {
+   "id": 19,
+   "text": "Give career guidance to people",
+   "area": "S"
+  },
+  {
+   "id": 20,
+   "text": "Perform rehabilitation therapy",
+   "area": "S"
+  },
+  {
+   "id": 21,
+   "text": "Operate a beauty salon or barber shop",
+   "area": "E"
+  },
+  {
+   "id": 22,
+   "text": "Manage a department within a large company",
+   "area": "E"
+  },
+  {
+   "id": 23,
+   "text": "Install software across computers on a large network",
+   "area": "C"
+  },
+  {
+   "id": 24,
+   "text": "Operate a calculator",
+   "area": "C"
+  },
+  {
+   "id": 25,
+   "text": "Assemble electronic parts",
+   "area": "R"
+  },
+  {
+   "id": 26,
+   "text": "Drive a truck to deliver packages to offices and homes",
+   "area": "R"
+  },
+  {
+   "id": 27,
+   "text": "Examine blood samples using a microscope",
+   "area": "I"
+  },
+  {
+   "id": 28,
+   "text": "Investigate the cause of a fire",
+   "area": "I"
+  },
+  {
+   "id": 29,
+   "text": "Create special effects for movies",
+   "area": "A"
+  },
+  {
+   "id": 30,
+   "text": "Paint sets for plays",
+   "area": "A"
+  },
+  {
+   "id": 31,
+   "text": "Do volunteer work at a non-profit organization",
+   "area": "S"
+  },
+  {
+   "id": 32,
+   "text": "Teach children how to play sports",
+   "area": "S"
+  },
+  {
+   "id": 33,
+   "text": "Start your own business",
+   "area": "E"
+  },
+  {
+   "id": 34,
+   "text": "Negotiate business contracts",
+   "area": "E"
+  },
+  {
+   "id": 35,
+   "text": "Keep shipping and receiving records",
+   "area": "C"
+  },
+  {
+   "id": 36,
+   "text": "Calculate the wages of employees",
+   "area": "C"
+  },
+  {
+   "id": 37,
+   "text": "Test the quality of parts before shipment",
+   "area": "R"
+  },
+  {
+   "id": 38,
+   "text": "Repair and install locks",
+   "area": "R"
+  },
+  {
+   "id": 39,
+   "text": "Develop a way to better predict the weather",
+   "area": "I"
+  },
+  {
+   "id": 40,
+   "text": "Work in a biology lab",
+   "area": "I"
+  },
+  {
+   "id": 41,
+   "text": "Write scripts for movies or television shows",
+   "area": "A"
+  },
+  {
+   "id": 42,
+   "text": "Perform jazz or tap dance",
+   "area": "A"
+  },
+  {
+   "id": 43,
+   "text": "Teach sign language to people who are deaf or hard of hearing",
+   "area": "S"
+  },
+  {
+   "id": 44,
+   "text": "Help conduct a group therapy session",
+   "area": "S"
+  },
+  {
+   "id": 45,
+   "text": "Represent a client in a lawsuit",
+   "area": "E"
+  },
+  {
+   "id": 46,
+   "text": "Market a new line of clothing",
+   "area": "E"
+  },
+  {
+   "id": 47,
+   "text": "Inventory supplies using a hand-held computer",
+   "area": "C"
+  },
+  {
+   "id": 48,
+   "text": "Record rent payments",
+   "area": "C"
+  },
+  {
+   "id": 49,
+   "text": "Set up and operate machines to make products",
+   "area": "R"
+  },
+  {
+   "id": 50,
+   "text": "Put out forest fires",
+   "area": "R"
+  },
+  {
+   "id": 51,
+   "text": "Invent a replacement for sugar",
+   "area": "I"
+  },
+  {
+   "id": 52,
+   "text": "Do laboratory tests to identify diseases",
+   "area": "I"
+  },
+  {
+   "id": 53,
+   "text": "Sing in a band",
+   "area": "A"
+  },
+  {
+   "id": 54,
+   "text": "Edit movies",
+   "area": "A"
+  },
+  {
+   "id": 55,
+   "text": "Take care of children at a day-care center",
+   "area": "S"
+  },
+  {
+   "id": 56,
+   "text": "Teach a high-school class",
+   "area": "S"
+  },
+  {
+   "id": 57,
+   "text": "Sell merchandise at a department store",
+   "area": "E"
+  },
+  {
+   "id": 58,
+   "text": "Manage a clothing store",
+   "area": "E"
+  },
+  {
+   "id": 59,
+   "text": "Keep inventory records",
+   "area": "C"
+  },
+  {
+   "id": 60,
+   "text": "Stamp, sort, and distribute mail for an organization",
+   "area": "C"
+  }
+ ]
+}

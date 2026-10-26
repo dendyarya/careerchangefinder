@@ -1,0 +1,429 @@
+{
+ "name": "IPIP Big-Five Factor Markers (50 items)",
+ "source_url": "https://ipip.ori.org/new_ipip-50-item-scale.htm",
+ "source_files": [
+  "data/raw/tests/ipip-50-item-scale.htm"
+ ],
+ "license": {
+  "name": "Public domain",
+  "url": "https://ipip.ori.org/",
+  "attribution": "Items from the International Personality Item Pool (IPIP), a public-domain collection of personality items (ipip.ori.org). Goldberg, L. R. (1992). The development of markers for the Big-Five factor structure. Psychological Assessment, 4, 26-42."
+ },
+ "instructions": "Describe yourself as you generally are now, not as you wish to be in the future. Describe yourself as you honestly see yourself, in relation to other people you know of the same sex as you are, and roughly your same age. Indicate for each statement how accurately it describes you.",
+ "instructions_note": "Official wording, without the sentence about confidentiality; our site stores answers only in the browser.",
+ "scale": [
+  {
+   "value": 1,
+   "label": "Very Inaccurate"
+  },
+  {
+   "value": 2,
+   "label": "Moderately Inaccurate"
+  },
+  {
+   "value": 3,
+   "label": "Neither Accurate Nor Inaccurate"
+  },
+  {
+   "value": 4,
+   "label": "Moderately Accurate"
+  },
+  {
+   "value": 5,
+   "label": "Very Accurate"
+  }
+ ],
+ "factors": {
+  "1": {
+   "id": "extraversion",
+   "name": "Extraversion"
+  },
+  "2": {
+   "id": "agreeableness",
+   "name": "Agreeableness"
+  },
+  "3": {
+   "id": "conscientiousness",
+   "name": "Conscientiousness"
+  },
+  "4": {
+   "id": "emotional-stability",
+   "name": "Emotional Stability"
+  },
+  "5": {
+   "id": "openness",
+   "name": "Intellect/Imagination (Openness)"
+  }
+ },
+ "scoring": {
+  "method": "+keyed items score 1-5, -keyed items score 6 minus the answer; sum of 10 items per factor (10-50)",
+  "source": "https://ipip.ori.org/newScoringInstructions.htm",
+  "bands": {
+   "low": [
+    10,
+    23
+   ],
+   "medium": [
+    24,
+    36
+   ],
+   "high": [
+    37,
+    50
+   ]
+  },
+  "bands_note": "Bands split the possible score range into thirds. They are not population norms."
+ },
+ "items": [
+  {
+   "id": 1,
+   "text": "Am the life of the party.",
+   "factor": 1,
+   "factor_id": "extraversion",
+   "key": "+"
+  },
+  {
+   "id": 2,
+   "text": "Feel little concern for others.",
+   "factor": 2,
+   "factor_id": "agreeableness",
+   "key": "-"
+  },
+  {
+   "id": 3,
+   "text": "Am always prepared.",
+   "factor": 3,
+   "factor_id": "conscientiousness",
+   "key": "+"
+  },
+  {
+   "id": 4,
+   "text": "Get stressed out easily.",
+   "factor": 4,
+   "factor_id": "emotional-stability",
+   "key": "-"
+  },
+  {
+   "id": 5,
+   "text": "Have a rich vocabulary.",
+   "factor": 5,
+   "factor_id": "openness",
+   "key": "+"
+  },
+  {
+   "id": 6,
+   "text": "Don't talk a lot.",
+   "factor": 1,
+   "factor_id": "extraversion",
+   "key": "-"
+  },
+  {
+   "id": 7,
+   "text": "Am interested in people.",
+   "factor": 2,
+   "factor_id": "agreeableness",
+   "key": "+"
+  },
+  {
+   "id": 8,
+   "text": "Leave my belongings around.",
+   "factor": 3,
+   "factor_id": "conscientiousness",
+   "key": "-"
+  },
+  {
+   "id": 9,
+   "text": "Am relaxed most of the time.",
+   "factor": 4,
+   "factor_id": "emotional-stability",
+   "key": "+"
+  },
+  {
+   "id": 10,
+   "text": "Have difficulty understanding abstract ideas.",
+   "factor": 5,
+   "factor_id": "openness",
+   "key": "-"
+  },
+  {
+   "id": 11,
+   "text": "Feel comfortable around people.",
+   "factor": 1,
+   "factor_id": "extraversion",
+   "key": "+"
+  },
+  {
+   "id": 12,
+   "text": "Insult people.",
+   "factor": 2,
+   "factor_id": "agreeableness",
+   "key": "-"
+  },
+  {
+   "id": 13,
+   "text": "Pay attention to details.",
+   "factor": 3,
+   "factor_id": "conscientiousness",
+   "key": "+"
+  },
+  {
+   "id": 14,
+   "text": "Worry about things.",
+   "factor": 4,
+   "factor_id": "emotional-stability",
+   "key": "-"
+  },
+  {
+   "id": 15,
+   "text": "Have a vivid imagination.",
+   "factor": 5,
+   "factor_id": "openness",
+   "key": "+"
+  },
+  {
+   "id": 16,
+   "text": "Keep in the background.",
+   "factor": 1,
+   "factor_id": "extraversion",
+   "key": "-"
+  },
+  {
+   "id": 17,
+   "text": "Sympathize with others' feelings.",
+   "factor": 2,
+   "factor_id": "agreeableness",
+   "key": "+"
+  },
+  {
+   "id": 18,
+   "text": "Make a mess of things.",
+   "factor": 3,
+   "factor_id": "conscientiousness",
+   "key": "-"
+  },
+  {
+   "id": 19,
+   "text": "Seldom feel blue.",
+   "factor": 4,
+   "factor_id": "emotional-stability",
+   "key": "+"
+  },
+  {
+   "id": 20,
+   "text": "Am not interested in abstract ideas.",
+   "factor": 5,
+   "factor_id": "openness",
+   "key": "-"
+  },
+  {
+   "id": 21,
+   "text": "Start conversations.",
+   "factor": 1,
+   "factor_id": "extraversion",
+   "key": "+"
+  },
+  {
+   "id": 22,
+   "text": "Am not interested in other people's problems.",
+   "factor": 2,
+   "factor_id": "agreeableness",
+   "key": "-"
+  },
+  {
+   "id": 23,
+   "text": "Get chores done right away.",
+   "factor": 3,
+   "factor_id": "conscientiousness",
+   "key": "+"
+  },
+  {
+   "id": 24,
+   "text": "Am easily disturbed.",
+   "factor": 4,
+   "factor_id": "emotional-stability",
+   "key": "-"
+  },
+  {
+   "id": 25,
+   "text": "Have excellent ideas.",
+   "factor": 5,
+   "factor_id": "openness",
+   "key": "+"
+  },
+  {
+   "id": 26,
+   "text": "Have little to say.",
+   "factor": 1,
+   "factor_id": "extraversion",
+   "key": "-"
+  },
+  {
+   "id": 27,
+   "text": "Have a soft heart.",
+   "factor": 2,
+   "factor_id": "agreeableness",
+   "key": "+"
+  },
+  {
+   "id": 28,
+   "text": "Often forget to put things back in their proper place.",
+   "factor": 3,
+   "factor_id": "conscientiousness",
+   "key": "-"
+  },
+  {
+   "id": 29,
+   "text": "Get upset easily.",
+   "factor": 4,
+   "factor_id": "emotional-stability",
+   "key": "-"
+  },
+  {
+   "id": 30,
+   "text": "Do not have a good imagination.",
+   "factor": 5,
+   "factor_id": "openness",
+   "key": "-"
+  },
+  {
+   "id": 31,
+   "text": "Talk to a lot of different people at parties.",
+   "factor": 1,
+   "factor_id": "extraversion",
+   "key": "+"
+  },
+  {
+   "id": 32,
+   "text": "Am not really interested in others.",
+   "factor": 2,
+   "factor_id": "agreeableness",
+   "key": "-"
+  },
+  {
+   "id": 33,
+   "text": "Like order.",
+   "factor": 3,
+   "factor_id": "conscientiousness",
+   "key": "+"
+  },
+  {
+   "id": 34,
+   "text": "Change my mood a lot.",
+   "factor": 4,
+   "factor_id": "emotional-stability",
+   "key": "-"
+  },
+  {
+   "id": 35,
+   "text": "Am quick to understand things.",
+   "factor": 5,
+   "factor_id": "openness",
+   "key": "+"
+  },
+  {
+   "id": 36,
+   "text": "Don't like to draw attention to myself.",
+   "factor": 1,
+   "factor_id": "extraversion",
+   "key": "-"
+  },
+  {
+   "id": 37,
+   "text": "Take time out for others.",
+   "factor": 2,
+   "factor_id": "agreeableness",
+   "key": "+"
+  },
+  {
+   "id": 38,
+   "text": "Shirk my duties.",
+   "factor": 3,
+   "factor_id": "conscientiousness",
+   "key": "-"
+  },
+  {
+   "id": 39,
+   "text": "Have frequent mood swings.",
+   "factor": 4,
+   "factor_id": "emotional-stability",
+   "key": "-"
+  },
+  {
+   "id": 40,
+   "text": "Use difficult words.",
+   "factor": 5,
+   "factor_id": "openness",
+   "key": "+"
+  },
+  {
+   "id": 41,
+   "text": "Don't mind being the center of attention.",
+   "factor": 1,
+   "factor_id": "extraversion",
+   "key": "+"
+  },
+  {
+   "id": 42,
+   "text": "Feel others' emotions.",
+   "factor": 2,
+   "factor_id": "agreeableness",
+   "key": "+"
+  },
+  {
+   "id": 43,
+   "text": "Follow a schedule.",
+   "factor": 3,
+   "factor_id": "conscientiousness",
+   "key": "+"
+  },
+  {
+   "id": 44,
+   "text": "Get irritated easily.",
+   "factor": 4,
+   "factor_id": "emotional-stability",
+   "key": "-"
+  },
+  {
+   "id": 45,
+   "text": "Spend time reflecting on things.",
+   "factor": 5,
+   "factor_id": "openness",
+   "key": "+"
+  },
+  {
+   "id": 46,
+   "text": "Am quiet around strangers.",
+   "factor": 1,
+   "factor_id": "extraversion",
+   "key": "-"
+  },
+  {
+   "id": 47,
+   "text": "Make people feel at ease.",
+   "factor": 2,
+   "factor_id": "agreeableness",
+   "key": "+"
+  },
+  {
+   "id": 48,
+   "text": "Am exacting in my work.",
+   "factor": 3,
+   "factor_id": "conscientiousness",
+   "key": "+"
+  },
+  {
+   "id": 49,
+   "text": "Often feel blue.",
+   "factor": 4,
+   "factor_id": "emotional-stability",
+   "key": "-"
+  },
+  {
+   "id": 50,
+   "text": "Am full of ideas.",
+   "factor": 5,
+   "factor_id": "openness",
+   "key": "+"
+  }
+ ]
+}

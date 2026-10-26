@@ -1,0 +1,29 @@
+{
+ "name": "College Major Quiz",
+ "author": "careerchangefinder.com, using the O*NET Interest Profiler Short Form and IPIP items",
+ "note": "Uses your Interest Profiler scores and your Openness and Conscientiousness scores from the 20 IPIP items for those two traits. Majors are linked to careers through the NCES CIP 2020 to SOC 2018 crosswalk.",
+ "parts": [
+  {
+   "test": "interest-profiler",
+   "items": "all 60"
+  },
+  {
+   "test": "big-five-ipip50",
+   "factors": [
+    "openness",
+    "conscientiousness"
+   ],
+   "items": "the 20 items for factors 5 and 3"
+  }
+ ],
+ "scoring": {
+  "interest_weight": 0.7,
+  "openness_weight": 0.15,
+  "conscientiousness_weight": 0.15,
+  "method": "interest fit = Pearson r between your 6 Interest Profiler scores and the major's profile (mean O*NET Interest profile of its linked careers), negative values set to 0. Trait fit = 1 - |your trait percentile of the 10-50 range - the major's trait value|. Score = weighted sum, 0-100.",
+  "min_linked_careers": 1,
+  "top_n": 15,
+  "confidence_k": 1,
+  "confidence_note": "Majors linked to few careers have a less reliable profile. Score is multiplied by n / (n + k), where n = number of linked careers and k = confidence_k (1 career = 50%, 3 = 75%, 9 = 90%)."
+ }
+}

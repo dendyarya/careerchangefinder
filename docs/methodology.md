@@ -49,6 +49,7 @@ Hub pages (teachers, nurses, and others) use the average profile of the member o
 - **First step:** O*NET Education, Training and Experience (most common category and its share of workers), plus the Job Zone label.
 - **The hard parts:** O*NET Work Context factors rated 3.5 or higher on a 1–5 scale (for example, time pressure or exposure to disease).
 - **Majors:** the NCES crosswalk links majors (CIP codes) to careers (SOC codes).
+- **Work styles that stand out:** O*NET Work Styles with a Distinctiveness Rank (DR) above 0, highest first (ties broken by the Impact scale, WI), up to 5.
 
 ## Limits
 

@@ -224,7 +224,6 @@ def main() -> None:
         sub = df[(df["O*NET-SOC Code"] == code) & (df["Scale ID"] == scale)].sort_values("Data Value", ascending=False)
         return [{"name": r["Element Name"], "value": round(float(r["Data Value"]), 2)} for _, r in sub.head(n).iterrows()]
 
-    ws_rank = ws[ws["Scale ID"] == ws["Scale ID"].iloc[0]]
     alt_titles = alt.groupby("O*NET-SOC Code")["Job Title"].apply(lambda s: list(dict.fromkeys(s))[:10]).to_dict()
 
     # majors from crosswalk
@@ -382,8 +381,11 @@ def main() -> None:
     kn_long = kn_long[kn_long["Scale ID"] == "IM"].sort_values("Data Value", ascending=False)
     kn_top = kn_long.groupby("O*NET-SOC Code").head(6).groupby("O*NET-SOC Code").apply(
         lambda d: [{"name": n, "value": round(float(v), 2)} for n, v in zip(d["Element Name"], d["Data Value"])]).to_dict()
-    ws_sorted = ws_rank.sort_values("Data Value", ascending=False)
-    ws_top = ws_sorted.groupby("O*NET-SOC Code").head(5).groupby("O*NET-SOC Code")["Element Name"].apply(list).to_dict()
+    # Work styles that stand out for this job: O*NET Distinctiveness Rank (DR, 0-10) above 0,
+    # highest first; ties broken by Work Styles Impact (WI). Max 5.
+    ws_p = ws.pivot_table(index=["O*NET-SOC Code", "Element Name"], columns="Scale ID", values="Data Value").reset_index()
+    ws_p = ws_p[ws_p["DR"] > 0].sort_values(["O*NET-SOC Code", "DR", "WI"], ascending=[True, False, False])
+    ws_top = ws_p.groupby("O*NET-SOC Code").head(5).groupby("O*NET-SOC Code")["Element Name"].apply(list).to_dict()
     for rec in occupations:
         rec["knowledge"] = kn_top.get(rec["code"], [])
         rec["work_styles"] = ws_top.get(rec["code"], [])
