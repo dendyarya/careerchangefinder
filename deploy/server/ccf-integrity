@@ -1,0 +1,15 @@
+#!/bin/bash
+# Hourly (cron): check that the live release still matches its checksums and has no extra files.
+# Writes problems to ~/integrity.log and exits non-zero (runbook: Keamanan website, part 4).
+set -uo pipefail
+for ENV in staging production; do
+  CUR=/var/www/careerchangefinder/$ENV/current
+  [ -e "$CUR" ] || continue
+  cd "$CUR" || continue
+  bad=$(sha256sum --quiet -c MANIFEST.sha256 2>&1)
+  extra=$(comm -13 <(sed 's/^[0-9a-f]*  //' MANIFEST.sha256 | sort) <(find . -type f ! -name MANIFEST.sha256 ! -path './.next/cache/*' | sort))
+  if [ -n "$bad$extra" ]; then
+    { echo "$(date -u +%FT%TZ) $ENV INTEGRITY PROBLEM"; echo "$bad"; echo "extra files:"; echo "$extra"; } >> "$HOME/integrity.log"
+    exit 1
+  fi
+done

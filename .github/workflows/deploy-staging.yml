@@ -1,0 +1,94 @@
+# Deploy to staging.careerchangefinder.com on every push to the "staging" branch.
+# Actions are pinned to commit SHAs (runbook: Keamanan website, part 2).
+name: Deploy staging
+
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: staging
+    env:
+      SITE_ENV: staging
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Install
+        run: |
+          npm ci
+          pip install -r scripts/etl/requirements.txt
+          sudo apt-get install -y --no-install-recommends poppler-utils
+
+      - name: Security audit (fail on high or critical)
+        run: npm audit --audit-level=high
+
+      - name: Type check, lint, unit tests
+        run: |
+          npm run typecheck
+          npm run lint
+          npm test
+
+      - name: Check data against the official sources
+        run: |
+          python scripts/etl/download.py
+          python scripts/etl/verify.py
+          python scripts/etl/verify_tests.py
+
+      - name: Build
+        run: npm run build
+
+      - name: Check built pages (SEO basics and numbers vs data)
+        run: npm run qa
+
+      - name: Assemble release with checksums
+        run: |
+          set -euo pipefail
+          R=release
+          cp -r .next/standalone "$R"
+          mkdir -p "$R/.next"
+          cp -r .next/static "$R/.next/static"
+          cp -r public "$R/public"
+          rm -rf "$R/.next/cache"
+          echo "$GITHUB_SHA" > "$R/RELEASE"
+          (cd "$R" && find . -type f ! -name MANIFEST.sha256 -print0 | sort -z | xargs -0 sha256sum > MANIFEST.sha256)
+          du -sh "$R"
+
+      - name: Upload to the VPS and activate
+        env:
+          SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          HOST: ${{ secrets.VPS_HOST }}
+          PORT: ${{ secrets.VPS_PORT }}
+          USER: ${{ secrets.VPS_USER }}
+          KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          SSH="ssh -i $HOME/.ssh/deploy -p $PORT -o StrictHostKeyChecking=yes -o IdentitiesOnly=yes"
+          # The deploy key can only rsync into the releases folder and run "activate" (deploy/server/ccf-gate)
+          ID="$GITHUB_SHA-$GITHUB_RUN_ID"
+          rsync -rlptz --chmod=Du=rwx,Dgo=,Fu=rw,Fgo= -e "$SSH" release/ "$USER@$HOST:staging/releases/$ID/"
+          $SSH "$USER@$HOST" "activate staging $ID"
+          rm -f ~/.ssh/deploy

@@ -1,0 +1,21 @@
+#!/bin/bash
+# Forced command for the GitHub Actions deploy key (set in ~ccf/.ssh/authorized_keys).
+# The key may ONLY: rsync files into /var/www/careerchangefinder (via rrsync) or activate a release.
+# No shell, no port forwarding (authorized_keys also sets "restrict").
+set -euo pipefail
+ROOT=/var/www/careerchangefinder
+cmd="${SSH_ORIGINAL_COMMAND:-}"
+case "$cmd" in
+  "rsync --server"*)
+    exec /usr/bin/rrsync "$ROOT"
+    ;;
+  "activate staging "* | "activate production "*)
+    read -r _ env sha <<<"$cmd"
+    [[ "$sha" =~ ^[0-9a-f]{40}-[0-9]+$ ]] || { echo "bad release id" >&2; exit 2; }
+    exec /home/ccf/bin/ccf-activate "$env" "$sha"
+    ;;
+  *)
+    echo "command not allowed" >&2
+    exit 1
+    ;;
+esac

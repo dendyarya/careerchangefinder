@@ -1,0 +1,56 @@
+#!/bin/bash
+# Activate an uploaded release: verify checksums, make it read-only, switch "current",
+# restart the app with PM2, health-check, and roll back automatically on failure.
+# Usage: ccf-activate staging|production <git sha>-<run id>
+set -euo pipefail
+ENV="$1"; SHA="$2"
+case "$ENV" in staging) PORT=3101 ;; production) PORT=3100 ;; *) echo "unknown env" >&2; exit 2 ;; esac
+BASE=/var/www/careerchangefinder/$ENV
+REL=$BASE/releases/$SHA
+export NVM_DIR="$HOME/.nvm"; . "$NVM_DIR/nvm.sh" >/dev/null
+
+[ -f "$REL/MANIFEST.sha256" ] || { echo "release $SHA not found" >&2; exit 1; }
+cd "$REL"
+sha256sum --quiet --strict -c MANIFEST.sha256 || { echo "checksum mismatch, not activating" >&2; exit 1; }
+
+# runtime cache lives outside the read-only release
+mkdir -p "$BASE/cache"
+rm -rf "$REL/.next/cache" && ln -s "$BASE/cache" "$REL/.next/cache"
+chmod -R a-w "$REL"
+
+PREV=$(readlink -f "$BASE/current" 2>/dev/null || true)
+ln -sfn "$REL" "$BASE/current.tmp" && mv -Tf "$BASE/current.tmp" "$BASE/current"
+
+restart() {
+  pm2 delete "ccf-$ENV" >/dev/null 2>&1 || true
+  pm2 start "$BASE/ecosystem.config.cjs" >/dev/null
+}
+healthy() {
+  for _ in $(seq 1 20); do
+    curl -fsS -o /dev/null "http://127.0.0.1:$PORT/" && return 0
+    sleep 1
+  done
+  return 1
+}
+
+restart
+if healthy; then
+  pm2 save >/dev/null
+  echo "$(date -u +%FT%TZ) $SHA" >> "$BASE/deploys.log"
+  echo "activated $ENV $SHA"
+else
+  echo "health check failed" >&2
+  if [ -n "$PREV" ] && [ -d "$PREV" ]; then
+    ln -sfn "$PREV" "$BASE/current.tmp" && mv -Tf "$BASE/current.tmp" "$BASE/current"
+    restart
+    echo "rolled back to $(basename "$PREV")" >&2
+  fi
+  exit 1
+fi
+
+# keep the 3 newest releases (never the active one)
+cd "$BASE/releases"
+ls -1t | tail -n +4 | while read -r old; do
+  [ "$BASE/releases/$old" = "$(readlink -f "$BASE/current")" ] && continue
+  chmod -R u+w "$old" && rm -rf "$old"
+done

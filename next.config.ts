@@ -76,6 +76,10 @@ const nextConfig: NextConfig = {
         ],
       },
       { source: "/api/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
+      // anything that is not the production site is never indexed
+      ...(process.env.SITE_ENV === "production"
+        ? []
+        : [{ source: "/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] }]),
     ];
   },
 };
