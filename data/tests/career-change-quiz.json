@@ -6,48 +6,273 @@
  "scoring": {
   "method": "Sum of points (0-30). Any question answered 0 or 1 adds its tip to your action plan.",
   "levels": [
-   {"id": "plan-first", "min": 0, "max": 13, "title": "Plan first",
+   {
+    "id": "plan-first",
+    "min": 0,
+    "max": 13,
+    "title": "Plan first",
     "summary": "A change is possible, but a few basics need work before you leave your current job.",
-    "next_step": "Pick the two tips below that matter most and work on them for the next 30 days."},
-   {"id": "getting-ready", "min": 14, "max": 22, "title": "Getting ready",
+    "next_step": "Pick the two tips below that matter most and work on them for the next 30 days."
+   },
+   {
+    "id": "getting-ready",
+    "min": 14,
+    "max": 22,
+    "title": "Getting ready",
     "summary": "You have a good base. Close the gaps below and you can start applying or training.",
-    "next_step": "Set a date for your first concrete step, such as an informational interview or a course."},
-   {"id": "ready", "min": 23, "max": 30, "title": "Ready to move",
+    "next_step": "Set a date for your first concrete step, such as an informational interview or a course."
+   },
+   {
+    "id": "ready",
+    "min": 23,
+    "max": 30,
+    "title": "Ready to move",
     "summary": "You are well prepared to start your career change.",
-    "next_step": "Start applying, or enroll in the training your target job needs."}
+    "next_step": "Start applying, or enroll in the training your target job needs."
+   }
   ],
   "weak_answer_max_points": 1
  },
  "questions": [
-  {"id": "cc1", "area": "savings", "text": "If your income dropped during the change, how long could your savings cover your basic bills?",
-   "options": [{"label": "Less than 1 month", "points": 0}, {"label": "1 to 3 months", "points": 1}, {"label": "3 to 6 months", "points": 2}, {"label": "More than 6 months", "points": 3}],
-   "tip": "Build a cushion of at least 3 months of basic expenses before you leave your job, or plan a change you can make while still employed."},
-  {"id": "cc2", "area": "income", "text": "Could you live on a lower salary for a while if your new career starts lower?",
-   "options": [{"label": "No", "points": 0}, {"label": "Only a small cut", "points": 1}, {"label": "Yes, for up to a year", "points": 2}, {"label": "Yes, my target pays the same or more", "points": 3}],
-   "tip": "Check the starting pay of your target job on its career page and write a budget for that amount."},
-  {"id": "cc3", "area": "time", "text": "How many hours a week can you spend learning or job hunting?",
-   "options": [{"label": "Almost none", "points": 0}, {"label": "1 to 3 hours", "points": 1}, {"label": "4 to 8 hours", "points": 2}, {"label": "More than 8 hours", "points": 3}],
-   "tip": "Block out a fixed time each week, even 3 hours, and protect it like a work meeting."},
-  {"id": "cc4", "area": "support", "text": "Do the people closest to you support this change?",
-   "options": [{"label": "No", "points": 0}, {"label": "I haven't talked to them", "points": 1}, {"label": "Mostly", "points": 2}, {"label": "Yes, fully", "points": 3}],
-   "tip": "Talk with your family or partner about the plan, the timeline, and any money changes."},
-  {"id": "cc5", "area": "target", "text": "How clear is the job you want to move into?",
-   "options": [{"label": "I have no idea yet", "points": 0}, {"label": "I have a few ideas", "points": 1}, {"label": "I have 1 or 2 target jobs", "points": 2}, {"label": "I know exactly which job", "points": 3}],
-   "tip": "Take the Free Career Test or use the Career Change Tool to narrow your options to 1 or 2 jobs."},
-  {"id": "cc6", "area": "research", "text": "Have you talked to someone who already does that job?",
-   "options": [{"label": "No", "points": 0}, {"label": "I've read about it online", "points": 1}, {"label": "Yes, one person", "points": 2}, {"label": "Yes, several people", "points": 3}],
-   "tip": "Ask two people who do the job for a 20-minute informational interview about their typical day."},
-  {"id": "cc7", "area": "skills", "text": "Do you know which of your current skills carry over to the new job?",
-   "options": [{"label": "No", "points": 0}, {"label": "Not really", "points": 1}, {"label": "Some of them", "points": 2}, {"label": "Yes, clearly", "points": 3}],
-   "tip": "Use the Transferable Skills Finder to list the skills you already have for your target job."},
-  {"id": "cc8", "area": "training", "text": "Do you know what training or credentials the new job needs?",
-   "options": [{"label": "No", "points": 0}, {"label": "I'm not sure", "points": 1}, {"label": "Yes, but I have no plan yet", "points": 2}, {"label": "Yes, and I have a plan", "points": 3}],
-   "tip": "Look up the education and certification section of your target career, then find a program near you through CareerOneStop."},
-  {"id": "cc9", "area": "benefits", "text": "Do you have a plan for health insurance during the change?",
-   "options": [{"label": "No", "points": 0}, {"label": "I haven't thought about it", "points": 1}, {"label": "I have an idea", "points": 2}, {"label": "Yes, it's covered", "points": 3}],
-   "tip": "Compare your options before you leave, such as a partner's plan, COBRA, or the Health Insurance Marketplace."},
-  {"id": "cc10", "area": "materials", "text": "Is your resume ready for the new field?",
-   "options": [{"label": "No", "points": 0}, {"label": "It's written for my current job", "points": 1}, {"label": "Partly updated", "points": 2}, {"label": "Yes, tailored to the new field", "points": 3}],
-   "tip": "Rewrite your resume around the transferable skills your target job needs, not your old job title."}
+  {
+   "id": "cc1",
+   "area": "savings",
+   "text": "If your income dropped during the change, how long could your savings cover your basic bills?",
+   "options": [
+    {
+     "label": "Less than 1 month",
+     "points": 0
+    },
+    {
+     "label": "1 to 3 months",
+     "points": 1
+    },
+    {
+     "label": "3 to 6 months",
+     "points": 2
+    },
+    {
+     "label": "More than 6 months",
+     "points": 3
+    }
+   ],
+   "tip": "Build a cushion of at least 3 months of basic expenses before you leave your job, or plan a change you can make while still employed."
+  },
+  {
+   "id": "cc2",
+   "area": "income",
+   "text": "Could you live on a lower salary for a while if your new career starts lower?",
+   "options": [
+    {
+     "label": "No",
+     "points": 0
+    },
+    {
+     "label": "Only a small cut",
+     "points": 1
+    },
+    {
+     "label": "Yes, for up to a year",
+     "points": 2
+    },
+    {
+     "label": "Yes, for as long as needed",
+     "points": 3
+    }
+   ],
+   "tip": "Check the starting pay of your target job on its career page and write a budget for that amount."
+  },
+  {
+   "id": "cc3",
+   "area": "time",
+   "text": "How many hours a week can you spend learning or job hunting?",
+   "options": [
+    {
+     "label": "Almost none",
+     "points": 0
+    },
+    {
+     "label": "1 to 3 hours",
+     "points": 1
+    },
+    {
+     "label": "4 to 8 hours",
+     "points": 2
+    },
+    {
+     "label": "More than 8 hours",
+     "points": 3
+    }
+   ],
+   "tip": "Block out a fixed time each week, even 3 hours, and protect it like a work meeting."
+  },
+  {
+   "id": "cc4",
+   "area": "support",
+   "text": "Do the people closest to you support this change?",
+   "options": [
+    {
+     "label": "No",
+     "points": 0
+    },
+    {
+     "label": "I haven't talked to them",
+     "points": 1
+    },
+    {
+     "label": "Mostly",
+     "points": 2
+    },
+    {
+     "label": "Yes, fully",
+     "points": 3
+    }
+   ],
+   "tip": "Talk with your family or partner about the plan, the timeline, and any money changes."
+  },
+  {
+   "id": "cc5",
+   "area": "target",
+   "text": "How clear is the job you want to move into?",
+   "options": [
+    {
+     "label": "I have no idea yet",
+     "points": 0
+    },
+    {
+     "label": "I have a few ideas",
+     "points": 1
+    },
+    {
+     "label": "I have 1 or 2 target jobs",
+     "points": 2
+    },
+    {
+     "label": "I know exactly which job",
+     "points": 3
+    }
+   ],
+   "tip": "Take the Free Career Test or use the Career Change Tool to narrow your options to 1 or 2 jobs."
+  },
+  {
+   "id": "cc6",
+   "area": "research",
+   "text": "Have you talked to someone who already does that job?",
+   "options": [
+    {
+     "label": "No",
+     "points": 0
+    },
+    {
+     "label": "I've read about it online",
+     "points": 1
+    },
+    {
+     "label": "Yes, one person",
+     "points": 2
+    },
+    {
+     "label": "Yes, several people",
+     "points": 3
+    }
+   ],
+   "tip": "Ask two people who do the job for a 20-minute informational interview about their typical day."
+  },
+  {
+   "id": "cc7",
+   "area": "skills",
+   "text": "Do you know which of your current skills carry over to the new job?",
+   "options": [
+    {
+     "label": "No",
+     "points": 0
+    },
+    {
+     "label": "Not really",
+     "points": 1
+    },
+    {
+     "label": "Some of them",
+     "points": 2
+    },
+    {
+     "label": "Yes, clearly",
+     "points": 3
+    }
+   ],
+   "tip": "Use the Transferable Skills Finder to list the skills you already have for your target job."
+  },
+  {
+   "id": "cc8",
+   "area": "training",
+   "text": "Do you know what training or credentials the new job needs?",
+   "options": [
+    {
+     "label": "No",
+     "points": 0
+    },
+    {
+     "label": "I'm not sure",
+     "points": 1
+    },
+    {
+     "label": "Yes, but I have no plan yet",
+     "points": 2
+    },
+    {
+     "label": "Yes, and I have a plan",
+     "points": 3
+    }
+   ],
+   "tip": "Look up the education and certification section of your target career, then find a program near you through CareerOneStop."
+  },
+  {
+   "id": "cc9",
+   "area": "benefits",
+   "text": "Do you have a plan for health insurance during the change?",
+   "options": [
+    {
+     "label": "No",
+     "points": 0
+    },
+    {
+     "label": "I haven't thought about it",
+     "points": 1
+    },
+    {
+     "label": "I have an idea",
+     "points": 2
+    },
+    {
+     "label": "Yes, it's covered",
+     "points": 3
+    }
+   ],
+   "tip": "Compare your options before you leave, such as a partner's plan, COBRA, or the Health Insurance Marketplace."
+  },
+  {
+   "id": "cc10",
+   "area": "materials",
+   "text": "Is your resume ready for the new field?",
+   "options": [
+    {
+     "label": "No",
+     "points": 0
+    },
+    {
+     "label": "It's written for my current job",
+     "points": 1
+    },
+    {
+     "label": "Partly updated",
+     "points": 2
+    },
+    {
+     "label": "Yes, tailored to the new field",
+     "points": 3
+    }
+   ],
+   "tip": "Rewrite your resume around the transferable skills your target job needs, not your old job title."
+  }
  ]
 }

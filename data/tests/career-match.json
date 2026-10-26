@@ -9,31 +9,303 @@
   "combined": "Free Career Test ranking = 60% interest fit (Interest Profiler correlation, negative values set to 0) + 40% Career Match. Shown separately from the official Interest Profiler results."
  },
  "questions": [
-  {"id": "cm1", "text": "How much do you want to talk and work with other people during the day?", "attr": "contact",
-   "options": [{"label": "A little", "target": 0.15}, {"label": "Some", "target": 0.5}, {"label": "A lot", "target": 0.85}, {"label": "Doesn't matter", "target": null}]},
-  {"id": "cm2", "text": "Would you like to serve customers or the public?", "attr": "public",
-   "options": [{"label": "I'd rather not", "target": 0.15}, {"label": "Sometimes is fine", "target": 0.5}, {"label": "Yes, I enjoy it", "target": 0.85}, {"label": "Doesn't matter", "target": null}]},
-  {"id": "cm3", "text": "Do you want to lead or coordinate other people's work?", "attr": "lead",
-   "options": [{"label": "No, I'd rather do my own work", "target": 0.15}, {"label": "Now and then", "target": 0.5}, {"label": "Yes, regularly", "target": 0.85}, {"label": "Doesn't matter", "target": null}]},
-  {"id": "cm4", "text": "Where would you like to spend your workday?", "attr": "outdoors",
-   "options": [{"label": "Indoors", "target": 0.15}, {"label": "A mix of indoors and outdoors", "target": 0.5}, {"label": "Mostly outdoors", "target": 0.9}, {"label": "Doesn't matter", "target": null}]},
-  {"id": "cm5", "text": "Do you prefer a desk job or one where you move around?", "attr": "sitting",
-   "options": [{"label": "Mostly at a desk", "target": 0.85}, {"label": "A mix of both", "target": 0.5}, {"label": "On my feet and moving", "target": 0.15}, {"label": "Doesn't matter", "target": null}]},
-  {"id": "cm6", "text": "What kind of schedule do you want?", "attr": "regular_schedule",
-   "options": [{"label": "The same hours every week", "target": 0.85}, {"label": "Mostly regular, some changes", "target": 0.5}, {"label": "Changing hours are fine", "target": 0.15}, {"label": "Doesn't matter", "target": null}]},
-  {"id": "cm7", "text": "How do you feel about working more than 40 hours a week?", "attr": "long_hours",
-   "options": [{"label": "I want to avoid it", "target": 0.1}, {"label": "Sometimes is OK", "target": 0.5}, {"label": "Fine with me", "target": 0.85}, {"label": "Doesn't matter", "target": null}]},
-  {"id": "cm8", "text": "How do you handle tight deadlines?", "attr": "time_pressure",
-   "options": [{"label": "I prefer a calm pace", "target": 0.15}, {"label": "Some pressure is OK", "target": 0.5}, {"label": "I do well under pressure", "target": 0.85}, {"label": "Doesn't matter", "target": null}]},
-  {"id": "cm9", "text": "Are you OK with physical risk, such as hazardous conditions or equipment?", "attr": "hazard",
-   "options": [{"label": "No, I want a safe setting", "target": 0.1}, {"label": "A little is OK", "target": 0.5}, {"label": "Yes, with proper training", "target": 0.85}, {"label": "Doesn't matter", "target": null}]},
-  {"id": "cm10", "text": "How much freedom do you want to make your own decisions at work?", "attr": "freedom",
-   "options": [{"label": "Clear instructions suit me", "target": 0.15}, {"label": "Some freedom", "target": 0.5}, {"label": "A lot of freedom", "target": 0.85}, {"label": "Doesn't matter", "target": null}]},
-  {"id": "cm11", "text": "Do you prefer routine or variety?", "attr": "repetition",
-   "options": [{"label": "Routine: the same tasks I know well", "target": 0.85}, {"label": "A balance", "target": 0.5}, {"label": "Variety: something new often", "target": 0.15}, {"label": "Doesn't matter", "target": null}]},
-  {"id": "cm12", "text": "How much new education or training are you willing to do?", "attr": "job_zone", "filter": true,
-   "options": [{"label": "Little or none", "max_job_zone": 2}, {"label": "A certificate or associate degree", "max_job_zone": 3}, {"label": "A bachelor's degree", "max_job_zone": 4}, {"label": "A graduate degree if needed", "max_job_zone": 5}]},
-  {"id": "cm13", "text": "How important is high pay compared with other things?", "attr": "pay",
-   "options": [{"label": "Very important", "target": 0.9, "weight": 1.5}, {"label": "Somewhat important", "target": 0.65}, {"label": "Meaning matters more than pay", "target": null}]}
+  {
+   "id": "cm1",
+   "text": "How much do you want to talk and work with other people during the day?",
+   "attr": "contact",
+   "options": [
+    {
+     "label": "A little",
+     "target": 0.15
+    },
+    {
+     "label": "Some",
+     "target": 0.5
+    },
+    {
+     "label": "A lot",
+     "target": 0.85
+    },
+    {
+     "label": "Doesn't matter",
+     "target": null
+    }
+   ]
+  },
+  {
+   "id": "cm2",
+   "text": "Would you like to serve customers or the public?",
+   "attr": "public",
+   "options": [
+    {
+     "label": "I'd rather not",
+     "target": 0.15
+    },
+    {
+     "label": "Sometimes is fine",
+     "target": 0.5
+    },
+    {
+     "label": "Yes, I enjoy it",
+     "target": 0.85
+    },
+    {
+     "label": "Doesn't matter",
+     "target": null
+    }
+   ]
+  },
+  {
+   "id": "cm3",
+   "text": "Do you want to lead or coordinate other people's work?",
+   "attr": "lead",
+   "options": [
+    {
+     "label": "No, I'd rather do my own work",
+     "target": 0.15
+    },
+    {
+     "label": "Now and then",
+     "target": 0.5
+    },
+    {
+     "label": "Yes, regularly",
+     "target": 0.85
+    },
+    {
+     "label": "Doesn't matter",
+     "target": null
+    }
+   ]
+  },
+  {
+   "id": "cm4",
+   "text": "Where would you like to spend your workday?",
+   "attr": "outdoors",
+   "options": [
+    {
+     "label": "Indoors",
+     "target": 0.15
+    },
+    {
+     "label": "A mix of indoors and outdoors",
+     "target": 0.5
+    },
+    {
+     "label": "Mostly outdoors",
+     "target": 0.9
+    },
+    {
+     "label": "Doesn't matter",
+     "target": null
+    }
+   ]
+  },
+  {
+   "id": "cm5",
+   "text": "Do you prefer a desk job or one where you move around?",
+   "attr": "sitting",
+   "options": [
+    {
+     "label": "Mostly at a desk",
+     "target": 0.85
+    },
+    {
+     "label": "A mix of both",
+     "target": 0.5
+    },
+    {
+     "label": "On my feet and moving",
+     "target": 0.15
+    },
+    {
+     "label": "Doesn't matter",
+     "target": null
+    }
+   ]
+  },
+  {
+   "id": "cm6",
+   "text": "What kind of schedule do you want?",
+   "attr": "regular_schedule",
+   "options": [
+    {
+     "label": "The same hours every week",
+     "target": 0.85
+    },
+    {
+     "label": "Mostly regular, some changes",
+     "target": 0.5
+    },
+    {
+     "label": "Changing hours are fine",
+     "target": 0.15
+    },
+    {
+     "label": "Doesn't matter",
+     "target": null
+    }
+   ]
+  },
+  {
+   "id": "cm7",
+   "text": "How do you feel about working more than 40 hours a week?",
+   "attr": "long_hours",
+   "options": [
+    {
+     "label": "I want to avoid it",
+     "target": 0.1
+    },
+    {
+     "label": "Sometimes is OK",
+     "target": 0.5
+    },
+    {
+     "label": "Fine with me",
+     "target": null,
+     "note": "Accepting long hours is not a wish for them, so it counts like Doesn't matter."
+    },
+    {
+     "label": "Doesn't matter",
+     "target": null
+    }
+   ]
+  },
+  {
+   "id": "cm8",
+   "text": "How do you handle tight deadlines?",
+   "attr": "time_pressure",
+   "options": [
+    {
+     "label": "I prefer a calm pace",
+     "target": 0.15
+    },
+    {
+     "label": "Some pressure is OK",
+     "target": 0.5
+    },
+    {
+     "label": "I do well under pressure",
+     "target": 0.85
+    },
+    {
+     "label": "Doesn't matter",
+     "target": null
+    }
+   ]
+  },
+  {
+   "id": "cm9",
+   "text": "Are you OK with physical risk, such as hazardous conditions or equipment?",
+   "attr": "hazard",
+   "options": [
+    {
+     "label": "No, I want a safe setting",
+     "target": 0.1
+    },
+    {
+     "label": "A little is OK",
+     "target": 0.5
+    },
+    {
+     "label": "I'd like hands-on work with some risk",
+     "target": 0.85
+    },
+    {
+     "label": "Doesn't matter",
+     "target": null
+    }
+   ]
+  },
+  {
+   "id": "cm10",
+   "text": "How much freedom do you want to make your own decisions at work?",
+   "attr": "freedom",
+   "options": [
+    {
+     "label": "Clear instructions suit me",
+     "target": 0.15
+    },
+    {
+     "label": "Some freedom",
+     "target": 0.5
+    },
+    {
+     "label": "A lot of freedom",
+     "target": 0.85
+    },
+    {
+     "label": "Doesn't matter",
+     "target": null
+    }
+   ]
+  },
+  {
+   "id": "cm11",
+   "text": "Do you prefer routine or variety?",
+   "attr": "repetition",
+   "options": [
+    {
+     "label": "Routine: the same tasks I know well",
+     "target": 0.85
+    },
+    {
+     "label": "A balance",
+     "target": 0.5
+    },
+    {
+     "label": "Variety: something new often",
+     "target": 0.15
+    },
+    {
+     "label": "Doesn't matter",
+     "target": null
+    }
+   ]
+  },
+  {
+   "id": "cm12",
+   "text": "How much new education or training are you willing to do?",
+   "attr": "job_zone",
+   "filter": true,
+   "options": [
+    {
+     "label": "Little or none",
+     "max_job_zone": 2
+    },
+    {
+     "label": "A certificate or associate degree",
+     "max_job_zone": 3
+    },
+    {
+     "label": "A bachelor's degree",
+     "max_job_zone": 4
+    },
+    {
+     "label": "A graduate degree if needed",
+     "max_job_zone": 5
+    }
+   ]
+  },
+  {
+   "id": "cm13",
+   "text": "How important is high pay compared with other things?",
+   "attr": "pay",
+   "options": [
+    {
+     "label": "Very important",
+     "target": 0.9,
+     "weight": 1.5
+    },
+    {
+     "label": "Somewhat important",
+     "target": 0.65
+    },
+    {
+     "label": "Meaning matters more than pay",
+     "target": null
+    }
+   ]
+  }
  ]
 }

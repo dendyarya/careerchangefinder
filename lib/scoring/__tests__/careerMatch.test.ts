@@ -62,3 +62,14 @@ describe("Career Match (5 answer patterns)", () => {
     expect(() => readAnswers(a)).toThrow(/cm5/);
   });
 });
+
+describe("Approved question fixes (Gate 3B)", () => {
+  it("cm7 'Fine with me' adds no preference for long hours", () => {
+    const p = readAnswers({ ...allDont(), cm7: 2 });
+    expect(p.prefs.find((x) => x.attr === "long_hours")).toBeUndefined();
+  });
+  it("cm9 third option asks for risk, not just accepts it", () => {
+    const q9 = cm.questions.find((q) => q.id === "cm9")!;
+    expect(q9.options[2]!.label).toBe("I'd like hands-on work with some risk");
+  });
+});
