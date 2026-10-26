@@ -59,7 +59,18 @@ for t, pages in titles.items():
 built = {"/" + str(f.relative_to(ROOT)).removesuffix(".html").replace("(site)/", "") for f in ROOT.rglob("*.html")}
 built = {"/" if b == "/index" else b for b in built}
 statics = {"/search-index.json", "/hubs.json", "/big-five-data.json"}
-missing = sorted(h for h in internal if h not in built and h not in statics and not h.startswith(("/_next", "/career-change-data", "/images", "/keystatic")))
+# state salary pages are rendered on demand (ISR): a link is fine if that career has that state in the BLS data
+_P = ROOT.parents[2] / "data" / "processed"
+_occ = {o["slug"]: o for o in json.loads((_P / "occupations.json").read_text())}
+_state_ok = set()
+for f in (_P / "wages").glob("*.json"):
+    if not _occ[f.stem]["thin"]:
+        for st in json.loads(f.read_text())["states"]:
+            _state_ok.add(f"/careers/{f.stem}/salary/" + re.sub(r"[^a-z]+", "-", st["state"].lower()))
+on_demand = {h for h in internal if re.fullmatch(r"/careers/[^/]+/salary/[^/]+", h)}
+for h in sorted(on_demand - _state_ok)[:20]:
+    errors.append(f"link to a state salary page with no data: {h}")
+missing = sorted(h for h in set(internal) - on_demand if h not in built and h not in statics and not h.startswith(("/_next", "/career-change-data", "/images", "/keystatic")))
 print(f"{n} pages audited, {len(errors)} errors, {len(warns)} title-length warnings")
 for e in errors[:40]:
     print("  ERROR", e)

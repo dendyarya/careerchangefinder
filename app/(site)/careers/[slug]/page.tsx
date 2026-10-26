@@ -406,7 +406,7 @@ export default async function CareerProfile({ params }: { params: Promise<{ slug
         <RelatedLinks
           links={[
             ...(m.fromPage ? [{ label: `Jobs for former ${m.nameLower}`, href: m.fromPage }] : []),
-            { label: `Jobs similar to ${m.nameLower}`, href: `/jobs-similar-to/${slug}` },
+            ...(o.thin ? [] : [{ label: `Jobs similar to ${m.nameLower}`, href: `/jobs-similar-to/${slug}` }]),
             ...(m.group ? [{ label: `More ${m.group.short} careers`, href: `/careers/industry/${m.group.slug}` }] : []),
             { label: "Career Change Tool", href: `/career-change/tool?job=${slug}` },
           ]}
