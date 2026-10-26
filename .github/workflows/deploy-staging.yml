@@ -61,6 +61,17 @@ jobs:
       - name: Check built pages (SEO basics and numbers vs data)
         run: npm run qa
 
+      - name: Check on-demand state salary pages (read-only build, like the server)
+        run: |
+          set -euo pipefail
+          cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/
+          chmod -R a-w .next/standalone
+          (cd .next/standalone && SITE_ENV=staging PORT=3299 HOSTNAME=127.0.0.1 node server.js > ../../server.log 2>&1 &)
+          for _ in $(seq 1 30); do curl -fsS -o /dev/null http://127.0.0.1:3299/ && break; sleep 1; done
+          python scripts/qa/check_state_pages.py http://127.0.0.1:3299 300
+          chmod -R u+w .next/standalone
+          rm -rf .next/standalone/.next/static .next/standalone/public
+
       - name: Assemble release with checksums
         run: |
           set -euo pipefail

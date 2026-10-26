@@ -57,6 +57,8 @@ const common = [
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // on-demand pages (state salary) are cached in memory only: releases are read-only on the server
+  experimental: { isrFlushToDisk: false },
   trailingSlash: false,
   poweredByHeader: false,
   agentRules: false,

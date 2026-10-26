@@ -8,6 +8,7 @@ whose order is recomputed here from the documented rules (independent of the Typ
 Exits 1 on any mismatch.
 """
 import html
+import math
 import json
 import pathlib
 import re
@@ -135,6 +136,32 @@ for (kind, slug), titles in expected.items():
     if got != titles:
         diff = next((i for i, (a, b) in enumerate(zip(got, titles)) if a != b), min(len(got), len(titles)))
         errors.append(f"listing {kind}/{slug}: order differs at row {diff + 1} ({len(got)} vs {len(titles)} rows)")
+
+# ---------------------------------------------------------------- salary by state
+for slug, o in occ.items():
+    wf = P / "wages" / f"{slug}.json"
+    f = APP / "careers" / slug / "salary.html"
+    if o["thin"] or not o["wage"] or not wf.exists():
+        if f.exists():
+            errors.append(f"salary page built for {slug} without data")
+        continue
+    if not f.exists():
+        errors.append(f"salary {slug} not built")
+        continue
+    states = json.loads(wf.read_text())["states"]
+    rows = re.findall(r"<tr[^>]*>(.*?)</tr>", re.search(r"<tbody>(.*?)</tbody>", f.read_text(), re.S).group(1), re.S)
+    nat = o["wage"]["median"]
+    np_ = lambda v: "Not published" if v is None else money(v)
+    if len(rows) != len(states):
+        errors.append(f"salary {slug}: {len(rows)} rows != {len(states)}")
+    for i, (row, s_) in enumerate(zip(rows, states)):
+        cells = [text(c) for c in re.findall(r"<td[^>]*>(.*?)</td>", row, re.S)]
+        vs = None if not nat else math.floor((s_["median"] - nat) / nat * 100 + 0.5)  # JS Math.round
+        exp = (str(i + 1), s_["state"], money(s_["median"]), pct(vs), np_(s_["p10"]), np_(s_["p90"]),
+               "Not published" if s_["employment"] is None else f"{s_['employment']:,}")
+        checked += 7
+        if tuple(cells) != exp:
+            errors.append(f"salary {slug} row {i + 1}: page {tuple(cells)} != data {exp}")
 
 print(f"{checked:,} values checked on built pages, {len(errors)} mismatches")
 for e in errors[:30]:

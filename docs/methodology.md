@@ -77,6 +77,10 @@ Every list uses careers with a full page only. The rule is printed on each page.
 
 Every listing and every "Jobs similar to" row is re-checked against the data after each build (`scripts/qa/check_pages_vs_data.py`), with the listing order recomputed from the rules above.
 
+## Salary pages
+
+`/careers/[job]/salary` lists every state BLS publishes for the job (BLS OEWS May 2025 state file), highest median first, with the 10th and 90th percentiles, employment and the difference from the national median. `/careers/[job]/salary/[state]` shows one state, its rank, the states ranked just above and below, and the state median of up to 6 similar careers. Values BLS does not publish (`*`, or `#` for amounts above its highest published figure) are shown as "Not published". Group wages carry the broader BLS group label. Pay is not adjusted for living costs. State pages with fewer than 1,000 jobs are noindex. State pages are built on first visit and kept in memory; a sample of them is checked against the data in every deploy (`scripts/qa/check_state_pages.py`).
+
 ## Career Change Tool
 
 The same data as the pages above. Filters: extra education (any, none, up to a certificate or associate, up to a bachelor's degree) and pay (any, no drop bigger than 10%, pays more). Careers with only a broader BLS group wage are left out of the pay filters.
