@@ -118,7 +118,11 @@ export function BigFiveTest() {
   if (phase === "intro") {
     return (
       <div className="flex max-w-[900px] flex-col gap-5 rounded-lg border-[1.5px] border-mist bg-ice p-6 shadow-md md:p-8">
-        <h2 ref={headingRef} tabIndex={-1} className="m-0 font-display text-[28px] font-bold outline-none">
+        <h2
+          ref={headingRef}
+          tabIndex={-1}
+          className="m-0 font-display text-[28px] font-bold outline-none focus-visible:shadow-none focus-visible:outline-none"
+        >
           50 statements · about 8 minutes
         </h2>
         <p className="m-0 text-slate">{b5.instructions}</p>
@@ -190,7 +194,7 @@ export function BigFiveTest() {
             id="b5-q"
             ref={headingRef}
             tabIndex={-1}
-            className="m-0 font-display text-[clamp(28px,4vw,40px)] leading-tight font-bold outline-none"
+            className="m-0 font-display text-[clamp(28px,4vw,40px)] leading-tight font-bold outline-none focus-visible:shadow-none focus-visible:outline-none"
           >
             {item.text}
           </h2>
@@ -256,7 +260,7 @@ export function BigFiveTest() {
           id="b5-result"
           ref={headingRef}
           tabIndex={-1}
-          className="m-0 font-display text-[clamp(30px,4vw,44px)] leading-tight font-bold outline-none"
+          className="m-0 font-display text-[clamp(30px,4vw,44px)] leading-tight font-bold outline-none focus-visible:shadow-none focus-visible:outline-none"
         >
           Your highest trait: {sEnd === "high" ? strongest.high.label : strongest.low.label}
         </h2>
@@ -313,8 +317,8 @@ export function BigFiveTest() {
               >
                 What{" "}
                 {f.band === "medium"
-                  ? `a middle ${t.name.split(" ")[0]} score means`
-                  : `${end} ${t.name.split(" ")[0]} means`}{" "}
+                  ? `a middle ${t.name.replace(/ \(.*\)/, "")} score means`
+                  : `${end} ${t.name.replace(/ \(.*\)/, "")} means`}{" "}
                 →
               </Link>
             </div>

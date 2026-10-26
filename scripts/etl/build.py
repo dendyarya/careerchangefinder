@@ -79,10 +79,19 @@ def load_bls():
 
 # ---------------------------------------------------------------- helpers
 
+LIST_TITLE = re.compile(r"^[^,]+,( [^,]+,)* (and|or) ")
+
+
 def slugify(title: str) -> str:
+    # "Area, Ethnic, and Cultural Studies Teachers" is a list, not "Area": use the whole title
+    if LIST_TITLE.match(title):
+        return slugify_full(title)
     base = title.split(",")[0]
     base = base.replace("&", " and ").lower()
     base = re.sub(r"[^a-z0-9]+", "-", base).strip("-")
+    # "Directors, Religious Activities and Education" must not become just "directors"
+    if "," in title and "-" not in base and not title.split(",", 1)[1].strip().startswith("Except"):
+        return slugify_full(title)
     return base
 
 

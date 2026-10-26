@@ -29,10 +29,12 @@ describe("Jobs for Former page model", () => {
     const noExtra = m.rows.filter((r) => r.extraEdu === "None").length;
     expect(faq).toContain(`${noExtra} of the ${m.rows.length} matches`);
   });
-  it("keeps titles within 60 characters and descriptions within 160", () => {
-    for (const s of careerChangeSources().slice(0, 200)) {
+  it("gives every page a unique title and a 70-160 character description", () => {
+    const seen = new Set<string>();
+    for (const s of careerChangeSources()) {
       const p = buildFromPage(s)!;
-      expect(p.title.length).toBeLessThanOrEqual(60);
+      expect(seen.has(p.title), p.title).toBe(false);
+      seen.add(p.title);
       expect(p.description.length).toBeLessThanOrEqual(160);
       expect(p.description.length).toBeGreaterThanOrEqual(70);
     }

@@ -19,7 +19,7 @@ export default function BigFivePage() {
         <PageTitle before="Big Five " highlight="Personality Test" />
         <p className="m-0 text-lead">
           Fifty short statements measure five broad traits: Extraversion, Agreeableness, Conscientiousness, Emotional
-          Stability and Openness. Your results link to careers that fit your strongest trait.
+          Stability and Openness. Your results link to careers that fit your highest trait.
         </p>
       </section>
       <BigFiveTest />

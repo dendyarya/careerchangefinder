@@ -132,3 +132,25 @@ export function careerChangeSources(): string[] {
   const folded = new Set(singleCodeHubRedirects().map((r) => r.from));
   return [...HUB_SLUGS, ...occupations().filter((o) => !o.thin && !folded.has(o.slug)).map((o) => o.slug)];
 }
+
+const LIST_TITLE = /^[^,]+,( [^,]+,)* (and|or) /;
+let dupShort: Set<string> | null = null;
+/**
+ * Name used in headings: "Registered Nurses", "Cooks (Fast Food)" when several jobs share "Cooks",
+ * and the full title for list-style names like "Area, Ethnic, and Cultural Studies Teachers".
+ */
+export function displayName(title: string): string {
+  if (LIST_TITLE.test(title)) return title;
+  const short = title.split(",")[0]!.trim();
+  if (!title.includes(",")) return title;
+  if (!dupShort) {
+    const counts = new Map<string, number>();
+    for (const o of occupations().filter((x) => !x.thin)) {
+      const s = o.title.split(",")[0]!.trim();
+      counts.set(s, (counts.get(s) ?? 0) + 1);
+    }
+    dupShort = new Set([...counts].filter(([, n]) => n > 1).map(([s]) => s));
+  }
+  if (dupShort.has(short) || !short.includes(" ")) return `${short} (${title.slice(short.length + 1).trim()})`;
+  return short;
+}

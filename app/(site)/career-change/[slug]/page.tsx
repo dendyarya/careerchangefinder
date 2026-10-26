@@ -199,9 +199,7 @@ export default async function CareerChangePage({ params }: { params: Promise<{ s
 
       <RelatedLinks
         links={[
-          ...m.members
-            .slice(0, 3)
-            .map((x) => ({ label: `${x.title.split(",")[0]} career profile`, href: `/careers/${x.slug}` })),
+          ...m.members.slice(0, 3).map((x) => ({ label: `${x.title} career profile`, href: `/careers/${x.slug}` })),
           { label: "Transferable Skills Finder", href: "/transferable-skills" },
           { label: "Career Change Tool", href: "/career-change/tool" },
           { label: "Career change at 40", href: "/career-change/at-40" },

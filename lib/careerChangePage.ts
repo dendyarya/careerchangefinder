@@ -3,8 +3,16 @@
  * from here, so the page component only lays it out. Unit-tested in careerChangePage.test.ts.
  */
 import "server-only";
-import { hubData, occBySlug, occByCode, transitionsFor, type Occupation, type TransitionItem } from "@/lib/data/server";
-import { clip, inSentence, listJoin, money, shortTitle, signedPct } from "@/lib/format";
+import {
+  displayName,
+  hubData,
+  occBySlug,
+  occByCode,
+  transitionsFor,
+  type Occupation,
+  type TransitionItem,
+} from "@/lib/data/server";
+import { clip, inSentence, listJoin, money, signedPct } from "@/lib/format";
 import type { Faq } from "@/components/page/Common";
 import type { Row } from "@/components/career-change/CareerTable";
 
@@ -95,9 +103,9 @@ export function buildFromPage(slug: string): FromPageModel | null {
   const tr = hub ?? transitionsFor(slug);
   if (!tr || !tr.top.length) return null;
 
-  const name = hub ? hub.plural : shortTitle(occ!.title);
+  const name = hub ? hub.plural : displayName(occ!.title);
   const pluralLower = inSentence(name);
-  const singularLower = hub ? inSentence(hub.singular) : inSentence(singularize(name));
+  const singularLower = hub ? inSentence(hub.singular) : inSentence(singularize(name.split(" (")[0]!));
   const zone = tr.job_zone;
   const rows = tr.top.map((t) => row(t, zone));
   const skills3 = tr.source_skills.slice(0, 3).map((s) => s.name.toLowerCase());
@@ -125,10 +133,10 @@ export function buildFromPage(slug: string): FromPageModel | null {
     };
   });
 
-  const members = tr.members.map((m) => ({ title: m.title, slug: m.slug }));
+  const members = tr.members.map((m) => ({ title: displayName(m.title), slug: m.slug }));
   const sourceLabel =
     hub && members.length > 1
-      ? `Compared with ${listJoin(members.map((m) => inSentence(shortTitle(m.title))))}: employment-weighted median ${money(tr.baseline_median)}.`
+      ? `Compared with ${listJoin(members.map((m) => inSentence(displayName(m.title))))}: employment-weighted median ${money(tr.baseline_median)}.`
       : `Compared with ${hub ? members[0]!.title : occ!.title}, median ${money(tr.baseline_median)}.`;
 
   const best = rows[0]!;
@@ -179,7 +187,7 @@ export function buildFromPage(slug: string): FromPageModel | null {
   const title =
     [`${base}: ${rows.length} Careers That Use Your Skills`, `${base}: ${rows.length} Career Options`, base].find(
       (t) => t.length <= 60,
-    ) ?? clip(base, 60);
+    ) ?? base; // a longer unique title beats a clipped duplicate
   const description = clip(
     `${rows.length} careers for former ${pluralLower}, ranked by skill match with BLS median pay and pay change. Closest match: ${best.title} (${best.match}%).`,
     160,
