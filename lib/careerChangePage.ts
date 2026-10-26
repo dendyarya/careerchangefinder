@@ -126,9 +126,10 @@ export function buildFromPage(slug: string): FromPageModel | null {
   });
 
   const members = tr.members.map((m) => ({ title: m.title, slug: m.slug }));
-  const sourceLabel = hub
-    ? `Compared with ${listJoin(members.map((m) => inSentence(shortTitle(m.title))))}: employment-weighted median ${money(tr.baseline_median)}.`
-    : `Compared with ${occ!.title}, median ${money(tr.baseline_median)}.`;
+  const sourceLabel =
+    hub && members.length > 1
+      ? `Compared with ${listJoin(members.map((m) => inSentence(shortTitle(m.title))))}: employment-weighted median ${money(tr.baseline_median)}.`
+      : `Compared with ${hub ? members[0]!.title : occ!.title}, median ${money(tr.baseline_median)}.`;
 
   const best = rows[0]!;
   const intro =
