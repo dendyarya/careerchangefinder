@@ -10,7 +10,7 @@ How careerchangefinder.com turns public data into career matches. This page is t
 | Pay (national and by state) | BLS Occupational Employment and Wage Statistics, May 2025 | Public domain |
 | Majors linked to careers | NCES CIP 2020 to SOC 2018 crosswalk | Public domain |
 
-We do not edit source numbers. Every build is checked by `scripts/etl/verify.py`, which re-reads the raw files and compares every published value (246,349 values in the October 2026 build, 0 differences).
+We do not edit source numbers. Every build is checked by `scripts/etl/verify.py`, which re-reads the raw files and compares every published value (270,904 values in the October 2026 build, 0 differences), including that every "top" list really holds the highest-rated items.
 
 ## Which careers get a page
 

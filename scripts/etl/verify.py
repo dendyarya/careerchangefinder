@@ -126,6 +126,135 @@ for c, o in occ.items():
         if src is None or abs(src - d["value"]) > 0.006 or src < 3.5:
             err(f"{c} downside {d['factor']} {d['value']} != {src}")
 
+print("Completeness of top lists ...")
+# a shown list must hold the highest-rated items: nothing left out may rate higher than the lowest shown
+for fname, field, scale in (("Transferable Skills.xlsx", "transferable_skills", "IM"),
+                            ("Essential Skills.xlsx", "essential_skills", "IM"), ("Knowledge.xlsx", "knowledge", "IM")):
+    allv = {}
+    for r in rows(ONET / fname):
+        if r.get("Scale ID") == scale:
+            allv.setdefault(r["O*NET-SOC Code"], {})[r["Element Name"]] = float(r["Data Value"])
+    for c, o in occ.items():
+        if not o[field]:
+            if allv.get(c):
+                err(f"{c} {field} empty but source has data")
+            continue
+        bump(f"{field} completeness")
+        shown = {x["name"] for x in o[field]}
+        low = min(x["value"] for x in o[field])
+        left = [v for n, v in allv.get(c, {}).items() if n not in shown]
+        if left and max(left) > low + 0.006:
+            err(f"{c} {field}: an item rated {max(left)} was left out (lowest shown {low})")
+
+print("Tasks and downsides completeness ...")
+t_im = {}
+for r in rows(ONET / "Task Ratings.xlsx"):
+    if r.get("Scale ID") == "IM":
+        t_im[(r["O*NET-SOC Code"], r["Task ID"])] = float(r["Data Value"])
+t_text = {}
+for r in rows(ONET / "Task Statements.xlsx"):
+    t_text.setdefault(r["O*NET-SOC Code"], {})[r["Task"]] = t_im.get((r["O*NET-SOC Code"], r["Task ID"]))
+for c, o in occ.items():
+    if not o["tasks"]:
+        continue
+    bump("tasks completeness")
+    src = t_text.get(c, {})
+    shown = [src.get(t) for t in o["tasks"]]
+    if None in shown:
+        continue  # tasks without an importance rating: order cannot be checked
+    low = min(shown)
+    if any(v is not None and v > low + 0.006 for t, v in src.items() if t not in o["tasks"]):
+        err(f"{c} tasks: a more important task was left out")
+DOWN = ["Time Pressure", "Consequence of Error", "Conflict Situations",
+        "Dealing with Violent or Physically Aggressive People", "Exposed to Disease or Infections",
+        "Exposed to Hazardous Conditions", "Spend Time Standing", "Outdoors, Exposed to All Weather Conditions"]
+for c, o in occ.items():
+    bump("downsides completeness")
+    qual = sorted([wc[(c, f)] for f in DOWN if wc.get((c, f), 0) >= 3.5], reverse=True)[:3]
+    got = [d["value"] for d in o["downsides"]]
+    if [round(x, 2) for x in qual] != got:
+        err(f"{c} downsides {got} != expected {qual}")
+
+print("Holland codes ...")
+for c, o in occ.items():
+    if not o["riasec"]:
+        continue
+    bump("holland codes")
+    src = ri.get(c, {})
+    order = sorted(src.items(), key=lambda kv: -kv[1])
+    third = order[2][1]
+    vals = [src.get(L, -1) for L in o["holland"]]
+    if len(set(o["holland"])) != 3 or vals != sorted(vals, reverse=True):
+        err(f"{c} holland {o['holland']} not in score order {order[:3]}")
+    if any(src.get(L, -1) < third - 0.006 for L in o["holland"]):
+        err(f"{c} holland letter not in top 3")
+
+print("Alternate titles, work styles, contact ...")
+alt = {}
+for r in rows(ONET / "Job Titles.xlsx"):
+    alt.setdefault(r["O*NET-SOC Code"], set()).add(r["Job Title"])
+for c, o in occ.items():
+    for a in o["alt_titles"]:
+        bump("alternate titles")
+        if a not in alt.get(c, set()):
+            err(f"{c} alt title not in source: {a}")
+ws_vals = {}
+for r in rows(ONET / "Work Styles.xlsx"):
+    ws_vals.setdefault(r["Scale ID"], {}).setdefault(r["O*NET-SOC Code"], {})[r["Element Name"]] = float(r["Data Value"])
+ws_scale = next(iter(ws_vals))
+for c, o in occ.items():
+    src = ws_vals[ws_scale].get(c, {})
+    for s in o["work_styles"]:
+        bump("work styles")
+        if s not in src:
+            err(f"{c} work style not in source: {s}")
+    if o["work_styles"]:
+        low = min(src[s] for s in o["work_styles"] if s in src)
+        if any(v > low + 0.006 for n, v in src.items() if n not in o["work_styles"]):
+            err(f"{c} work styles: a higher-rated style was left out")
+for c, o in occ.items():
+    if o["contact_with_others"] is not None:
+        bump("contact with others")
+        src = wc.get((c, "Contact With Others"))
+        if src is None or abs(src - o["contact_with_others"]) > 0.006:
+            err(f"{c} contact {o['contact_with_others']} != {src}")
+
+print("First step (education, training, experience) ...")
+cat_label = {}
+for fname in ("Education Categories.xlsx", "Training and Experience Categories.xlsx"):
+    for r in rows(ONET / fname):
+        cat_label[(r["Element Name"], r["Scale ID"], int(r["Category"]))] = str(r["Category Description"])
+dist = {}
+for fname in ("Education.xlsx", "Training and Experience.xlsx"):
+    for r in rows(ONET / fname):
+        if r.get("Category") not in (None, "", "n/a"):
+            dist.setdefault((r["O*NET-SOC Code"], r["Element Name"], r["Scale ID"]), {})[int(r["Category"])] = float(r["Data Value"])
+for c, o in occ.items():
+    fs = o["first_step"]
+    if fs["job_zone"] != o["job_zone"]:
+        err(f"{c} first_step job zone differs")
+    for key, el, sc in (("typical_education", "Required Level of Education", "RL"),
+                        ("on_the_job_training", "On-the-Job Training", "OJ"),
+                        ("related_experience", "Related Work Experience", "RW")):
+        v = fs.get(key)
+        if not v:
+            continue
+        bump("first-step items")
+        d = dist.get((c, el, sc), {})
+        if not d or abs(d.get(v["category"], -1) - v["pct"]) > 0.051 or v["pct"] < max(d.values()) - 0.051:
+            err(f"{c} {key} {v} not the most common category in source")
+        if v["label"] != cat_label.get((el, sc, v["category"])):
+            err(f"{c} {key} label {v['label']!r} != {cat_label.get((el, sc, v['category']))!r}")
+
+print("Thin flags ...")
+for c, o in occ.items():
+    bump("thin flags")
+    no_pay = not o["wage"] or o["wage"]["median"] is None
+    if no_pay and not o["thin"]:
+        err(f"{c} has no BLS median but is not thin")
+    if "All Other" in o["title"] and not o["thin"]:
+        err(f"{c} All Other but not thin")
+
 # ---------------------------------------------------------------- BLS
 print("BLS national ...")
 nat = {}
@@ -174,15 +303,22 @@ for f in glob.glob(str(P / "wages" / "*.json")):
 print("NCES crosswalk ...")
 cw = {}
 cw_soc = {}
+cip_title = {}
 for r in rows(RAW / "nces" / "CIP2020_SOC2018_Crosswalk.xlsx", "CIP-SOC"):
     cip, soc = str(r["CIP2020Code"]).strip(), str(r["SOC2018Code"]).strip()
     cw.setdefault(cip, set()).add(soc)
     cw_soc.setdefault(soc, set()).add(cip)
+    cip_title[cip] = str(r["CIP2020Title"]).strip().rstrip(".")
 for c, o in occ.items():
     for m in o["majors"]:
         bump("occupation->major links")
         if c[:7] not in cw.get(m["cip"], set()):
             err(f"{c} major {m['cip']} not linked in crosswalk")
+        if m["title"].strip() != cip_title.get(m["cip"]):
+            err(f"{c} major title {m['title']!r} != {cip_title.get(m['cip'])!r}")
+    n_src = len(cw_soc.get(c[:7], set()))
+    if len(o["majors"]) < min(n_src, 12):
+        err(f"{c} shows {len(o['majors'])} majors, crosswalk has {n_src}")
 for m in json.loads((P / "majors.json").read_text()):
     for c in m["careers"]:
         bump("major->career links")
