@@ -36,10 +36,16 @@ CTP_ATTRS = {
     "long_hours": ("Duration of Typical Work Week", 3),  # More than 40 hours
 }
 # College Major Quiz: Big Five trait -> O*NET Work Styles (Impact scale WI)
+# Big Five result pages and the College Major Quiz: Big Five trait -> O*NET Work Styles (Impact scale WI).
+# Our mapping (documented in docs/tests.md); O*NET Work Styles are not a personality test.
 TRAIT_STYLES = {
-    "openness": ["Intellectual Curiosity", "Innovation"],
+    "extraversion": ["Social Orientation", "Leadership Orientation"],
+    "agreeableness": ["Cooperation", "Empathy"],
     "conscientiousness": ["Attention to Detail", "Dependability"],
+    "emotional-stability": ["Stress Tolerance", "Self-Control"],
+    "openness": ["Intellectual Curiosity", "Innovation"],
 }
+TRAIT_TOP_N = 15
 
 
 def main():
@@ -101,6 +107,23 @@ def main():
                                                          "traits = mean percentile of linked careers",
                                                          "majors": majors_out}, ensure_ascii=False,
                                                         separators=(",", ":"), allow_nan=False))
+    # Big Five result pages: careers and majors at each end of every trait
+    trait_pages = {}
+    for t in TRAIT_STYLES:
+        ranked = [c for c in careers if c["attrs"][t] is not None]
+        for end, rev in (("high", True), ("low", False)):
+            # low end: only careers that need training (Job Zone 3+), so the list is not just entry-level work
+            pool = ranked if rev else [c for c in ranked if (c["job_zone"] or 0) >= 3]
+            picks = sorted(pool, key=lambda c: (c["attrs"][t], c["median"] or 0), reverse=rev)[:TRAIT_TOP_N]
+            mj = [m for m in majors_out if m["traits"].get(t) is not None and len(m["careers"]) >= 5]
+            mj = sorted(mj, key=lambda m: m["traits"][t], reverse=rev)[:8]
+            trait_pages[f"{end}-{t}"] = {
+                "trait": t, "end": end, "styles": TRAIT_STYLES[t], "min_job_zone": None if rev else 3,
+                "careers": [{"slug": c["slug"], "title": c["title"], "median": None if c["wage_is_group"] else c["median"],
+                             "job_zone": c["job_zone"], "percentile": c["attrs"][t]} for c in picks],
+                "majors": [{"slug": m["slug"], "title": m["title"], "value": m["traits"][t]} for m in mj],
+            }
+    (OUT / "trait-pages.json").write_text(json.dumps(trait_pages, ensure_ascii=False, separators=(",", ":"), allow_nan=False))
     missing = {k: int(raw[k].isna().sum()) for k in raw.columns}
     print(f"careers {len(careers)}, majors with careers {len(majors_out)}; missing values per attribute: {missing}")
 

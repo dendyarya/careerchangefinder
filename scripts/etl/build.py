@@ -239,7 +239,8 @@ def main() -> None:
 
     # majors from crosswalk
     cw = pd.read_excel(RAW / "nces" / "CIP2020_SOC2018_Crosswalk.xlsx", sheet_name="CIP-SOC", engine="openpyxl", dtype=str)
-    cw = cw[cw["SOC2018Code"] != "99-9999"]
+    # "99.9999 NO MATCH" (CIP) and "99-9999 NO MATCH" (SOC) are crosswalk placeholders, not majors or jobs
+    cw = cw[(cw["SOC2018Code"] != "99-9999") & (cw["CIP2020Code"] != "99.9999")]
     soc_to_majors = cw.groupby("SOC2018Code").apply(lambda d: list(zip(d["CIP2020Code"], d["CIP2020Title"].str.rstrip(".")))).to_dict()
 
     # ------------------------------------------------ similarity
@@ -435,6 +436,18 @@ def main() -> None:
                 if not thin.get(code, True):
                     majors[cip]["careers"].append(code)
     majors = [m for m in majors.values() if m["careers"]]
+    # unique major slugs: short form unless shared, then the full title, then the CIP code
+    mshort = {m["cip"]: slugify(m["title"]) for m in majors}
+    mcount = {}
+    for v in mshort.values():
+        mcount[v] = mcount.get(v, 0) + 1
+    mused = set()
+    for m in sorted(majors, key=lambda m: m["cip"]):
+        sl = mshort[m["cip"]] if mcount[mshort[m["cip"]]] == 1 else slugify_full(m["title"])
+        if sl in mused:
+            sl = f"{sl}-{m['cip'].replace('.', '')}"
+        mused.add(sl)
+        m["slug"] = sl
     dump(OUT / "majors.json", sorted(majors, key=lambda m: m["cip"]))
 
     good = [o for o in occupations if not o["thin"]]

@@ -55,6 +55,9 @@ def num(v):
 occ = {o["code"]: o for o in json.loads((P / "occupations.json").read_text())}
 
 print("Slugs ...")
+_ms = [m["slug"] for m in json.loads((P / "majors.json").read_text())]
+if len(set(_ms)) != len(_ms):
+    err("duplicate major slugs")
 _sl = [o["slug"] for o in occ.values()]
 bump("slugs", len(_sl))
 if len(set(_sl)) != len(_sl):
@@ -313,11 +316,14 @@ cip_title = {}
 for r in rows(RAW / "nces" / "CIP2020_SOC2018_Crosswalk.xlsx", "CIP-SOC"):
     cip, soc = str(r["CIP2020Code"]).strip(), str(r["SOC2018Code"]).strip()
     cw.setdefault(cip, set()).add(soc)
-    cw_soc.setdefault(soc, set()).add(cip)
+    if cip != "99.9999":  # placeholder "NO MATCH", not a major
+        cw_soc.setdefault(soc, set()).add(cip)
     cip_title[cip] = str(r["CIP2020Title"]).strip().rstrip(".")
 for c, o in occ.items():
     for m in o["majors"]:
         bump("occupation->major links")
+        if m["cip"] == "99.9999":
+            err(f"{c} links to placeholder major 99.9999")
         if c[:7] not in cw.get(m["cip"], set()):
             err(f"{c} major {m['cip']} not linked in crosswalk")
         if m["title"].strip() != cip_title.get(m["cip"]):
@@ -326,6 +332,8 @@ for c, o in occ.items():
     if len(o["majors"]) < min(n_src, 12):
         err(f"{c} shows {len(o['majors'])} majors, crosswalk has {n_src}")
 for m in json.loads((P / "majors.json").read_text()):
+    if m["cip"] == "99.9999" or "NO MATCH" in m["title"].upper():
+        err(f"placeholder major {m['cip']} {m['title']}")
     for c in m["careers"]:
         bump("major->career links")
         if c[:7] not in cw.get(m["cip"], set()):
