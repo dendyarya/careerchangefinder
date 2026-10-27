@@ -43,7 +43,7 @@ CONF
     systemctl reload ssh 2>/dev/null || systemctl reload sshd
     # sshd keeps the FIRST value it reads, so our file is named 00-… to win over e.g. 50-cloud-init.conf
     sshd -T | grep -E '^(passwordauthentication|kbdinteractiveauthentication|permitrootlogin) '
-    sshd -T | grep -q '^passwordauthentication no' \
+    sshd -T 2>/dev/null | grep '^passwordauthentication no' >/dev/null \
       || die "password login is still on: another setting in /etc/ssh/sshd_config comes before the Include line"
     echo "Done. Test a NEW key login in a second window before closing this one."
   else
