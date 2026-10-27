@@ -11,7 +11,7 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "etl": "python3 scripts/etl/build.py && python3 scripts/etl/build_tests.py && python3 scripts/etl/build_situations.py && python3 scripts/etl/verify.py && python3 scripts/etl/verify_situations.py && python3 scripts/etl/verify_tests.py && python3 scripts/etl/report.py",
+    "etl": "python3 scripts/etl/build.py && python3 scripts/etl/build_tests.py && python3 scripts/etl/build_situations.py && python3 scripts/etl/verify.py && python3 scripts/etl/verify_situations.py && python3 scripts/etl/verify_short_names.py && python3 scripts/etl/verify_tests.py && python3 scripts/etl/report.py",
     "check": "npm run typecheck && npm run lint && npm test",
     "qa": "python3 scripts/qa/audit_html.py && python3 scripts/qa/check_pages_vs_data.py"
   },

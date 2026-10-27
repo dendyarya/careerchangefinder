@@ -6,6 +6,7 @@ import { money, payChangeTone, signedPct } from "@/lib/format";
 import { buildSalary, salarySlugs } from "@/lib/salary";
 import { pageMeta } from "@/lib/seo";
 import { SITE } from "@/lib/site";
+import { alsoCalled } from "@/lib/seoName";
 
 export const dynamicParams = false;
 export const generateStaticParams = () => salarySlugs().map((slug) => ({ slug }));
@@ -35,6 +36,7 @@ export default async function SalaryPage({ params }: { params: Promise<{ slug: s
       <Breadcrumbs items={[{ name: "Careers", href: "/careers" }, { name: m.name, href: `/careers/${m.o.slug}` }, { name: "Salary by state" }]} />
       <section className="flex max-w-[920px] flex-col gap-[18px]">
         <PageTitle before={`${m.name} `} highlight="Salary by State" />
+        {alsoCalled(m.o.title, m.o.code) && <p className="m-0 text-small text-muted">Also called: {alsoCalled(m.o.title, m.o.code)}</p>}
         <p className="m-0 text-lead">{m.intro}</p>
         <UpdatedLine sources="BLS OEWS May 2025" />
       </section>

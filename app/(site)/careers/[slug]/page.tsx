@@ -9,6 +9,7 @@ import { stateSlug } from "@/lib/salary";
 import { pageMeta } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 import { RIASEC_NAMES } from "@/lib/soc";
+import { alsoCalled } from "@/lib/seoName";
 
 export const dynamicParams = false;
 export const generateStaticParams = () => profileSlugs().map((slug) => ({ slug }));
@@ -120,6 +121,7 @@ export default async function CareerProfile({ params }: { params: Promise<{ slug
               </span>
               <h1 className="m-0 text-h1 leading-[1.02] tracking-[-0.03em]">{m.name}</h1>
               {m.name !== o.title && <p className="m-0 text-small text-muted">O*NET title: {o.title}</p>}
+              {alsoCalled(o.title, o.code) && <p className="m-0 text-small text-muted">Also called: {alsoCalled(o.title, o.code)}</p>}
               <p className="m-0 text-lead">{o.description}</p>
               {o.alt_titles.length > 0 && (
                 <p className="m-0 text-[16px] text-muted">Also called: {o.alt_titles.slice(0, 6).join(", ")}</p>

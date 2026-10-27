@@ -185,9 +185,9 @@ export function buildFromPage(slug: string): FromPageModel | null {
 
   // Tahap 6 rule: titles 30–60 characters (the " | Career Change Finder" suffix is not counted here)
   const base = `Jobs for Former ${name}`;
-  const shortBase = `Jobs for Former ${seoName(name)}`;
+  const shortBase = `Jobs for Former ${seoName(name, occ?.code)}`;
   const title = fitTitle(
-    [`${base}: ${rows.length} Careers That Use Your Skills`, `${base}: ${rows.length} Career Options`, base, shortBase],
+    [`${base}: ${rows.length} Careers That Use Your Skills`, `${base}: ${rows.length} Career Options`, base, `${shortBase}: ${rows.length} Career Options`, shortBase],
     shortBase, // a longer unique title beats a clipped duplicate; the intent comes first
   );
   const description = clip(

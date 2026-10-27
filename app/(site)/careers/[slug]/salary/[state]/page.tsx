@@ -5,6 +5,7 @@ import { Breadcrumbs, FaqSection, H2, PageTitle, RelatedLinks, SourcesBox, Updat
 import { money, payChangeTone, signedPct } from "@/lib/format";
 import { buildStateSalary } from "@/lib/salary";
 import { pageMeta } from "@/lib/seo";
+import { alsoCalled } from "@/lib/seoName";
 
 // 874 careers × up to 51 states: rendered on first request, then cached (ISR). Unknown pairs 404.
 export const dynamicParams = true;
@@ -46,6 +47,7 @@ export default async function StateSalaryPage({ params }: { params: Promise<{ sl
       />
       <section className="flex max-w-[920px] flex-col gap-[18px]">
         <PageTitle before={`${m.name} Salary in `} highlight={s.state} />
+        {alsoCalled(m.o.title, m.o.code) && <p className="m-0 text-small text-muted">Also called: {alsoCalled(m.o.title, m.o.code)}</p>}
         <p className="m-0 text-lead">
           {m.name} in {s.state} earn a median of {money(s.median)} a year, {signedPct(s.vsNational)} compared with
           the U.S. median.{m.group ? ` Figures are for the broader BLS group “${w.bls_title}”.` : ""}

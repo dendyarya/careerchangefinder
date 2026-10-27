@@ -153,10 +153,10 @@ export function buildProfile(slug: string): ProfileModel | null {
   const pay = w?.median
     ? `median pay ${money(w.median)}${w.is_group ? " (broader BLS group)" : ""}`
     : "pay data not published by BLS";
-  const sn = seoName(name);
+  const sn = seoName(name, o.code);
   const title = fitTitle(
     [`${name}: Salary, Skills and How to Start`, `${name}: Salary and Skills`, `${name} Career Profile`, name,
-     `${sn}: Salary and Skills`, `${sn} Career Profile`, sn],
+     `${sn}: Salary, Skills and How to Start`, `${sn}: Salary and Skills`, `${sn} Career Profile`, sn],
     sn,
   );
   const description = clip(

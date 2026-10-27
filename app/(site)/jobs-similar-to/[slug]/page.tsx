@@ -7,6 +7,7 @@ import { money } from "@/lib/format";
 import { pageMeta } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 import { buildSimilar, similarSlugs } from "@/lib/similarJobs";
+import { AlsoCalled } from "@/components/page/AlsoCalled";
 
 export const dynamicParams = false;
 export const generateStaticParams = () => similarSlugs().map((slug) => ({ slug }));
@@ -26,6 +27,7 @@ export default async function SimilarPage({ params }: { params: Promise<{ slug: 
       <Breadcrumbs items={[{ name: "Jobs Similar To", href: "/jobs-similar-to" }, { name: m.name }]} />
       <section className="flex max-w-[920px] flex-col gap-[18px]">
         <PageTitle before="Jobs Similar to " highlight={m.name} />
+        <AlsoCalled slug={m.slug} />
         <p className="m-0 text-lead">{m.intro}</p>
         <p className="m-0 text-slate">
           {m.name}: {m.group ? `${money(m.median)} (broader BLS group)` : `${money(m.median)} median pay`}

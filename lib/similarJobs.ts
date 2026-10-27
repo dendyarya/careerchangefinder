@@ -96,7 +96,7 @@ export function buildSimilar(slug: string): SimilarModel | null {
   const group = Boolean(o.wage?.is_group);
   const top3 = rows.slice(0, 3).map((r) => displayName(r.title));
 
-  const sn = seoName(name);
+  const sn = seoName(name, o.code);
   const title = fitTitle(
     [`Jobs Similar to ${name}: ${rows.length} Careers Like It`, `Jobs Similar to ${name}`, `Jobs Like ${name}`, `Jobs Like ${sn}`],
     `Jobs Like ${sn}`, // long names: over 60 characters, but never the same as the career profile title

@@ -54,6 +54,7 @@ jobs:
           python scripts/etl/download.py
           python scripts/etl/verify.py
           python scripts/etl/verify_situations.py
+          python scripts/etl/verify_short_names.py
           python scripts/etl/verify_tests.py
 
       - name: Build

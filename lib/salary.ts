@@ -52,7 +52,7 @@ export function buildSalary(slug: string) {
   const { o, name, nameLower, rows, nat, group } = b;
   const hi = rows[0]!;
   const lo = rows[rows.length - 1]!;
-  const sn = seoName(name);
+  const sn = seoName(name, o.code);
   const title = fitTitle(
     [`${name} Salary by State (2025 BLS Data)`, `${name} Salary by State`, `${name} Pay by State`, `${sn} Salary by State`, `${sn} Pay by State`],
     `Salary by State: ${sn}`,
@@ -81,7 +81,7 @@ export function buildStateSalary(slug: string, state: string) {
   const { o, name, nameLower, rows, nat, group } = b;
   const s = rows.find((r) => r.slug === state);
   if (!s || !isPublished("salary-states", `${slug}/${state}`)) return null;
-  const sn = seoName(name);
+  const sn = seoName(name, o.code);
   const title = fitTitle(
     [`${name} Salary in ${s.state} (2025)`, `${name} Salary in ${s.state}`, `${name} Pay in ${s.state}`, `${sn} Salary in ${s.state}`, `${sn} Pay in ${s.state}`],
     `${s.state} Salary: ${sn}`,

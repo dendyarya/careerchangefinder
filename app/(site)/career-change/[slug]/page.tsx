@@ -28,6 +28,7 @@ import { money, payChangeTone, signedPct } from "@/lib/format";
 import { pageMeta } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 import { SITUATION_SLUGS } from "@/lib/situations";
+import { AlsoCalled } from "@/components/page/AlsoCalled";
 
 // One route for /career-change/from-*, to-* and at-* (Next.js cannot name a folder "from-[job]").
 // Phase 1 builds from-* pages; to-* and at-* come in phase 2.
@@ -85,6 +86,7 @@ export default async function CareerChangePage({ params }: { params: Promise<{ s
 
       <section className="flex max-w-[920px] flex-col gap-[18px]">
         <PageTitle before="Jobs for " highlight={`Former ${m.name}`} />
+        {!m.isHub && <AlsoCalled slug={m.slug} />}
         <p className="m-0 text-lead">{m.intro}</p>
         <UpdatedLine />
       </section>
