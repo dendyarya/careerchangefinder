@@ -1,7 +1,8 @@
 #!/bin/bash
 # One-time VPS setup for careerchangefinder.com (docs/deploy.md). Run as root from the unpacked bundle:
-#   sudo bash setup-vps.sh            # app user, folders, Node, PM2, scripts, Nginx sites, deploy key
-#   sudo bash setup-vps.sh --harden-ssh   # later, separately: turn off SSH password login
+#   bash setup-vps.sh                 # app user, folders, Node, PM2, scripts, Nginx sites, deploy key
+#   bash setup-vps.sh --harden-ssh    # later, separately: turn off SSH password login
+# Tested on Ubuntu 24.04; written for Debian 12/13 and Ubuntu 22.04+ (no sudo needed when run as root).
 # Safe to run again. It only creates or changes files that belong to this site:
 #   user "ccf", /var/www/careerchangefinder, /etc/ssl/careerchangefinder (checks only),
 #   /etc/nginx/sites-{available,enabled}/{careerchangefinder.com,staging.careerchangefinder.com},
@@ -17,7 +18,7 @@ SITES=(careerchangefinder.com staging.careerchangefinder.com)
 
 say() { printf '\n\033[1m== %s\033[0m\n' "$*"; }
 die() { printf '\n\033[31mSTOP: %s\033[0m\n' "$*" >&2; exit 1; }
-[ "$(id -u)" = 0 ] || die "run with sudo (as root)"
+[ "$(id -u)" = 0 ] || die "run as root (or with sudo)"
 command -v apt-get >/dev/null || die "this script expects Ubuntu or Debian"
 
 # ---------------------------------------------------------------- SSH hardening (separate step)
@@ -78,7 +79,7 @@ echo "ok"
 
 # ---------------------------------------------------------------- 3. Node 22 and PM2 for the app user
 say "3/9 Node.js 22 and PM2 (for user $APP only)"
-sudo -u "$APP" -H bash -lc '
+runuser -l "$APP" -c '
   set -e
   export NVM_DIR="$HOME/.nvm"
   if [ ! -s "$NVM_DIR/nvm.sh" ]; then
@@ -90,8 +91,8 @@ sudo -u "$APP" -H bash -lc '
   command -v pm2 >/dev/null || npm install -g pm2@6 >/dev/null
   node -v; pm2 -v
 '
-NODE_BIN=$(sudo -u "$APP" -H bash -lc '. ~/.nvm/nvm.sh >/dev/null; dirname "$(command -v node)"')
-PM2_BIN=$(sudo -u "$APP" -H bash -lc '. ~/.nvm/nvm.sh >/dev/null; command -v pm2')
+NODE_BIN=$(runuser -l "$APP" -c '. ~/.nvm/nvm.sh >/dev/null; dirname "$(command -v node)"')
+PM2_BIN=$(runuser -l "$APP" -c '. ~/.nvm/nvm.sh >/dev/null; command -v pm2')
 env PATH="$PATH:$NODE_BIN" "$PM2_BIN" startup systemd -u "$APP" --hp "/home/$APP" >/dev/null
 echo "PM2 starts with the server (service pm2-$APP)"
 

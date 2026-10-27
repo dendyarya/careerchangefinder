@@ -32,7 +32,7 @@ so the manual run is the approval step.)
 | `/etc/ssl/careerchangefinder/origin.{pem,key}` | Cloudflare Origin Certificate |
 | `/etc/nginx/.htpasswd-ccf-staging` | staging password |
 
-Everything is created by `deploy/setup-vps.sh` (tested on Ubuntu 24.04 with Nginx 1.24). It never edits
+Everything is created by `deploy/setup-vps.sh` (tested on Ubuntu 24.04 with Nginx 1.24; the VPS runs Debian 13). It never edits
 other sites' files; if `nginx -t` fails with our sites, it disables them again.
 
 ## Launch steps
@@ -49,18 +49,18 @@ Secrets never go into chat or screenshots: private keys, the origin key, passwor
    - SSL/TLS → Origin Server → Create Certificate: RSA, hostnames `careerchangefinder.com` and
      `*.careerchangefinder.com`, 15 years. On the VPS, paste the certificate into
      `/etc/ssl/careerchangefinder/origin.pem` and the private key into `/etc/ssl/careerchangefinder/origin.key`
-     (`sudo mkdir -p /etc/ssl/careerchangefinder && sudo nano …`).
+     (`mkdir -p /etc/ssl/careerchangefinder && nano …` as root).
    - DNS: `A staging → <VPS IP>`, Proxied.
 4. **VPS setup.** Upload `ccf-server-setup.tar.gz` (made by `deploy/make-bundle.sh`) to the VPS, then:
-   `mkdir ~/ccf-setup && tar -xzf ccf-server-setup.tar.gz -C ~/ccf-setup && cd ~/ccf-setup && sudo bash setup-vps.sh`.
+   `mkdir ~/ccf-setup && tar -xzf ccf-server-setup.tar.gz -C ~/ccf-setup && cd ~/ccf-setup && bash setup-vps.sh` (as root).
    It asks for a staging username and password. At the end it prints the values for step 5.
 5. **GitHub secrets** (both environments, or once at repository level): `VPS_HOST`, `VPS_PORT`, `VPS_USER`,
    `VPS_KNOWN_HOSTS` (printed by the script), and `VPS_SSH_KEY` = the full content of
-   `/root/ccf-deploy-key/id_ed25519` (`sudo cat` it on the server and copy it straight into GitHub).
-   Then delete it on the server: `sudo rm -r /root/ccf-deploy-key`.
+   `/root/ccf-deploy-key/id_ed25519` (`cat` it on the server as root and copy it straight into GitHub).
+   Then delete it on the server: `rm -r /root/ccf-deploy-key`.
 6. **First staging deploy.** Push to `staging`; watch Actions → Deploy. Open https://staging.careerchangefinder.com
    with the staging password and check a few pages.
-7. **SSH password login off.** After you have logged in with an SSH key: `sudo bash setup-vps.sh --harden-ssh`,
+7. **SSH password login off.** After you have logged in with an SSH key: `bash setup-vps.sh --harden-ssh`,
    keep that session open and test a new key login in a second window.
 8. **Production.** Cloudflare DNS: `A @ → <VPS IP>` and `CNAME www → careerchangefinder.com`, both Proxied.
    Fast-forward `main` to `staging`, run Actions → Deploy → Run workflow on `main`, then check https://careerchangefinder.com,
@@ -72,8 +72,8 @@ Secrets never go into chat or screenshots: private keys, the origin key, passwor
 ## Roll back by hand
 
 ```bash
-sudo -u ccf ls -1t /var/www/careerchangefinder/production/releases   # pick an older release id
-sudo -u ccf /home/ccf/bin/ccf-activate production <release-id>
+ls -1t /var/www/careerchangefinder/production/releases              # pick an older release id
+runuser -l ccf -c '/home/ccf/bin/ccf-activate production <release-id>'
 ```
 
 ## Keystatic (optional, later)
