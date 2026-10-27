@@ -1,27 +1,34 @@
-# Deploy to staging.careerchangefinder.com on every push to the "staging" branch.
+# Deploy careerchangefinder.com (docs/deploy.md).
+#   push to "staging" -> staging.careerchangefinder.com (password-protected, noindex)
+#   push to "main"    -> careerchangefinder.com (the "production" environment can require approval)
 # Actions are pinned to commit SHAs (runbook: Keamanan website, part 2).
-name: Deploy staging
+name: Deploy
 
 on:
   push:
-    branches: [staging]
+    branches: [staging, main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: deploy-staging
+  group: deploy-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
   build-and-deploy:
+    if: github.ref_name == 'staging' || github.ref_name == 'main'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
-    environment: staging
+    environment: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
     env:
-      SITE_ENV: staging
+      SITE_ENV: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
       NEXT_TELEMETRY_DISABLED: "1"
+      # public IDs, baked into the static pages; set as environment variables (not secrets) on "production"
+      ADSENSE_CLIENT: ${{ vars.ADSENSE_CLIENT }}
+      GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
+      GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -68,7 +75,7 @@ jobs:
           set -euo pipefail
           cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/
           chmod -R a-w .next/standalone
-          (cd .next/standalone && SITE_ENV=staging PORT=3299 HOSTNAME=127.0.0.1 node server.js > ../../server.log 2>&1 &)
+          (cd .next/standalone && PORT=3299 HOSTNAME=127.0.0.1 node server.js > ../../server.log 2>&1 &)
           for _ in $(seq 1 30); do curl -fsS -o /dev/null http://127.0.0.1:3299/ && break; sleep 1; done
           python scripts/qa/check_state_pages.py http://127.0.0.1:3299 300
           python scripts/qa/check_sitemaps.py http://127.0.0.1:3299
@@ -103,6 +110,6 @@ jobs:
           SSH="ssh -i $HOME/.ssh/deploy -p $PORT -o StrictHostKeyChecking=yes -o IdentitiesOnly=yes"
           # The deploy key can only rsync into the releases folder and run "activate" (deploy/server/ccf-gate)
           ID="$GITHUB_SHA-$GITHUB_RUN_ID"
-          rsync -rlptz --chmod=Du=rwx,Dgo=,Fu=rw,Fgo= -e "$SSH" release/ "$USER@$HOST:staging/releases/$ID/"
-          $SSH "$USER@$HOST" "activate staging $ID"
+          rsync -rlptz --chmod=Du=rwx,Dgo=,Fu=rw,Fgo= -e "$SSH" release/ "$USER@$HOST:$SITE_ENV/releases/$ID/"
+          $SSH "$USER@$HOST" "activate $SITE_ENV $ID"
           rm -f ~/.ssh/deploy
