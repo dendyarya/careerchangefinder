@@ -57,11 +57,7 @@ You are responsible for the decisions you make using information from the site. 
 
 ## Changes
 
-We may change the site or these Terms at any time. When we change the Terms we update the date at the top of this page. If you keep using the site after a change, you accept the updated Terms.
-
-## Governing law
-
-These Terms are governed by the laws of the Republic of Indonesia, without regard to conflict-of-law rules. If any part of these Terms cannot be enforced, the rest still applies.
+We may change the site or these Terms at any time. When we change the Terms we update the date at the top of this page. If you keep using the site after a change, you accept the updated Terms. If any part of these Terms cannot be enforced, the rest still applies.
 
 ## Contact
 
