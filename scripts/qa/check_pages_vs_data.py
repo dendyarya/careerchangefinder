@@ -163,6 +163,45 @@ for slug, o in occ.items():
         if tuple(cells) != exp:
             errors.append(f"salary {slug} row {i + 1}: page {tuple(cells)} != data {exp}")
 
+# ---------------------------------------------------------------- career change at 40 (rule recomputed)
+f = APP / "career-change" / "at-40.html"
+if f.exists():
+    age = json.loads((P / "situations" / "age.json").read_text())
+    aw, A = age["all_workers"], age["careers"]
+    def at40(max_jz):
+        out = []
+        for o in good:
+            a = A.get(o["code"]) or {}
+            p_ = pay(o)
+            if o["code"].startswith("11-") or "supervisor" in o["title"].lower():
+                continue
+            if not a.get("share_45_plus") or not p_ or not o["job_zone"] or o["job_zone"] > max_jz:
+                continue
+            if p_ < aw["us_median_pay"] or a["share_45_plus"] < aw["share_45_plus"]:
+                continue
+            out.append((o, a))
+        return sorted(out, key=lambda x: (-pay(x[0]), x[0]["title"]))
+    page = f.read_text()
+    tables = re.findall(r"<tbody>(.*?)</tbody>", page, re.S)
+    got = [[[text(c) for c in re.findall(r"<td[^>]*>(.*?)</td>", r, re.S)] for r in re.findall(r"<tr[^>]*>(.*?)</tr>", tb, re.S)] for tb in tables]
+    main_rows, fast_rows = got[0] + got[1], got[2] + (got[3] if len(got) > 3 else [])
+    for name, rows_, exp in (("main", main_rows, at40(3)), ("fast", fast_rows, at40(2))):
+        if len(rows_) != len(exp):
+            errors.append(f"at-40 {name}: {len(rows_)} rows != {len(exp)}")
+        for i, (cells, (o, a)) in enumerate(zip(rows_, exp)):
+            checked += 4
+            want = (str(i + 1), o["title"], money(pay(o)), f"{math.floor(a['share_45_plus'] * 100 + 0.5)}%" + (" Broader group" if a["group"] else ""),
+                    "—" if a["median_age"] is None else f"{a['median_age']:.1f}")
+            have = (cells[0], cells[1], cells[2], cells[4], cells[5])
+            if have != want:
+                errors.append(f"at-40 {name} row {i + 1}: page {have} != data {want}")
+    for s_ in (f"{aw['median_age']}", f"{math.floor(aw['share_45_plus'] * 100 + 0.5)}%", money(aw["us_median_pay"])):
+        checked += 1
+        if s_ not in text(page):
+            errors.append(f"at-40: missing {s_}")
+else:
+    errors.append("at-40 not built")
+
 print(f"{checked:,} values checked on built pages, {len(errors)} mismatches")
 for e in errors[:30]:
     print("  -", e)

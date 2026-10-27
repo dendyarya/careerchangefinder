@@ -81,6 +81,17 @@ Every listing and every "Jobs similar to" row is re-checked against the data aft
 
 `/careers/[job]/salary` lists every state BLS publishes for the job (BLS OEWS May 2025 state file), highest median first, with the 10th and 90th percentiles, employment and the difference from the national median. `/careers/[job]/salary/[state]` shows one state, its rank, the states ranked just above and below, and the state median of up to 6 similar careers. Values BLS does not publish (`*`, or `#` for amounts above its highest published figure) are shown as "Not published". Group wages carry the broader BLS group label. Pay is not adjusted for living costs. State pages with fewer than 1,000 jobs are noindex. State pages are built on first visit and kept in memory; a sample of them is checked against the data in every deploy (`scripts/qa/check_state_pages.py`).
 
+## "Career change at …" and "Career change to …" pages
+
+Extra sources, downloaded by hand from bls.gov (kept in `data/raw/bls`):
+
+- **Worker age:** BLS Current Population Survey, 2025 annual averages, Table 11b (employed people by detailed occupation and age). 2025 is an 11-month average: October 2025 was not collected. CPS occupations carry titles, not SOC codes. They are matched to BLS OEWS SOC titles word for word (case and punctuation ignored); 18 titles that differ are mapped by hand in `scripts/etl/build_situations.py`. "Other …" catch-all rows are not used, except four clearly defined ones (other physicians, other mathematical science, other drafters, other engineering technicians). Shares are shown only where the CPS base is at least 50,000 workers, the same floor BLS uses for median age. When the CPS row covers several jobs the page says "Broader group".
+- **Government jobs:** BLS OEWS May 2025, national cross-industry estimates by ownership (federal, state, local government and private).
+
+**Career change at 40.** Careers that usually take two years or less to prepare for (O*NET Job Zone 3 or lower), pay at least the U.S. median for all occupations (BLS OEWS May 2025), and have at least the national share of workers aged 45 or older. Supervisor and manager jobs are left out because they are usually filled by promotion. Highest median pay first. "Faster options" is the same list limited to Job Zone 2 or lower.
+
+Every value is checked against the raw files by `scripts/etl/verify_situations.py`, and the page's lists are recomputed from these rules after each build.
+
 ## Career Change Tool
 
 The same data as the pages above. Filters: extra education (any, none, up to a certificate or associate, up to a bachelor's degree) and pay (any, no drop bigger than 10%, pays more). Careers with only a broader BLS group wage are left out of the pay filters.

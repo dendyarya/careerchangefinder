@@ -14,6 +14,8 @@ import {
   SourcesBox,
   UpdatedLine,
 } from "@/components/page/Common";
+import { At40Page } from "@/components/situations/At40Page";
+import { buildAt40 } from "@/lib/agePages";
 import { buildFromPage } from "@/lib/careerChangePage";
 import { careerChangeSources } from "@/lib/data/server";
 import { money, payChangeTone, signedPct } from "@/lib/format";
@@ -24,8 +26,11 @@ import { SITE } from "@/lib/site";
 // Phase 1 builds from-* pages; to-* and at-* come in phase 2.
 export const dynamicParams = false;
 
+// situation pages built so far (at-30/50, to-* follow after the at-40 example is approved)
+const SITUATIONS = ["at-40"];
+
 export function generateStaticParams() {
-  return careerChangeSources().map((s) => ({ slug: `from-${s}` }));
+  return [...careerChangeSources().map((s) => ({ slug: `from-${s}` })), ...SITUATIONS.map((slug) => ({ slug }))];
 }
 
 function parse(slug: string) {
@@ -34,6 +39,10 @@ function parse(slug: string) {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (slug === "at-40") {
+    const a = buildAt40();
+    return pageMeta({ title: a.title, description: a.description, path: "/career-change/at-40" });
+  }
   const m = parse(slug);
   if (!m) return {};
   return pageMeta({ title: m.title, description: m.description, path: `/career-change/${slug}` });
@@ -41,6 +50,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function CareerChangePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (slug === "at-40") return <At40Page />;
   const m = parse(slug);
   if (!m) notFound();
 
