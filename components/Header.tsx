@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { CTA, MENUS, type NavMenu } from "@/lib/nav";
+import { CTA, type NavLink, type NavMenu } from "@/lib/nav";
 import { Chevron, CloseIcon, MenuIcon, SearchIcon } from "./icons";
 import { Logo } from "./Logo";
 import { SearchPanel } from "./SearchPanel";
@@ -69,7 +69,7 @@ function MegaPanel({ menu, onNavigate }: { menu: NavMenu; onNavigate: () => void
   );
 }
 
-function Drawer({ onClose, onSearch }: { onClose: () => void; onSearch: () => void }) {
+function Drawer({ menus, onClose, onSearch }: { menus: NavMenu[]; onClose: () => void; onSearch: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const [openId, setOpenId] = useState<string | null>(null);
   useFocusTrap(ref, true);
@@ -107,7 +107,7 @@ function Drawer({ onClose, onSearch }: { onClose: () => void; onSearch: () => vo
           <SearchIcon /> Search careers
         </button>
         <ul className="m-0 mt-2 list-none p-0">
-          {MENUS.map((m) => {
+          {menus.map((m) => {
             const open = openId === m.id;
             return (
               <li key={m.id} className="border-b-[1.5px] border-mist">
@@ -164,7 +164,8 @@ function Drawer({ onClose, onSearch }: { onClose: () => void; onSearch: () => vo
   );
 }
 
-export function Header({ careerCount }: { careerCount: number }) {
+/** `menus` and `popular` hold only links to pages that exist (filtered on the server, lib/liveNav.ts). */
+export function Header({ careerCount, menus, popular }: { careerCount: number; menus: NavMenu[]; popular: NavLink[] }) {
   const pathname = usePathname();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -205,7 +206,7 @@ export function Header({ careerCount }: { careerCount: number }) {
     };
   }, [openMenu, searchOpen]);
 
-  const active = MENUS.find((m) => m.id === openMenu);
+  const active = menus.find((m) => m.id === openMenu);
 
   return (
     <>
@@ -222,7 +223,7 @@ export function Header({ careerCount }: { careerCount: number }) {
           </div>
           <nav aria-label="Main" className="hidden flex-1 justify-center md:flex">
             <ul className="m-0 flex list-none gap-[30px] p-0 text-ui font-bold">
-              {MENUS.map((m) => {
+              {menus.map((m) => {
                 const open = openMenu === m.id;
                 const current = pathname === m.href || pathname.startsWith(`${m.href}/`);
                 return (
@@ -282,6 +283,7 @@ export function Header({ careerCount }: { careerCount: number }) {
       )}
       {drawerOpen && (
         <Drawer
+          menus={menus}
           onClose={() => setDrawerOpen(false)}
           onSearch={() => {
             setDrawerOpen(false);
@@ -289,7 +291,7 @@ export function Header({ careerCount }: { careerCount: number }) {
           }}
         />
       )}
-      {searchOpen && <SearchPanel careerCount={careerCount} onClose={() => setSearchOpen(false)} />}
+      {searchOpen && <SearchPanel careerCount={careerCount} popular={popular} onClose={() => setSearchOpen(false)} />}
     </>
   );
 }

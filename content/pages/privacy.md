@@ -6,7 +6,7 @@ This Privacy Policy explains what information Career Change Finder ("we", "us") 
 
 - You do not need an account, and we do not ask for your name or email to use the site.
 - Your test answers stay in your browser. They are not sent to our server.
-- We show ads from Google AdSense and may use affiliate links and Google Analytics. These services use cookies or similar technology, and you can opt out as described below.
+- We use Google AdSense for ads, Google Analytics for visitor statistics, and affiliate links. These services use cookies or similar technology, and you can opt out as described below.
 
 ## Information we collect
 
@@ -28,11 +28,11 @@ We use Google AdSense to show ads.
 
 Other ad vendors and networks that work with Google may also serve ads on this site. You can learn more about each vendor and opt out at [www.aboutads.info/choices](https://www.aboutads.info/choices/). Read [how Google uses information from sites that use its services](https://policies.google.com/technologies/partner-sites).
 
-Where the law requires it, for example for visitors in the European Economic Area, the United Kingdom and Switzerland, we ask for your consent before personalized ads are shown.
+Where the law requires it, for example for visitors in the European Economic Area, the United Kingdom and Switzerland, a consent message from Google asks for your consent before personalized ads are shown or analytics cookies are set. You can change your choice at any time with the "Privacy and cookie settings" link at the bottom of every page.
 
 ## Analytics
 
-We may use Google Analytics to understand how many people visit, which pages they use and how they found the site. Google Analytics uses cookies and collects information such as pages visited, device type and approximate location. We use it only in aggregate. You can opt out with the [Google Analytics opt-out browser add-on](https://tools.google.com/dlpage/gaoptout).
+We use Google Analytics to understand how many people visit, which pages they use and how they found the site. Google Analytics uses cookies and collects information such as pages visited, device type and approximate location. We look at it only in aggregate and do not use it to identify you. Where consent is required, Google Analytics runs in a limited, cookieless mode until you agree. You can opt out with the [Google Analytics opt-out browser add-on](https://tools.google.com/dlpage/gaoptout). We also use Google Search Console, which shows us how our pages appear in Google Search; it does not run on this website or set cookies here.
 
 ## Affiliate links
 

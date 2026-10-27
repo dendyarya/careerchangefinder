@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
-import { POPULAR_SEARCHES } from "@/lib/nav";
+import type { NavLink } from "@/lib/nav";
 import { formatPay, matchHub, searchCareers, type HubEntry, type SearchEntry } from "@/lib/search";
 import { SearchIcon } from "./icons";
 import { useFocusTrap } from "./useFocusTrap";
@@ -27,7 +27,15 @@ interface Item {
   strong?: boolean;
 }
 
-export function SearchPanel({ onClose, careerCount }: { onClose: () => void; careerCount: number }) {
+export function SearchPanel({
+  onClose,
+  careerCount,
+  popular,
+}: {
+  onClose: () => void;
+  careerCount: number;
+  popular: NavLink[];
+}) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [q, setQ] = useState("");
@@ -182,7 +190,7 @@ export function SearchPanel({ onClose, careerCount }: { onClose: () => void; car
           <div className="flex flex-col gap-2.5">
             <p className="m-0 text-small font-extrabold text-muted">Popular searches</p>
             <div className="flex flex-wrap gap-2">
-              {POPULAR_SEARCHES.map((p) => (
+              {popular.map((p) => (
                 <Link
                   key={p.href}
                   href={p.href}

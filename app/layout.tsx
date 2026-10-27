@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { SITE } from "@/lib/site";
+import { TRACKING } from "@/lib/tracking";
 import "./globals.css";
 
 // Self-hosted (OFL) font files: no request to Google at build or run time.
@@ -25,6 +26,8 @@ export const metadata: Metadata = {
   openGraph: { type: "website", siteName: SITE.name, locale: "en_US" },
   // Only the production site may be indexed (staging and previews stay noindex).
   robots: SITE.indexable ? { index: true, follow: true } : { index: false, follow: false },
+  // Search Console ownership (HTML-tag method), production only
+  ...(TRACKING.siteVerification ? { verification: { google: TRACKING.siteVerification } } : {}),
 };
 
 export const viewport: Viewport = { themeColor: "#1D62AF", width: "device-width", initialScale: 1 };

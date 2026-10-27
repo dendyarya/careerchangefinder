@@ -230,6 +230,7 @@ export const MENUS: NavMenu[] = [
           { label: "What Major Should I Choose?", href: "/guides/what-major-should-i-choose" },
           { label: "Should I Change My Major?", href: "/guides/should-i-change-my-major" },
           { label: "Does Your Major Matter?", href: "/guides/does-your-major-matter" },
+          { label: "Trade School vs College", href: "/guides/trade-school-vs-college" },
         ],
       },
       {

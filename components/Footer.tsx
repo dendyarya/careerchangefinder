@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { meta } from "@/lib/data";
-import { FOOTER_COLUMNS } from "@/lib/nav";
+import type { NavGroup } from "@/lib/nav";
+import { PrivacySettingsLink } from "./PrivacySettingsLink";
 
-export function Footer() {
+export function Footer({ columns }: { columns: NavGroup[] }) {
   const year = new Date(meta.built_at).getFullYear();
   return (
     <footer className="bg-ink text-white">
@@ -14,7 +15,7 @@ export function Footer() {
             contact@careerchangefinder.com
           </a>
         </div>
-        {FOOTER_COLUMNS.map((c) => (
+        {columns.map((c) => (
           <div key={c.title} className="flex flex-col gap-2.5 text-[16px]">
             <strong className="text-[16px]">{c.title}</strong>
             <ul className="m-0 flex list-none flex-col gap-2.5 p-0">
@@ -44,7 +45,10 @@ export function Footer() {
         <p className="m-0">
           {meta.attribution.bls} {meta.attribution.nces}
         </p>
-        <p className="m-0">© {year} careerchangefinder.com · Not career, financial or psychological advice.</p>
+        <p className="m-0">
+          © {year} careerchangefinder.com · Not career, financial or psychological advice. ·{" "}
+          <PrivacySettingsLink className="cursor-pointer border-0 bg-transparent p-0 text-footer-link underline hover:text-white" />
+        </p>
       </div>
     </footer>
   );

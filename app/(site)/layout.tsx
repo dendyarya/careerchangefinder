@@ -1,5 +1,6 @@
 import { SiteShell } from "@/components/SiteShell";
 import { JsonLd } from "@/components/page/Common";
+import { Tracking } from "@/components/Tracking";
 import { SITE } from "@/lib/site";
 
 // Organization + WebSite on every page. No SearchAction: Google retired the sitelinks search box in 2024.
@@ -29,6 +30,7 @@ const ORG = {
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <SiteShell>
+      <Tracking />
       <JsonLd data={ORG} />
       {children}
     </SiteShell>

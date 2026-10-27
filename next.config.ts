@@ -18,16 +18,24 @@ function hubRedirects() {
     }));
 }
 
-// Security headers (runbook: "Keamanan website", part 3). CSP is a baseline here;
-// it is tightened in Tahap 8 once the ad, analytics and consent scripts are known.
+// Security headers (runbook: "Keamanan website", part 3).
+// Google tags (lib/tracking.ts) load only on production builds that have their IDs. AdSense supports only
+// a nonce-based strict CSP, which static pages cannot carry, and its domains change without notice
+// (support.google.com/adsense/answer/16283098), so with ads on, scripts, frames, images and connections
+// are limited to HTTPS instead of a domain list. Everything else stays locked down.
+const prod = process.env.SITE_ENV === "production";
+const ads = prod && /^ca-pub-\d{10,20}$/.test(process.env.ADSENSE_CLIENT?.trim() ?? "");
+const analytics = prod && /^G-[A-Z0-9]{4,15}$/.test(process.env.GA_MEASUREMENT_ID?.trim() ?? "");
+const google = ads || analytics;
 const csp = [
   "default-src 'self'",
-  // React needs eval() only in development (better error stacks); never in production
-  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
-  "font-src 'self'",
-  "connect-src 'self'",
+  // React needs eval() only in development (better error stacks); AdSense's recommended policy allows it
+  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" || ads ? " 'unsafe-eval'" : ""}${google ? " https:" : ""}`,
+  `style-src 'self' 'unsafe-inline'${ads ? " https:" : ""}`,
+  `img-src 'self' data: blob:${google ? " https:" : ""}`,
+  `font-src 'self'${ads ? " https:" : ""}`,
+  `connect-src 'self'${google ? " https:" : ""}`,
+  ...(google ? ["frame-src https:"] : []),
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -52,7 +60,8 @@ const common = [
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
   },
-  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+  // ad clicks open the advertiser in a new tab; strict same-origin can break that hand-off
+  { key: "Cross-Origin-Opener-Policy", value: ads ? "same-origin-allow-popups" : "same-origin" },
 ];
 
 const nextConfig: NextConfig = {

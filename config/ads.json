@@ -1,0 +1,6 @@
+{
+  "_note": "AdSense display ad unit IDs, one per size (AdSense > Ads > By ad unit > Display ads, the data-ad-slot number). Empty = the placeholder stays empty; Auto ads can still run. Used only on the production site with ADSENSE_CLIENT set (lib/tracking.ts).",
+  "leaderboard": "",
+  "rectangle": "",
+  "in-content": ""
+}
