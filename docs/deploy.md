@@ -5,15 +5,17 @@ Two sites on the same VPS, deployed by `.github/workflows/deploy.yml`:
 | Branch | Site | Port | Notes |
 |---|---|---|---|
 | `staging` | https://staging.careerchangefinder.com | 3101 | password, `noindex`, `SITE_ENV=staging` |
-| `main` | https://careerchangefinder.com | 3100 | `SITE_ENV=production`; the `production` environment requires approval |
+| `main` | https://careerchangefinder.com | 3100 | `SITE_ENV=production`; manual only: Actions → Deploy → Run workflow on `main` |
 
 Each run: `npm ci`, `npm audit`, type check, lint, unit tests → download O*NET and re-check all data →
 `next build` → `npm run qa` → on-demand pages and sitemaps checked on a read-only build → release with
 `MANIFEST.sha256` → rsync to the VPS → `activate` (checksums, read-only, switch, PM2 restart, health check,
 automatic rollback).
 
-**Day to day:** changes go to `staging` first. After they are checked there, `main` is fast-forwarded to
-`staging` and the production deploy is approved in GitHub Actions.
+**Day to day:** changes go to `staging` first (deployed automatically). After they are checked there, `main`
+is fast-forwarded to `staging`, and the live site is updated only when someone clicks Actions → Deploy →
+Run workflow on `main`. (Required reviewers are not available for private repos on a free GitHub plan,
+so the manual run is the approval step.)
 
 ## On the VPS
 
@@ -41,7 +43,7 @@ Secrets never go into chat or screenshots: private keys, the origin key, passwor
    Then the `staging` branch is created from `main`.
 2. **GitHub environments.** Settings → Environments:
    - `staging`: Deployment branches = `staging` only.
-   - `production`: Deployment branches = `main` only; Required reviewers = you.
+   - `production`: Deployment branches = `main` only.
 3. **Cloudflare.** The domain must use Cloudflare's nameservers.
    - SSL/TLS → Overview: **Full (strict)**. Edge Certificates: Always Use HTTPS on.
    - SSL/TLS → Origin Server → Create Certificate: RSA, hostnames `careerchangefinder.com` and
@@ -61,7 +63,7 @@ Secrets never go into chat or screenshots: private keys, the origin key, passwor
 7. **SSH password login off.** After you have logged in with an SSH key: `sudo bash setup-vps.sh --harden-ssh`,
    keep that session open and test a new key login in a second window.
 8. **Production.** Cloudflare DNS: `A @ → <VPS IP>` and `CNAME www → careerchangefinder.com`, both Proxied.
-   Fast-forward `main` to `staging`, approve the deployment in Actions, then check https://careerchangefinder.com,
+   Fast-forward `main` to `staging`, run Actions → Deploy → Run workflow on `main`, then check https://careerchangefinder.com,
    `/robots.txt` and `/sitemap.xml`.
 9. **Google.** Search Console, Analytics and AdSense: `docs/ads-consent.md`. The IDs go in the `production`
    environment as **variables** (not secrets): `GOOGLE_SITE_VERIFICATION`, `GA_MEASUREMENT_ID`,
