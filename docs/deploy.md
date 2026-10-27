@@ -76,8 +76,27 @@ ls -1t /var/www/careerchangefinder/production/releases              # pick an ol
 runuser -l ccf -c '/home/ccf/bin/ccf-activate production <release-id>'
 ```
 
-## Keystatic (optional, later)
+## Keystatic (CMS for Guides) on staging
 
-The CMS admin stays off on production (Nginx returns 404 for `/keystatic`). To use it, create the GitHub App,
-set its three secrets on the server, put `/keystatic` behind Cloudflare Access, and remove the two
-`location ^~ … keystatic` blocks from the production Nginx file.
+The CMS runs only on staging (behind the staging password); production returns 404 for `/keystatic`.
+`https://staging.careerchangefinder.com/keystatic` opens the `staging` branch. Each save is a commit to
+`staging`, which deploys staging automatically. Publishing = fast-forward `main` to `staging` + Run workflow.
+Because the CMS commits to `staging`, all other work is also based on `staging` (never force-push).
+
+One-time setup:
+
+1. **GitHub App** (github.com/settings/apps/new, on the account that owns the repo):
+   - Name: any unique name, e.g. `ccf-keystatic-<you>`; Homepage URL: `https://staging.careerchangefinder.com`
+   - Callback URL: `https://staging.careerchangefinder.com/api/keystatic/github/oauth/callback`
+   - Tick "Request user authorization (OAuth) during installation"; Webhook: untick "Active"
+   - Repository permissions: Contents = Read and write, Metadata = Read-only, Pull requests = Read-only
+   - Where can it be installed: Only on this account → Create. Then "Generate a new client secret".
+   - Install App → only the `careerchangefinder` repository.
+2. GitHub → Settings → Environments → `staging` → variable `KEYSTATIC_GITHUB_APP_SLUG` = the app's slug
+   (the last part of its URL, github.com/apps/<slug>).
+3. On the VPS: `bash setup-vps.sh --keystatic` (asks for the Client ID and the client secret, generates
+   `KEYSTATIC_SECRET`, writes `/var/www/careerchangefinder/staging/keystatic.env` as root:ccf 640, restarts staging).
+4. Actions → Deploy → Run workflow on `staging` (the slug is built into the page).
+
+`/api/keystatic` gets the public origin `https://staging.careerchangefinder.com` so the OAuth redirect is right
+behind Nginx (app/api/keystatic/[...params]/route.ts).

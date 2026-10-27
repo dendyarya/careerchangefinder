@@ -73,7 +73,12 @@ const nextConfig: NextConfig = {
   agentRules: false,
   reactStrictMode: true,
   async redirects() {
-    return hubRedirects();
+    // the CMS on staging edits the "staging" branch (Keystatic would otherwise open the default branch, main)
+    const cms =
+      process.env.SITE_ENV === "staging"
+        ? [{ source: "/keystatic", destination: "/keystatic/branch/staging", permanent: false }]
+        : [];
+    return [...cms, ...hubRedirects()];
   },
   async headers() {
     return [

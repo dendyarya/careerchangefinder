@@ -2,6 +2,7 @@
 # One-time VPS setup for careerchangefinder.com (docs/deploy.md). Run as root from the unpacked bundle:
 #   bash setup-vps.sh                 # app user, folders, Node, PM2, scripts, Nginx sites, deploy key
 #   bash setup-vps.sh --harden-ssh    # later, separately: turn off SSH password login
+#   bash setup-vps.sh --keystatic     # optional: CMS on staging (asks for the GitHub App keys)
 # Tested on Ubuntu 24.04; written for Debian 12/13 and Ubuntu 22.04+ (no sudo needed when run as root).
 # Safe to run again. It only creates or changes files that belong to this site:
 #   user "ccf", /var/www/careerchangefinder, /etc/ssl/careerchangefinder (checks only),
@@ -50,6 +51,29 @@ CONF
     rm -f /etc/ssh/sshd_config.d/00-ccf-hardening.conf
     die "sshd config test failed; nothing changed"
   fi
+  exit 0
+fi
+
+# ---------------------------------------------------------------- Keystatic on staging (separate step)
+if [ "${1:-}" = "--keystatic" ]; then
+  say "Keystatic CMS on staging: GitHub App keys"
+  install -o "$APP" -g "$APP" -m 644 "$HERE/server/ecosystem.staging.cjs" "$ROOT/staging/ecosystem.config.cjs"
+  read -r -p "GitHub App Client ID: " cid
+  read -r -s -p "GitHub App Client secret (hidden): " csec; echo
+  [[ "$cid" =~ ^[A-Za-z0-9.]{10,40}$ ]] || die "that does not look like a Client ID"
+  [ ${#csec} -ge 30 ] || die "that does not look like a client secret"
+  f="$ROOT/staging/keystatic.env"
+  umask 077
+  {
+    echo "KEYSTATIC_GITHUB_CLIENT_ID=$cid"
+    echo "KEYSTATIC_GITHUB_CLIENT_SECRET=$csec"
+    echo "KEYSTATIC_SECRET=$(openssl rand -hex 32)"
+  } > "$f"
+  chown root:"$APP" "$f" && chmod 640 "$f"
+  runuser -l "$APP" -c '. ~/.nvm/nvm.sh >/dev/null; pm2 delete ccf-staging >/dev/null 2>&1; pm2 start /var/www/careerchangefinder/staging/ecosystem.config.cjs >/dev/null && pm2 save >/dev/null'
+  sleep 3
+  code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3101/api/keystatic/github/login || true)
+  echo "Keys saved in $f (root:$APP 640) and staging restarted. CMS login route answers: $code (302 = on, 404 = off)."
   exit 0
 fi
 
