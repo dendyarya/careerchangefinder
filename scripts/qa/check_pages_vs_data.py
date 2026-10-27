@@ -213,6 +213,76 @@ for slug_, (key, mj, fj) in AGE_RULES.items():
         if s_ not in text(page):
             errors.append(f"{slug_}: missing {s_}")
 
+# ---------------------------------------------------------------- career change to government (rules recomputed)
+f = APP / "career-change" / "to-government.html"
+if not f.exists():
+    errors.append("to-government not built")
+else:
+    G = json.loads((P / "situations" / "government.json").read_text())["careers"]
+    jr = lambda x: math.floor(x + 0.5)
+    rows_g = []
+    for o in good:
+        g = G.get(o["code"])
+        if not o["wage"] or o["wage"]["is_group"] or o["code"].startswith("11-") or "supervisor" in o["title"].lower():
+            continue
+        if not g or not (g.get("government") or {}).get("employment"):
+            continue
+        gm, pm = g["government"]["median"], (g.get("private") or {}).get("median")
+        diff = None if gm is None or not pm else jr((gm - pm) / pm * 100)
+        rows_g.append((o, g, diff))
+    main_ = sorted([x for x in rows_g if x[1]["government"]["employment"] >= 10000], key=lambda x: (-x[1]["government"]["employment"], x[0]["title"]))
+    more_ = sorted([x for x in rows_g if x[2] is not None and x[2] >= 10 and x[1]["government"]["employment"] >= 5000
+                    and ((x[1].get("private") or {}).get("employment") or 0) >= 5000], key=lambda x: (-x[2], x[0]["title"]))
+    fed_ = sorted([x for x in rows_g if ((x[1].get("federal") or {}).get("employment") or 0) >= 5000],
+                  key=lambda x: (-x[1]["federal"]["employment"], x[0]["title"]))
+    page = f.read_text()
+    flat = [[text(c) for c in re.findall(r"<td[^>]*>(.*?)</td>", r, re.S)] for tb in re.findall(r"<tbody>(.*?)</tbody>", page, re.S)
+            for r in re.findall(r"<tr[^>]*>(.*?)</tr>", tb, re.S)]
+    n1, n2 = len(main_), len(more_)
+    groups = (("main", flat[:n1], main_), ("more", flat[n1:n1 + n2], more_), ("fed", flat[n1 + n2:], fed_))
+    for name, rows_, exp in groups:
+        if len(rows_) != len(exp):
+            errors.append(f"to-government {name}: {len(rows_)} rows != {len(exp)}")
+        for i, (cells, (o, g, diff)) in enumerate(zip(rows_, exp)):
+            gv, pv = g["government"], g.get("private") or {}
+            if name == "main":
+                want = (str(i + 1), o["title"], f"{gv['employment']:,}", "—" if g["gov_share"] is None else f"{jr(g['gov_share'] * 100)}%",
+                        money(gv["median"]), money(pv.get("median")), pct(diff))
+            elif name == "more":
+                want = (str(i + 1), o["title"], money(gv["median"]), money(pv.get("median")), pct(diff), f"{gv['employment']:,}")
+            else:
+                want = (str(i + 1), o["title"], f"{g['federal']['employment']:,}", money(g["federal"]["median"]), money(pv.get("median")))
+            checked += len(want)
+            if tuple(cells) != want:
+                errors.append(f"to-government {name} row {i + 1}: page {tuple(cells)} != data {want}")
+
+# ---------------------------------------------------------------- career change to remote work (rules recomputed)
+f = APP / "career-change" / "to-remote-work.html"
+if not f.exists():
+    errors.append("to-remote-work not built")
+else:
+    R = json.loads((P / "situations" / "remote.json").read_text())
+    us_med = json.loads((P / "situations" / "age.json").read_text())["all_workers"]["us_median_pay"]
+    rr = [o for o in good if o["wage"] and not o["wage"]["is_group"] and o["wage"]["median"] is not None and o["wage"]["median"] >= us_med
+          and (R["careers"].get(o["code"]) or {}).get("remote_friendly") and not (o["code"].startswith("11-") or "supervisor" in o["title"].lower())
+          and not any(o["code"].startswith(p_) for p_ in R["meta"]["licensed_prefixes"])]
+    rr.sort(key=lambda o: (-R["meta"]["telework_groups"][o["code"][:2]]["share_teleworked"], -o["wage"]["median"], o["title"]))
+    nd = [o for o in rr if (o["job_zone"] or 9) <= 3]
+    page = f.read_text()
+    flat = [[text(c) for c in re.findall(r"<td[^>]*>(.*?)</td>", r, re.S)] for tb in re.findall(r"<tbody>(.*?)</tbody>", page, re.S)
+            for r in re.findall(r"<tr[^>]*>(.*?)</tr>", tb, re.S)]
+    for name, rows_, exp in (("main", flat[:len(rr)], rr), ("no-degree", flat[len(rr):], nd)):
+        if len(rows_) != len(exp):
+            errors.append(f"to-remote-work {name}: {len(rows_)} rows != {len(exp)}")
+        for i, (cells, o) in enumerate(zip(rows_, exp)):
+            g = R["meta"]["telework_groups"][o["code"][:2]]
+            want = (str(i + 1), o["title"], money(o["wage"]["median"]),
+                    f"{math.floor(g['share_teleworked'] * 100 + 0.5)}% " + g["title"].removesuffix(" occupations"))
+            have = (cells[0], cells[1], cells[2], cells[4])
+            checked += 4
+            if have != want:
+                errors.append(f"to-remote-work {name} row {i + 1}: page {have} != data {want}")
+
 print(f"{checked:,} values checked on built pages, {len(errors)} mismatches")
 for e in errors[:30]:
     print("  -", e)

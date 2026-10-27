@@ -15,6 +15,10 @@ import {
   UpdatedLine,
 } from "@/components/page/Common";
 import { AgePage } from "@/components/situations/AgePage";
+import { GovPage } from "@/components/situations/GovPage";
+import { buildGovPage } from "@/lib/govPage";
+import { RemotePage } from "@/components/situations/RemotePage";
+import { buildRemotePage } from "@/lib/remotePage";
 import { AGE_SLUGS, buildAgePage, type AgeSlug } from "@/lib/agePages";
 import { buildFromPage } from "@/lib/careerChangePage";
 import { careerChangeSources } from "@/lib/data/server";
@@ -27,7 +31,7 @@ import { SITE } from "@/lib/site";
 export const dynamicParams = false;
 
 // situation pages built so far (to-* pages follow)
-const SITUATIONS: string[] = [...AGE_SLUGS];
+const SITUATIONS: string[] = [...AGE_SLUGS, "to-government", "to-remote-work"];
 const isAge = (s: string): s is AgeSlug => (AGE_SLUGS as readonly string[]).includes(s);
 
 export function generateStaticParams() {
@@ -40,6 +44,14 @@ function parse(slug: string) {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (slug === "to-remote-work") {
+    const r = buildRemotePage();
+    return pageMeta({ title: r.title, description: r.description, path: "/career-change/to-remote-work" });
+  }
+  if (slug === "to-government") {
+    const g = buildGovPage();
+    return pageMeta({ title: g.title, description: g.description, path: "/career-change/to-government" });
+  }
   if (isAge(slug)) {
     const a = buildAgePage(slug);
     return pageMeta({ title: a.title, description: a.description, path: `/career-change/${slug}` });
@@ -52,6 +64,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function CareerChangePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   if (isAge(slug)) return <AgePage slug={slug} />;
+  if (slug === "to-government") return <GovPage />;
+  if (slug === "to-remote-work") return <RemotePage />;
   const m = parse(slug);
   if (!m) notFound();
 

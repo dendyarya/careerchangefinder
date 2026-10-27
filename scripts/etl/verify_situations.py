@@ -13,7 +13,10 @@ import sys
 import openpyxl
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
-from build_situations import AGE_BANDS, CPS_MANUAL, CPS_MIN_TOTAL_K, OWN, bls_soc  # noqa: E402
+from build_situations import (  # noqa: E402
+    AGE_BANDS, CPS_MANUAL, CPS_MIN_TOTAL_K, OWN, REMOTE_CX, REMOTE_GWA, REMOTE_GWA_MIN, REMOTE_OUTDOORS,
+    TELEWORK_GROUPS, bls_soc,
+)
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 RAW = ROOT / "data" / "raw" / "bls"
@@ -115,6 +118,40 @@ for code, v in gov["careers"].items():
     checked += 1
     if v["gov_share"] != exp:
         err(f"{code}: gov share {v['gov_share']} != {exp}")
+
+# ------------------------------------------------------------------ remote (recomputed from raw O*NET with pandas)
+import pandas as pd  # noqa: E402
+
+ONET = ROOT / "data" / "raw" / "onet" / "db_31_0_excel"
+rem = json.loads((P / "situations" / "remote.json").read_text())
+wc = pd.read_excel(ONET / "Work Context.xlsx", engine="openpyxl")
+wa = pd.read_excel(ONET / "Work Activities.xlsx", engine="openpyxl")
+cxv = wc[wc["Scale ID"] == "CX"].set_index(["O*NET-SOC Code", "Element Name"])["Data Value"].to_dict()
+out5 = wc[(wc["Scale ID"] == "CXP") & (wc["Category"].astype(str).isin(["5", "5.0"]))].set_index(["O*NET-SOC Code", "Element Name"])["Data Value"].to_dict()
+imv = wa[wa["Scale ID"] == "IM"].set_index(["O*NET-SOC Code", "Element Name"])["Data Value"].to_dict()
+full = [c for c, o in occ.items() if not o["thin"]]
+for c in full:
+    v = rem["careers"].get(c)
+    has = any((c, e) in cxv for e in REMOTE_CX) or any((c, e) in imv for e in REMOTE_GWA)
+    if not has:
+        if v is not None:
+            err(f"{c}: remote entry without O*NET data")
+        continue
+    if v is None:
+        err(f"{c}: remote entry missing")
+        continue
+    blocked = (any(((cxv.get((c, e)) is not None) and (cxv[(c, e)] < t if op == "<" else cxv[(c, e)] >= t)) for e, (op, t) in REMOTE_CX.items())
+               or any(out5.get((c, e), 0) > 50 for e in REMOTE_OUTDOORS)
+               or any(imv.get((c, e), 0) >= REMOTE_GWA_MIN for e in REMOTE_GWA))
+    checked += 1
+    if v["remote_friendly"] == blocked:
+        err(f"{c}: remote_friendly {v['remote_friendly']} but recomputed blocked={blocked}")
+tw = {str(r[0]).strip(): r for r in openpyxl.load_workbook(RAW / "cps" / "cpsaat62_2025.xlsx", read_only=True).active.iter_rows(values_only=True) if r[0]}
+for soc, t in TELEWORK_GROUPS.items():
+    g, r = rem["meta"]["telework_groups"][soc], tw[t]
+    checked += 3
+    if g["at_work_k"] != r[1] or g["teleworkers_k"] != r[5] or g["pct_hours_teleworked"] != r[4]:
+        err(f"telework group {soc} differs from Table 62")
 
 print(f"{checked:,} situation values checked, {len(errors)} problems")
 for e in errors[:40]:

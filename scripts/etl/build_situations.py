@@ -6,7 +6,12 @@ Sources (kept in data/raw/bls, downloaded by hand because bls.gov blocks automat
   oesm25in4/national_owner_M2025_dl.xlsx  BLS OEWS May 2025, national cross-industry by ownership
                                           (federal, state, local government, private)
 
-Writes data/processed/situations/age.json and government.json, keyed by O*NET-SOC code.
+Writes data/processed/situations/age.json, government.json and remote.json, keyed by O*NET-SOC code.
+
+remote.json is our estimate of which careers can mostly be done from home, from O*NET 31.0 Work Context
+and Work Activities, following the method of Dingel & Neiman (2020), "How many jobs can be done at home?",
+Journal of Public Economics 189. A career is remote-friendly when none of the conditions in REMOTE_BLOCKERS
+applies. It is an estimate of what the work allows, not a count of remote job postings.
 
 CPS occupations have titles but no SOC codes. They are matched to the BLS OEWS SOC titles
 (case and punctuation ignored); titles that differ are listed in CPS_MANUAL below, each with the SOC
@@ -18,6 +23,8 @@ import pathlib
 import re
 
 import openpyxl
+
+import config as C
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 RAW = ROOT / "data" / "raw" / "bls"
@@ -198,18 +205,125 @@ def build_government(occ):
     return {"meta": meta, "careers": out}
 
 
+ONET = ROOT / "data" / "raw" / "onet" / "db_31_0_excel"
+# Dingel & Neiman (2020) conditions; any one means the work cannot mostly be done at home.
+# Work Context CX scale 1-5 (frequency: 3 = once a month, 4 = once a week; time: 4 = more than half the time).
+REMOTE_CX = {
+    "E-Mail": ("<", 3),  # used less than once a month
+    "Dealing with Violent or Physically Aggressive People": (">=", 4),  # at least weekly
+    "Exposed to Disease or Infections": (">=", 4),
+    "Exposed to Minor Burns, Cuts, Bites, or Stings": (">=", 4),
+    "Spend Time Walking or Running": (">=", 4),  # more than half the time
+    "Wear Common Protective or Safety Equipment such as Safety Shoes, Glasses, Gloves, Hearing Protection, Hard Hats, or Life Jackets": (">=", 4),
+    "Wear Specialized Protective or Safety Equipment such as Breathing Apparatus, Safety Harness, Full Protection Suits, or Radiation Protection": (">=", 4),
+}
+# majority of workers outdoors every day (CXP category 5 share above 50%)
+REMOTE_OUTDOORS = ["Outdoors, Exposed to All Weather Conditions", "Outdoors, Under Cover"]
+# Work Activities importance (IM, 1-5) of 4 or more = "very important"
+REMOTE_GWA = [
+    "Performing General Physical Activities",
+    "Handling and Moving Objects",
+    "Controlling Machines and Processes",
+    "Operating Vehicles, Mechanized Devices, or Equipment",
+    "Performing for or Working Directly with the Public",
+    "Repairing and Maintaining Mechanical Equipment",
+    "Repairing and Maintaining Electronic Equipment",
+    "Inspecting Equipment, Structures, or Materials",
+]
+REMOTE_GWA_MIN = 4.0
+
+
+TELEWORK_FILE = RAW / "cps" / "cpsaat62_2025.xlsx"
+# SOC major group -> CPS Table 62 occupation row
+TELEWORK_GROUPS = {
+    "11": "Management occupations", "13": "Business and financial operations occupations",
+    "15": "Computer and mathematical occupations", "17": "Architecture and engineering occupations",
+    "19": "Life, physical, and social science occupations", "21": "Community and social services occupations",
+    "23": "Legal occupations", "25": "Education, training, and library occupations",
+    "27": "Arts, design, entertainment, sports, and media occupations",
+    "29": "Healthcare practitioners and technical occupations", "31": "Healthcare support occupations",
+    "33": "Protective service occupations", "35": "Food preparation and serving related occupations",
+    "37": "Building and grounds cleaning and maintenance occupations", "39": "Personal care and service occupations",
+    "41": "Sales and related occupations", "43": "Office and administrative support occupations",
+    "45": "Farming, fishing, and forestry occupations", "47": "Construction and extraction occupations",
+    "49": "Installation, maintenance, and repair occupations", "51": "Production occupations",
+    "53": "Transportation and material moving occupations",
+}
+
+
+def build_telework():
+    data = rows(TELEWORK_FILE)
+    assert "62. Average weekly hours of work and percent of hours teleworked" in str(data[0][0]), "unexpected file"
+    assert "2025 Annual Averages" in str(data[0][0]), "not the 2025 annual averages"
+    by_title = {str(r[0]).strip(): r for r in data if r[0]}
+    def rec(r):
+        return {"title": str(r[0]).strip(), "at_work_k": num(r[1]), "teleworkers_k": num(r[5]),
+                "share_teleworked": round(num(r[5]) / num(r[1]), 3), "pct_hours_teleworked": num(r[4])}
+    total = rec(by_title["Total, 16 years and over"])
+    groups = {soc: rec(by_title[t]) for soc, t in TELEWORK_GROUPS.items()}
+    return total, groups
+
+
+def build_remote(occ):
+    codes = {o["code"] for o in occ}
+    cx, cxp, im = {}, {}, {}
+    wc = rows(ONET / "Work Context.xlsx")
+    h = wc[0]
+    ic, ie, isc, icat, iv = (h.index(k) for k in ("O*NET-SOC Code", "Element Name", "Scale ID", "Category", "Data Value"))
+    for r in wc[1:]:
+        if r[ic] not in codes:
+            continue
+        if r[isc] == "CX" and r[ie] in REMOTE_CX:
+            cx[(r[ic], r[ie])] = float(r[iv])
+        elif r[isc] == "CXP" and r[ie] in REMOTE_OUTDOORS and str(r[icat]) in ("5", "5.0"):
+            cxp[(r[ic], r[ie])] = float(r[iv])
+    wa = rows(ONET / "Work Activities.xlsx")
+    h = wa[0]
+    ic, ie, isc, iv = (h.index(k) for k in ("O*NET-SOC Code", "Element Name", "Scale ID", "Data Value"))
+    for r in wa[1:]:
+        if r[ic] in codes and r[isc] == "IM" and r[ie] in REMOTE_GWA:
+            im[(r[ic], r[ie])] = float(r[iv])
+    out = {}
+    for c in sorted(codes):
+        if not any((c, e) in cx for e in REMOTE_CX) and not any((c, e) in im for e in REMOTE_GWA):
+            continue  # no O*NET context data for this career
+        blockers = []
+        for e, (op, t) in REMOTE_CX.items():
+            v = cx.get((c, e))
+            if v is not None and (v < t if op == "<" else v >= t):
+                blockers.append(e)
+        for e in REMOTE_OUTDOORS:
+            if cxp.get((c, e), 0) > 50:
+                blockers.append(e + " (every day, most workers)")
+        for e in REMOTE_GWA:
+            if im.get((c, e), 0) >= REMOTE_GWA_MIN:
+                blockers.append(e)
+        out[c] = {"remote_friendly": not blockers, "blockers": blockers}
+    total, groups = build_telework()
+    meta = {"telework_source": "BLS Current Population Survey, 2025 annual averages (11 months), Table 62",
+            "telework_total": total, "telework_groups": groups,
+            "method": "Dingel & Neiman (2020), applied to O*NET 31.0",
+            # long licensed professions (same list as the career-change matches) are not career-change targets
+            "licensed_prefixes": list(C.HEAVY_LICENSE_PREFIXES), "cx": {k: list(v) for k, v in REMOTE_CX.items()},
+            "outdoors_every_day_share_above": 50, "gwa_importance_min": REMOTE_GWA_MIN, "gwa": REMOTE_GWA}
+    return {"meta": meta, "careers": out}
+
+
 def main():
     occ = [o for o in json.loads((P / "occupations.json").read_text()) if not o["thin"]]
     OUT.mkdir(parents=True, exist_ok=True)
     age = build_age(occ)
     gov = build_government(occ)
-    for name, obj in (("age", age), ("government", gov)):
+    remote = build_remote(occ)
+    for name, obj in (("age", age), ("government", gov), ("remote", remote)):
         (OUT / f"{name}.json").write_text(json.dumps(obj, ensure_ascii=False, separators=(",", ":"), allow_nan=False))
     a = age["careers"]
     print(f"age: {len(a)} careers matched, {sum(1 for v in a.values() if v['enough_data'])} with enough data, "
           f"{sum(1 for v in a.values() if v['group'])} via a broader group; CPS rows used {age['meta']['cps_rows_used']}, "
           f"skipped {len(age['meta']['cps_rows_skipped'])}")
     print(f"government: {len(gov['careers'])} careers with government employment")
+    r = remote["careers"]
+    print(f"remote: {sum(1 for v in r.values() if v['remote_friendly'])} of {len(r)} careers remote-friendly")
 
 
 if __name__ == "__main__":
