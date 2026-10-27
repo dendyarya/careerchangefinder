@@ -28,6 +28,10 @@ This site shows ads and may contain affiliate links. If you buy something throug
 
 The site is provided "as is", without any warranty. To the extent the law allows, Career Change Finder is not liable for any loss that results from using the site or relying on its information.
 
+## Terms of use
+
+Using the site is subject to our [Terms of Use](/terms).
+
 ## Questions
 
 Email [contact@careerchangefinder.com](mailto:contact@careerchangefinder.com).

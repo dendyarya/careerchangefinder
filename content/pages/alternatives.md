@@ -2,7 +2,7 @@ There are several good free career tests and career sites. This page compares Ca
 
 ## Quick comparison
 
-| | Career Change Finder | My Next Move | CareerExplorer | Truity | 123test |
+| Compared | Career Change Finder | My Next Move | CareerExplorer | Truity | 123test |
 |---|---|---|---|---|---|
 | Run by | Independent website | National Center for O\*NET Development, sponsored by the U.S. Department of Labor | Private company | Private company | Private company |
 | Cost | Free, no sign-up | Free | Free test, optional paid membership | Free summary, paid full report | Free career test, other paid products |

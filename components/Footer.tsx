@@ -36,7 +36,7 @@ export function Footer({ columns }: { columns: NavGroup[] }) {
           <a
             href="https://creativecommons.org/licenses/by/4.0/"
             rel="noopener"
-            className="text-footer-link hover:text-white"
+            className="text-footer-link underline hover:text-white"
           >
             License
           </a>

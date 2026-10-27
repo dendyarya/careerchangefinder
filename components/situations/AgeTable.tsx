@@ -12,11 +12,17 @@ function Rows({ rows, start }: { rows: AgeRow[]; start: number }) {
         <tr key={r.slug} className="border-t border-mist align-top">
           <td className="px-4 py-3 font-display font-bold text-muted">{start + i + 1}</td>
           <td className="px-4 py-3">
-            <Link href={`/careers/${r.slug}`} className="font-bold text-ink decoration-accent decoration-2 underline-offset-4 hover:text-primary">
+            <Link
+              href={`/careers/${r.slug}`}
+              className="font-bold text-ink decoration-accent decoration-2 underline-offset-4 hover:text-primary"
+            >
               {r.title}
             </Link>
             {r.note && (
-              <a href={`#note-${r.slug}`} className="ml-2 rounded-sm bg-[#FFF4D6] px-2 py-0.5 text-small font-bold text-ink no-underline">
+              <a
+                href={`#note-${r.slug}`}
+                className="mt-1 ml-2 inline-block rounded-sm bg-[#FFF4D6] px-2 py-0.5 text-small font-bold text-ink no-underline"
+              >
                 Read before you start
               </a>
             )}
@@ -40,12 +46,24 @@ function Head({ caption, shareLabel }: { caption: string; shareLabel: string }) 
       <caption className="sr-only">{caption}</caption>
       <thead>
         <tr className="border-b-[1.5px] border-mist bg-panel text-left">
-          <th scope="col" className="w-[48px] px-4 py-3.5 text-small font-extrabold">#</th>
-          <th scope="col" className="px-4 py-3.5 text-small font-extrabold">Career</th>
-          <th scope="col" className="px-4 py-3.5 text-small font-extrabold">Median pay</th>
-          <th scope="col" className="px-4 py-3.5 text-small font-extrabold">Usual preparation</th>
-          <th scope="col" className="px-4 py-3.5 text-small font-extrabold">{shareLabel}</th>
-          <th scope="col" className="px-4 py-3.5 text-small font-extrabold">Median age</th>
+          <th scope="col" className="w-[48px] px-4 py-3.5 text-small font-extrabold">
+            #
+          </th>
+          <th scope="col" className="px-4 py-3.5 text-small font-extrabold">
+            Career
+          </th>
+          <th scope="col" className="px-4 py-3.5 text-small font-extrabold">
+            Median pay
+          </th>
+          <th scope="col" className="px-4 py-3.5 text-small font-extrabold">
+            Usual preparation
+          </th>
+          <th scope="col" className="px-4 py-3.5 text-small font-extrabold">
+            {shareLabel}
+          </th>
+          <th scope="col" className="px-4 py-3.5 text-small font-extrabold">
+            Median age
+          </th>
         </tr>
       </thead>
     </>
@@ -93,7 +111,15 @@ export function AgeTable({
   );
 }
 
-export function AgeBars({ bands, total, highlight }: { bands: Record<string, number>; total: number; highlight: string[] }) {
+export function AgeBars({
+  bands,
+  total,
+  highlight,
+}: {
+  bands: Record<string, number>;
+  total: number;
+  highlight: string[];
+}) {
   const max = Math.max(...Object.values(bands));
   return (
     <dl className="m-0 flex flex-col gap-2.5">
@@ -101,7 +127,10 @@ export function AgeBars({ bands, total, highlight }: { bands: Record<string, num
         <div key={b} className="grid grid-cols-[64px_1fr_56px] items-center gap-3">
           <dt className="tabular">{b}</dt>
           <span className="h-3.5 overflow-hidden rounded-md bg-mist" aria-hidden="true">
-            <span className={`block h-full rounded-md ${highlight.includes(b) ? "bg-primary" : "bg-sky"}`} style={{ width: `${(v / max) * 100}%` }} />
+            <span
+              className={`block h-full rounded-md ${highlight.includes(b) ? "bg-primary" : "bg-sky"}`}
+              style={{ width: `${(v / max) * 100}%` }}
+            />
           </span>
           <dd className="m-0 text-right font-display font-semibold tabular">{Math.round((v / total) * 100)}%</dd>
         </div>

@@ -168,20 +168,26 @@ export function SearchPanel({
                 className="m-0 flex list-none flex-col gap-1 p-0"
               >
                 {items.map((it, i) => (
-                  <li key={it.href} id={`${listId}-${i}`} role="option" aria-selected={i === active}>
-                    <Link
-                      href={it.href}
-                      onClick={onClose}
-                      onMouseEnter={() => setActive(i)}
-                      className={`flex items-center justify-between gap-4 rounded-md px-3.5 py-3 text-ink no-underline ${i === active || it.strong ? "bg-ice" : ""}`}
+                  // options hold no link of their own (an option may not contain interactive content);
+                  // the combobox handles arrows and Enter, a click opens the page
+                  <li
+                    key={it.href}
+                    id={`${listId}-${i}`}
+                    role="option"
+                    aria-selected={i === active}
+                    onClick={() => {
+                      onClose();
+                      router.push(it.href);
+                    }}
+                    onMouseEnter={() => setActive(i)}
+                    className={`flex cursor-pointer items-center justify-between gap-4 rounded-md px-3.5 py-3 text-ink ${i === active || it.strong ? "bg-ice" : ""}`}
+                  >
+                    <span className={it.strong ? "font-extrabold" : "font-bold"}>{it.label}</span>
+                    <span
+                      className={`shrink-0 text-right text-[16px] ${it.strong ? "font-extrabold text-primary" : "text-muted"}`}
                     >
-                      <span className={it.strong ? "font-extrabold" : "font-bold"}>{it.label}</span>
-                      <span
-                        className={`shrink-0 text-right text-[16px] ${it.strong ? "font-extrabold text-primary" : "text-muted"}`}
-                      >
-                        {it.meta}
-                      </span>
-                    </Link>
+                      {it.meta}
+                    </span>
                   </li>
                 ))}
               </ul>

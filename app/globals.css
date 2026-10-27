@@ -11,7 +11,7 @@
   --color-mist: #e1ecf4;
   --color-sky: #cfe6ff;
   --color-field-border: #8fa4bc;
-  --color-gain: #12805c;
+  --color-gain: #117a58; /* 4.8:1 on the ice panel (WCAG AA) */
   --color-loss: #c4242b;
   --color-panel: #eef5fc;
   --color-footer-text: #d6e2ef;
@@ -70,6 +70,13 @@
   }
   a {
     color: var(--color-primary);
+  }
+  /* plain text links (no utility classes: links inside sentences, Markdown links) are underlined, so they
+     are not told apart by color alone (WCAG 1.4.1). Styled links (menus, cards, buttons) carry classes. */
+  a:not([class]) {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
   }
   a:hover {
     color: var(--color-ink);

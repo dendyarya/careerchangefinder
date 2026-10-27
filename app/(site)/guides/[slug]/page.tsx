@@ -34,6 +34,8 @@ const CATEGORY = { "career-change": "Career change guide", "choosing-a-major": "
 const text = (c: React.ReactNode): string => (typeof c === "string" ? c : Array.isArray(c) ? c.map(text).join("") : "");
 
 const components = {
+  // wide tables scroll sideways on phones; tabIndex lets keyboard users scroll them (WCAG 2.1.1)
+  table: ({ children }: { children?: React.ReactNode }) => <table tabIndex={0}>{children}</table>,
   h2: ({ children }: { children?: React.ReactNode }) => <h2 id={headingId(text(children))}>{children}</h2>,
   a: ({ href = "", children }: { href?: string; children?: React.ReactNode }) =>
     href.startsWith("/") ? (

@@ -40,8 +40,10 @@ Ad unit IDs per size go in `config/ads.json` (empty = no fixed units; Auto ads c
    (3 choices: Consent, Do not consent, Manage options), set the privacy policy URL to
    `https://careerchangefinder.com/privacy`, publish it. In the message settings, tick
    *Enable consent mode for advertising purposes* and *Enable consent mode for analytics purposes*.
-5. **Optional, Privacy & messaging > US state regulations:** a "Do not sell or share my personal information"
-   message for visitors in the U.S. states that require it.
+5. **Recommended, Privacy & messaging > US state regulations:** create the message for careerchangefinder.com
+   and publish it. Google then shows a "Do not sell or share my personal information" option to visitors in
+   the U.S. states whose privacy laws require it (California and others), and stops personalized ads for those
+   who opt out. The Privacy Policy already explains this opt-out ("Your rights").
 6. Check in a private window with a VPN in an EEA country: the message appears, the footer link re-opens it.
 
 Sources: AdSense help 10961068 (European regulations messages), 16053245 (consent mode settings),

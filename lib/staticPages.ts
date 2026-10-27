@@ -67,6 +67,14 @@ export const STATIC_PAGES = {
     file: "pages/privacy.md",
     type: "WebPage",
   },
+  terms: {
+    title: "Terms of Use",
+    h1: ["Terms of ", "use"],
+    description:
+      "The rules for using Career Change Finder: what the site offers, how you may use its content, data licenses, ads, affiliate links and our liability limits.",
+    file: "pages/terms.md",
+    type: "WebPage",
+  },
   disclaimer: {
     title: "Disclaimer",
     h1: ["", "Disclaimer"],

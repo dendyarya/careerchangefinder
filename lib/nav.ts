@@ -282,6 +282,7 @@ export const FOOTER_COLUMNS: NavGroup[] = [
       { label: "Methodology", href: "/methodology" },
       { label: "Data Sources & Licenses", href: "/data-sources" },
       { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Use", href: "/terms" },
       { label: "Disclaimer", href: "/disclaimer" },
       { label: "Contact", href: "/contact" },
       { label: "Alternatives", href: "/alternatives" },

@@ -18,7 +18,7 @@ Source of truth for Tahap 4 (Next.js + Tailwind). Mockups: Design canvas "Career
 | `mist` | `#E1ECF4` | Borders, dividers, bar tracks, chips | — |
 | `sky` | `#CFE6FF` | Highlighter under headline words, light badges, focus ring | Ink on it 11:1 |
 | `field-border` | `#8FA4BC` | Input and select borders (non-text 3:1 rule) | 3.0:1 on white |
-| `gain` | `#12805C` | Positive pay change | 4.9:1 on white |
+| `gain` | `#117A58` | Positive pay change | 5.3:1 on white, 4.8:1 on the ice panel |
 | `loss` | `#C4242B` | Negative pay change, errors | 5.8:1 on white |
 | `white` | `#FFFFFF` | Page background, cards | — |
 
@@ -143,7 +143,7 @@ Every page with numbers ends with a source line in `small`/`muted`. Match scores
 colors: {
   primary: '#1D62AF', accent: '#1D91F1', ink: '#0E2A4D', slate: '#394662',
   muted: '#55627A', ice: '#F5FAFD', mist: '#E1ECF4', sky: '#CFE6FF',
-  field: '#8FA4BC', gain: '#12805C', loss: '#C4242B'
+  field: '#8FA4BC', gain: '#117A58', loss: '#C4242B'
 },
 fontFamily: {
   display: ['var(--font-space-grotesk)', 'Helvetica', 'sans-serif'],
