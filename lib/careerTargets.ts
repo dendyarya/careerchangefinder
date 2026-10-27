@@ -77,7 +77,7 @@ export const TARGETS: Record<string, TargetConfig> = {
   "to-teaching": {
     h1: "teaching",
     title: "Career Change to Teaching: Licenses, Pay and Paths",
-    codes: ["25-2011.00", "25-2012.00", "25-2021.00", "25-2022.00", "25-2031.00", "25-2023.00", "25-2032.00", "25-2051.00", "25-2055.00", "25-2056.00", "25-2057.00", "25-2058.00"],
+    codes: ["25-2021.00", "25-2011.00", "25-2012.00", "25-2022.00", "25-2031.00", "25-2023.00", "25-2032.00", "25-2051.00", "25-2055.00", "25-2056.00", "25-2057.00", "25-2058.00"],
     why: "Preschool to high school teachers, including special education and career and technical education.",
     notes: [
       {
