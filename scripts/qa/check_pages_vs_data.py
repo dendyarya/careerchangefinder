@@ -283,6 +283,63 @@ else:
             if have != want:
                 errors.append(f"to-remote-work {name} row {i + 1}: page {have} != data {want}")
 
+# ---------------------------------------------------------------- career change to tech/healthcare/nursing/trades (rules recomputed)
+NURSING_SOC = {"31-1131", "29-2061", "29-1141", "29-1171", "29-1151", "29-1161", "25-1072"}
+FIELD_RULES = {
+    "to-tech": lambda c: c.startswith("15-12") or c.startswith("15-2051"),
+    "to-healthcare": lambda c: c.startswith("29-") or c.startswith("31-"),
+    "to-nursing": lambda c: c[:7] in NURSING_SOC,
+    "to-skilled-trades": lambda c: (c.startswith("47-2") or c.startswith("47-4") or c.startswith("49-")),
+}
+A45 = json.loads((P / "situations" / "age.json").read_text())["careers"]
+for slug_, rule in FIELD_RULES.items():
+    f = APP / "career-change" / f"{slug_}.html"
+    if not f.exists():
+        errors.append(f"{slug_} not built")
+        continue
+    mem = [o for o in good if rule(o["code"])]
+    in_field = {o["slug"] for o in mem}
+    jobs = lambda o: o["wage"]["employment"] if o["wage"] and not o["wage"]["is_group"] else None
+    all_ = sorted(mem, key=lambda o: (-(jobs(o) or 0), o["title"]))
+    entry = sorted([o for o in mem if (o["job_zone"] or 9) <= 3 and not (o["code"].startswith("11-") or "supervisor" in o["title"].lower())],
+                   key=lambda o: (-(0 if (o["wage"] or {}).get("is_group") else ((o["wage"] or {}).get("median") or 0)), o["title"]))
+    page = f.read_text()
+    tbodies = re.findall(r"<tbody>(.*?)</tbody>", page, re.S)
+    flat = [[text(c) for c in re.findall(r"<td[^>]*>(.*?)</td>", r, re.S)] for tb in tbodies for r in re.findall(r"<tr[^>]*>(.*?)</tr>", tb, re.S)]
+    # order on page: entry (1-2 tables), starting points (1 table), all (1-2 tables)
+    n_e = len(entry)
+    e_rows, rest = flat[:n_e], flat[n_e:]
+    starts = []
+    for o in good:
+        if o["slug"] in in_field or rule(o["code"]):
+            continue
+        tf = P / "transitions" / f"{o['slug']}.json"
+        if not tf.exists():
+            continue
+        best = next((x for x in json.loads(tf.read_text())["top"] if x["slug"] in in_field), None)
+        if best:
+            starts.append((o, best))
+    s_rows, a_rows = rest[:min(20, len(starts))], rest[min(20, len(starts)):]
+    for name, rows_, exp in (("entry", e_rows, entry), ("all", a_rows, all_)):
+        if len(rows_) != len(exp):
+            errors.append(f"{slug_} {name}: {len(rows_)} rows != {len(exp)}")
+        for i, (cells, o) in enumerate(zip(rows_, exp)):
+            w = o["wage"] or {}
+            a = A45.get(o["code"]) or {}
+            want = (str(i + 1), o["title"], money(w.get("median")) + (" Broader BLS group" if w.get("is_group") else ""),
+                    "—" if jobs(o) is None else f"{jobs(o):,}",
+                    "—" if a.get("share_45_plus") is None else f"{math.floor(a['share_45_plus'] * 100 + 0.5)}%")
+            have = (cells[0], cells[1], cells[2], cells[4], cells[5])
+            checked += 5
+            if have != want:
+                errors.append(f"{slug_} {name} row {i + 1}: page {have} != data {want}")
+    for cells in s_rows:
+        o = next((x for x in good if x["title"] == cells[0]), None)
+        best = next((b for (s, b) in starts if s is o), None) if o else None
+        checked += 2
+        if not best or cells[1] != best["title"] or cells[2] != f"{best['match']}%":
+            errors.append(f"{slug_} start row {cells[0]}: {cells[1:3]} not the best in-field match")
+
 print(f"{checked:,} values checked on built pages, {len(errors)} mismatches")
 for e in errors[:30]:
     print("  -", e)

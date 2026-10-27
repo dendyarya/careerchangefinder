@@ -18,6 +18,8 @@ import { AgePage } from "@/components/situations/AgePage";
 import { GovPage } from "@/components/situations/GovPage";
 import { buildGovPage } from "@/lib/govPage";
 import { RemotePage } from "@/components/situations/RemotePage";
+import { FieldPage } from "@/components/situations/FieldPage";
+import { FIELD_SLUGS, buildFieldPage, type FieldSlug } from "@/lib/fieldPages";
 import { buildRemotePage } from "@/lib/remotePage";
 import { AGE_SLUGS, buildAgePage, type AgeSlug } from "@/lib/agePages";
 import { buildFromPage } from "@/lib/careerChangePage";
@@ -31,7 +33,8 @@ import { SITE } from "@/lib/site";
 export const dynamicParams = false;
 
 // situation pages built so far (to-* pages follow)
-const SITUATIONS: string[] = [...AGE_SLUGS, "to-government", "to-remote-work"];
+const SITUATIONS: string[] = [...AGE_SLUGS, ...FIELD_SLUGS, "to-government", "to-remote-work"];
+const isField = (s: string): s is FieldSlug => (FIELD_SLUGS as readonly string[]).includes(s);
 const isAge = (s: string): s is AgeSlug => (AGE_SLUGS as readonly string[]).includes(s);
 
 export function generateStaticParams() {
@@ -44,6 +47,10 @@ function parse(slug: string) {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (isField(slug)) {
+    const f = buildFieldPage(slug);
+    return pageMeta({ title: f.title, description: f.description, path: `/career-change/${slug}` });
+  }
   if (slug === "to-remote-work") {
     const r = buildRemotePage();
     return pageMeta({ title: r.title, description: r.description, path: "/career-change/to-remote-work" });
@@ -66,6 +73,7 @@ export default async function CareerChangePage({ params }: { params: Promise<{ s
   if (isAge(slug)) return <AgePage slug={slug} />;
   if (slug === "to-government") return <GovPage />;
   if (slug === "to-remote-work") return <RemotePage />;
+  if (isField(slug)) return <FieldPage slug={slug} />;
   const m = parse(slug);
   if (!m) notFound();
 
