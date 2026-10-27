@@ -26,8 +26,8 @@ const NURSING = new Set(["31-1131", "29-2061", "29-1141", "29-1171", "29-1151", 
 export const FIELDS: Record<FieldSlug, FieldConfig> = {
   "to-tech": {
     name: "tech",
-    h1: "tech",
-    title: "Career Change to Tech: Paths, Pay and Training",
+    h1: "tech and IT",
+    title: "Career Change to Tech or IT: Paths, Pay and Training",
     rule: "Computer occupations (SOC 15-1200) and data scientists (SOC 15-2051)",
     match: (c) => c.startsWith("15-12") || c.startsWith("15-2051"),
   },
@@ -41,7 +41,7 @@ export const FIELDS: Record<FieldSlug, FieldConfig> = {
   "to-nursing": {
     name: "nursing",
     h1: "nursing",
-    title: "Career Change to Nursing: Every Path, Pay and Training",
+    title: "Career Change to Nursing: Become a Nurse at Any Age",
     rule: "Nursing assistants, LPNs and LVNs, registered nurses and their specialties, nurse practitioners, nurse anesthetists, nurse midwives and nursing instructors",
     match: (c) => NURSING.has(c.slice(0, 7)),
   },
@@ -162,5 +162,21 @@ export function buildFieldPage(slug: FieldSlug) {
       a: `${f.rule}. Data: BLS OEWS May 2025 pay and jobs, O*NET 31.0 preparation, BLS CPS 2025 worker ages.`,
     },
   ];
-  return { slug, ...f, all, entry, startTop, nursingSteps, jobsTotal, intro, faq, description: `${all.length} ${f.name} careers with pay, jobs and training time, the fastest ways in, and the jobs whose skills carry over best. BLS 2025 data.` };
+  // nursing at 40 (Ahrefs keyword): ages of nursing workers, BLS CPS 2025
+  const nursingAge =
+    slug === "to-nursing"
+      ? members
+          .filter((o) => o.code.endsWith(".00") && ageData().careers[o.code]?.share_45_plus != null)
+          .map((o) => ({ ...row(o), medianAge: ageData().careers[o.code]!.median_age }))
+          .sort((a, b) => (b.share45 ?? 0) - (a.share45 ?? 0))
+      : [];
+  if (slug === "to-nursing") {
+    const rn = nursingAge.find((r) => r.slug === "registered-nurses");
+    if (rn)
+      faq.splice(1, 0, {
+        q: "Can I change careers to nursing at 40?",
+        a: `Yes. ${Math.round(rn.share45! * 100)}% of registered nurses are 45 or older and their median age is ${rn.medianAge} (BLS Current Population Survey, 2025). A practical nursing (LPN) program typically takes about 1 year; registered nurses need a bachelor's degree, an associate's degree or a diploma from an approved program, plus a state license (BLS Occupational Outlook Handbook).`,
+      });
+  }
+  return { slug, ...f, all, entry, startTop, nursingSteps, nursingAge, jobsTotal, intro, faq, description: `${all.length} ${f.name} careers with pay, jobs and training time, the fastest ways in, and the jobs whose skills carry over best. BLS 2025 data.` };
 }

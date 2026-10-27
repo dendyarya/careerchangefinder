@@ -128,6 +128,29 @@ export function FieldPage({ slug }: { slug: FieldSlug }) {
         </section>
       )}
 
+      {m.nursingAge.length > 0 && (
+        <section aria-labelledby="h-age40" className="flex flex-col gap-4 rounded-xl bg-panel p-6 md:p-8">
+          <H2 id="h-age40">Changing careers to nursing at 40</H2>
+          <p className="m-0 max-w-[860px]">{m.faq[1]!.a}</p>
+          <ul className="m-0 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
+            {m.nursingAge.map((r) => (
+              <li key={r.slug} className="rounded-lg border-[1.5px] border-mist bg-white p-4">
+                <Link href={`/careers/${r.slug}`} className="font-bold text-ink">
+                  {r.title}
+                </Link>
+                <p className="m-0 mt-1 text-[16px] text-muted">
+                  {pct(r.share45)} of workers are 45+{r.medianAge != null ? ` · median age ${r.medianAge.toFixed(1)}` : ""}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <p className="m-0 text-small text-muted">
+            BLS Current Population Survey, 2025 annual averages (Table 11b). See also{" "}
+            <Link href="/career-change/at-40">career change at 40</Link>.
+          </p>
+        </section>
+      )}
+
       <section aria-labelledby="h-entry" className="flex flex-col gap-4">
         <H2 id="h-entry">Ways into {m.name} with two years of preparation or less</H2>
         <p className="m-0 max-w-[860px] text-slate">

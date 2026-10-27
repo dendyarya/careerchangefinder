@@ -340,6 +340,15 @@ for slug_, rule in FIELD_RULES.items():
         if not best or cells[1] != best["title"] or cells[2] != f"{best['match']}%":
             errors.append(f"{slug_} start row {cells[0]}: {cells[1:3]} not the best in-field match")
 
+# nursing at 40: registered nurses' age figures
+f = APP / "career-change" / "to-nursing.html"
+if f.exists():
+    rn = A45.get("29-1141.00") or {}
+    want = f"{math.floor(rn['share_45_plus'] * 100 + 0.5)}% of registered nurses are 45 or older and their median age is {rn['median_age']}"
+    checked += 2
+    if want not in text(f.read_text()):
+        errors.append(f"to-nursing: missing '{want}'")
+
 print(f"{checked:,} values checked on built pages, {len(errors)} mismatches")
 for e in errors[:30]:
     print("  -", e)
