@@ -14,6 +14,8 @@ import {
   type SimilarItem,
 } from "@/lib/data/server";
 import { clip, inSentence, listJoin, money, signedPct } from "@/lib/format";
+import { fitTitle, seoName } from "@/lib/seoName";
+import { isPublished } from "@/lib/published";
 
 export const SIMILAR_N = 20;
 const JZ_TEXT: Record<number, string> = {
@@ -55,7 +57,7 @@ export interface SimilarModel {
 
 export function similarSlugs(): string[] {
   return occupations()
-    .filter((o) => !o.thin && transitionsFor(o.slug))
+    .filter((o) => !o.thin && transitionsFor(o.slug) && isPublished("jobs-similar-to", o.slug))
     .map((o) => o.slug);
 }
 
@@ -94,10 +96,11 @@ export function buildSimilar(slug: string): SimilarModel | null {
   const group = Boolean(o.wage?.is_group);
   const top3 = rows.slice(0, 3).map((r) => displayName(r.title));
 
-  const title =
-    [`Jobs Similar to ${name}: ${rows.length} Careers Like It`, `Jobs Similar to ${name}`, `Jobs Like ${name}`].find(
-      (t) => t.length <= 60,
-    ) ?? `Jobs Like ${name}`; // long names: over 60 characters, but never the same as the career profile title
+  const sn = seoName(name);
+  const title = fitTitle(
+    [`Jobs Similar to ${name}: ${rows.length} Careers Like It`, `Jobs Similar to ${name}`, `Jobs Like ${name}`, `Jobs Like ${sn}`],
+    `Jobs Like ${sn}`, // long names: over 60 characters, but never the same as the career profile title
+  );
   const description = clip(
     `The ${rows.length} careers most like ${nameLower} by skills, knowledge and daily work, with pay and education compared. O*NET 31.0 and BLS May 2025 data.`,
     160,

@@ -13,7 +13,9 @@ import {
   type Occupation,
 } from "@/lib/data/server";
 import { clip, inSentence, money } from "@/lib/format";
+import { fitTitle, seoName } from "@/lib/seoName";
 import { socGroupOf } from "@/lib/soc";
+import { isPublished } from "@/lib/published";
 
 const P = path.join(process.cwd(), "data");
 
@@ -134,7 +136,9 @@ export interface ProfileModel {
 }
 
 export function profileSlugs(): string[] {
-  return occupations().map((o) => o.slug);
+  return occupations()
+    .map((o) => o.slug)
+    .filter((s) => isPublished("careers", s));
 }
 
 export function buildProfile(slug: string): ProfileModel | null {
@@ -149,10 +153,12 @@ export function buildProfile(slug: string): ProfileModel | null {
   const pay = w?.median
     ? `median pay ${money(w.median)}${w.is_group ? " (broader BLS group)" : ""}`
     : "pay data not published by BLS";
-  const title =
-    [`${name}: Salary, Skills and How to Start`, `${name}: Salary and Skills`, `${name} Career Profile`, name].find(
-      (t) => t.length <= 60,
-    ) ?? name;
+  const sn = seoName(name);
+  const title = fitTitle(
+    [`${name}: Salary, Skills and How to Start`, `${name}: Salary and Skills`, `${name} Career Profile`, name,
+     `${sn}: Salary and Skills`, `${sn} Career Profile`, sn],
+    sn,
+  );
   const description = clip(
     `What ${inSentence(name)} do, ${pay}, education, skills and the hard parts of the job, from O*NET 31.0 and BLS May 2025 data.`,
     160,
@@ -177,4 +183,10 @@ export function buildProfile(slug: string): ProfileModel | null {
     title,
     description,
   };
+}
+
+/** Profiles that are indexed and go in the sitemap: published and not thin. */
+export function careerProfileIndexable(slug: string): boolean {
+  const o = occBySlug(slug);
+  return Boolean(o && !o.thin && isPublished("careers", slug));
 }

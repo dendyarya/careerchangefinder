@@ -8,6 +8,8 @@ import type { Faq } from "@/components/page/Common";
 import { statePay, type StatePay } from "@/lib/careerProfile";
 import { displayName, occBySlug, occupations, transitionsFor, type Occupation } from "@/lib/data/server";
 import { clip, inSentence, money, signedPct } from "@/lib/format";
+import { fitTitle, seoName } from "@/lib/seoName";
+import { isPublished } from "@/lib/published";
 
 export const stateSlug = (name: string) => name.toLowerCase().replace(/[^a-z]+/g, "-");
 /** State pages with fewer workers than this are noindex (estimates for very small groups are less reliable). */
@@ -37,7 +39,7 @@ function base(slug: string) {
 
 export function salarySlugs(): string[] {
   return occupations()
-    .filter((o) => !o.thin && o.wage && statePay(o.slug).length)
+    .filter((o) => !o.thin && o.wage && statePay(o.slug).length && isPublished("salary", o.slug))
     .map((o) => o.slug);
 }
 
@@ -50,10 +52,11 @@ export function buildSalary(slug: string) {
   const { o, name, nameLower, rows, nat, group } = b;
   const hi = rows[0]!;
   const lo = rows[rows.length - 1]!;
-  const title =
-    [`${name} Salary by State (2025 BLS Data)`, `${name} Salary by State`, `${name} Pay by State`].find(
-      (t) => t.length <= 60,
-    ) ?? `${name} Pay by State`;
+  const sn = seoName(name);
+  const title = fitTitle(
+    [`${name} Salary by State (2025 BLS Data)`, `${name} Salary by State`, `${name} Pay by State`, `${sn} Salary by State`, `${sn} Pay by State`],
+    `Salary by State: ${sn}`,
+  );
   const groupNote = group ? ` These figures are for the broader BLS group “${o.wage!.bls_title}”.` : "";
   const description = clip(
     `${name} earn a national median of ${money(nat)}. See median pay in all ${statesLabel(rows)} with data, from ${money(lo.median)} in ${lo.state} to ${money(hi.median)} in ${hi.state}. BLS May 2025.`,
@@ -77,10 +80,12 @@ export function buildStateSalary(slug: string, state: string) {
   if (!b) return null;
   const { o, name, nameLower, rows, nat, group } = b;
   const s = rows.find((r) => r.slug === state);
-  if (!s) return null;
-  const title =
-    [`${name} Salary in ${s.state} (2025)`, `${name} Salary in ${s.state}`, `${name} Pay in ${s.state}`].find((t) => t.length <= 60) ??
-    `${name} Pay in ${s.state}`;
+  if (!s || !isPublished("salary-states", `${slug}/${state}`)) return null;
+  const sn = seoName(name);
+  const title = fitTitle(
+    [`${name} Salary in ${s.state} (2025)`, `${name} Salary in ${s.state}`, `${name} Pay in ${s.state}`, `${sn} Salary in ${s.state}`, `${sn} Pay in ${s.state}`],
+    `${s.state} Salary: ${sn}`,
+  );
   const description = clip(
     `${name} in ${s.state} earn a median of ${money(s.median)} a year, ${signedPct(s.vsNational)} vs. the U.S. median, ranking ${s.rank} of ${rows.length}. BLS May 2025 data.`,
     160,

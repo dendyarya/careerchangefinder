@@ -7,11 +7,12 @@ import { headingId } from "@/lib/guides/headings";
 import { monthYear } from "@/lib/format";
 import { pageMeta } from "@/lib/seo";
 import { SITE } from "@/lib/site";
+import { isPublished } from "@/lib/published";
 
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const all = await listGuides();
+  const all = (await listGuides()).filter((g) => isPublished("guides", g.slug));
   // Next needs at least one param for a static route; "__none" renders a 404.
   return all.length ? all.map((g) => ({ slug: g.slug })) : [{ slug: "__none" }];
 }

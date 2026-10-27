@@ -1,0 +1,12 @@
+{
+  "_note": "Staged publishing (runbook Tahap 6). Each section is \"all\" or a list of slugs that are live. Pages not listed return 404 and are left out of the sitemap. Change and redeploy to publish more.",
+  "career-change-from": "all",
+  "career-change-situations": "all",
+  "careers": "all",
+  "careers-listings": "all",
+  "jobs-similar-to": "all",
+  "salary": "all",
+  "salary-states": "all",
+  "tests": "all",
+  "guides": "all"
+}

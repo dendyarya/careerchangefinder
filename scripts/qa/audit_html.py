@@ -18,8 +18,8 @@ n = 0
 internal = collections.Counter()
 for f in sorted(ROOT.rglob("*.html")):
     rel = "/" + str(f.relative_to(ROOT)).removesuffix(".html").replace("(site)/", "")
-    if rel.startswith(("/_", "/keystatic")) or rel.endswith("/index") and rel != "/index":
-        continue
+    if rel.startswith(("/_", "/keystatic")) or rel.endswith("/index") and rel != "/index" or rel.endswith("/__none"):
+        continue  # __none: placeholder param when no guide is published (renders the 404 page)
     rel = "/" if rel == "/index" else rel
     t = f.read_text()
     if "noindex" in t and 'name="robots" content="noindex, follow"' not in t and "/_not-found" in rel:
@@ -41,11 +41,28 @@ for f in sorted(ROOT.rglob("*.html")):
         errors.append(f"{rel}: description {len(desc)} chars")
     if '<link rel="canonical"' not in t:
         errors.append(f"{rel}: no canonical")
+    types = set()
     for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', t, re.S):
         try:
-            json.loads(block)
+            data = json.loads(block)
         except ValueError as e:
             errors.append(f"{rel}: bad JSON-LD {e}")
+            continue
+        for node in data.get("@graph", [data]):
+            types.add(node.get("@type"))
+    # structured data required by the runbook (Tahap 6)
+    if not {"Organization", "WebSite"} <= types:
+        errors.append(f"{rel}: no Organization/WebSite JSON-LD")
+    if rel != "/" and "BreadcrumbList" not in types:
+        errors.append(f"{rel}: no BreadcrumbList")
+    if re.fullmatch(r"/careers/[^/]+", rel) and "Occupation" not in types and "ItemList" not in types and "CollectionPage" not in types and rel not in ("/careers/a-z", "/careers/industry", "/careers/holland-code"):
+        errors.append(f"{rel}: career profile without Occupation JSON-LD")
+    if rel.startswith("/guides/") and "Article" not in types:
+        errors.append(f"{rel}: guide without Article JSON-LD")
+    if re.search(r'<details[^>]*>\s*<summary', t) and "FAQPage" not in types and 'id="faq' in t:
+        errors.append(f"{rel}: FAQ section without FAQPage JSON-LD")
+    if '<meta property="og:image"' not in t:
+        errors.append(f"{rel}: no og:image")
     body = re.sub(r"<script.*?</script>", " ", t, flags=re.S)
     text = html.unescape(re.sub(r"<[^>]+>", " ", body))
     for bad in ("undefined", "NaN", "[object Object]", "null%", "$null"):
@@ -58,7 +75,7 @@ for t, pages in titles.items():
         errors.append(f"duplicate title on {len(pages)} pages: {t} ({pages[:3]})")
 built = {"/" + str(f.relative_to(ROOT)).removesuffix(".html").replace("(site)/", "") for f in ROOT.rglob("*.html")}
 built = {"/" if b == "/index" else b for b in built}
-statics = {"/search-index.json", "/hubs.json", "/big-five-data.json"}
+statics = {"/search-index.json", "/hubs.json", "/big-five-data.json", "/icon.svg", "/apple-icon.png"}
 # state salary pages are rendered on demand (ISR): a link is fine if that career has that state in the BLS data
 _P = ROOT.parents[2] / "data" / "processed"
 _occ = {o["slug"]: o for o in json.loads((_P / "occupations.json").read_text())}

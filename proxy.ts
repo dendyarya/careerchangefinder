@@ -1,8 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-// Lowercase URLs (SEO): /Careers/Nurse -> /careers/nurse (301). Trailing slashes are removed by Next.
+// Canonical URLs (SEO, runbook Tahap 6), all 301:
+// - www.careerchangefinder.com -> careerchangefinder.com
+// - /Careers/Nurse -> /careers/nurse
+// Trailing slashes are removed by Next itself (308, also permanent).
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+  const host = request.headers.get("host") ?? "";
+  if (host.startsWith("www.")) {
+    return NextResponse.redirect(`https://${host.slice(4)}${pathname.toLowerCase()}${search}`, 301);
+  }
   if (pathname !== pathname.toLowerCase()) {
     const url = request.nextUrl.clone();
     url.pathname = pathname.toLowerCase();

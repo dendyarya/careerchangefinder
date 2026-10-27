@@ -7,9 +7,11 @@ import { clip, money } from "@/lib/format";
 import { pageMeta } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 import { parseResultSlug, RESULT_SLUGS, TRAITS } from "@/lib/traits";
+import { isPublished } from "@/lib/published";
 
 export const dynamicParams = false;
-export const generateStaticParams = () => RESULT_SLUGS.map((trait) => ({ trait }));
+export const generateStaticParams = () =>
+  RESULT_SLUGS.filter((trait) => isPublished("tests", `results/${trait}`)).map((trait) => ({ trait }));
 
 const EDU: Record<number, string> = {
   1: "Little or no preparation",

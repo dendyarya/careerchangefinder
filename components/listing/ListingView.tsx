@@ -7,6 +7,7 @@ import { buildListing, LISTING_SLUGS, type Listing } from "@/lib/listings";
 import { clip } from "@/lib/format";
 import { pageMeta } from "@/lib/seo";
 import { SITE } from "@/lib/site";
+import { isPublished } from "@/lib/published";
 
 
 const KIND_LABEL: Record<Listing["kind"], { crumb: string; href: string }> = {
@@ -17,7 +18,8 @@ const KIND_LABEL: Record<Listing["kind"], { crumb: string; href: string }> = {
   salary: { crumb: "By Salary", href: "/careers#salary" },
 };
 
-export const listingParams = (kind: Listing["kind"]) => LISTING_SLUGS[kind].map((slug) => ({ slug }));
+export const listingParams = (kind: Listing["kind"]) =>
+  LISTING_SLUGS[kind].filter((slug) => isPublished("careers-listings", `${kind}/${slug}`)).map((slug) => ({ slug }));
 
 export function listingMeta(kind: Listing["kind"], slug: string) {
   const l = buildListing(kind, slug);

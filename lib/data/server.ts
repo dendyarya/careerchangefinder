@@ -5,6 +5,7 @@
 import "server-only";
 import fs from "node:fs";
 import path from "node:path";
+import { isPublished } from "@/lib/published";
 
 const P = path.join(process.cwd(), "data", "processed");
 const readJson = <T>(...parts: string[]): T => JSON.parse(fs.readFileSync(path.join(P, ...parts), "utf8")) as T;
@@ -145,7 +146,9 @@ export function singleCodeHubRedirects(): { from: string; to: string }[] {
 /** Career-change source pages: 12 hubs + every non-thin occupation that is not folded into a hub. */
 export function careerChangeSources(): string[] {
   const folded = new Set(singleCodeHubRedirects().map((r) => r.from));
-  return [...HUB_SLUGS, ...occupations().filter((o) => !o.thin && !folded.has(o.slug)).map((o) => o.slug)];
+  return [...HUB_SLUGS, ...occupations().filter((o) => !o.thin && !folded.has(o.slug)).map((o) => o.slug)].filter((s) =>
+    isPublished("career-change-from", s),
+  );
 }
 
 const LIST_TITLE = /^[^,]+,( [^,]+,)* (and|or) /;

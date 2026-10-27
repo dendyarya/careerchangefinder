@@ -13,6 +13,7 @@ import {
   type TransitionItem,
 } from "@/lib/data/server";
 import { clip, inSentence, listJoin, money, signedPct } from "@/lib/format";
+import { fitTitle, seoName } from "@/lib/seoName";
 import type { Faq } from "@/components/page/Common";
 import type { Row } from "@/components/career-change/CareerTable";
 
@@ -184,10 +185,11 @@ export function buildFromPage(slug: string): FromPageModel | null {
 
   // Tahap 6 rule: titles 30–60 characters (the " | Career Change Finder" suffix is not counted here)
   const base = `Jobs for Former ${name}`;
-  const title =
-    [`${base}: ${rows.length} Careers That Use Your Skills`, `${base}: ${rows.length} Career Options`, base].find(
-      (t) => t.length <= 60,
-    ) ?? base; // a longer unique title beats a clipped duplicate
+  const shortBase = `Jobs for Former ${seoName(name)}`;
+  const title = fitTitle(
+    [`${base}: ${rows.length} Careers That Use Your Skills`, `${base}: ${rows.length} Career Options`, base, shortBase],
+    shortBase, // a longer unique title beats a clipped duplicate; the intent comes first
+  );
   const description = clip(
     `${rows.length} careers for former ${pluralLower}, ranked by skill match with BLS median pay and pay change. Closest match: ${best.title} (${best.match}%).`,
     160,

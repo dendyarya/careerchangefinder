@@ -27,13 +27,14 @@ import { careerChangeSources } from "@/lib/data/server";
 import { money, payChangeTone, signedPct } from "@/lib/format";
 import { pageMeta } from "@/lib/seo";
 import { SITE } from "@/lib/site";
+import { SITUATION_SLUGS } from "@/lib/situations";
 
 // One route for /career-change/from-*, to-* and at-* (Next.js cannot name a folder "from-[job]").
 // Phase 1 builds from-* pages; to-* and at-* come in phase 2.
 export const dynamicParams = false;
 
 // situation pages built so far (to-* pages follow)
-const SITUATIONS: string[] = [...AGE_SLUGS, ...FIELD_SLUGS, "to-government", "to-remote-work"];
+const SITUATIONS = SITUATION_SLUGS;
 const isField = (s: string): s is FieldSlug => (FIELD_SLUGS as readonly string[]).includes(s);
 const isAge = (s: string): s is AgeSlug => (AGE_SLUGS as readonly string[]).includes(s);
 

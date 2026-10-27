@@ -10,6 +10,7 @@ import { evaluate } from "@mdx-js/mdx";
 import * as runtime from "react/jsx-runtime";
 import remarkGfm from "remark-gfm";
 import keystaticConfig from "@/keystatic.config";
+import { isPublished } from "@/lib/published";
 import { SITE } from "@/lib/site";
 import { h2s } from "./headings";
 
@@ -43,7 +44,7 @@ export async function listGuides(): Promise<GuideMeta[]> {
       heroImageAlt: entry.heroImageAlt ?? "",
       draft: entry.draft,
     }))
-    .filter((g) => !g.draft || !SITE.indexable)
+    .filter((g) => (!g.draft || !SITE.indexable) && isPublished("guides", g.slug))
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 }
 

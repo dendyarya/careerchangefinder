@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ogImageFor } from "./og";
 import { SITE } from "./site";
 
 const SUFFIX = ` | ${SITE.name}`;
@@ -24,8 +25,15 @@ export function pageMeta({
     title: { absolute: full },
     description,
     alternates: { canonical: path },
-    openGraph: { title: full, description, url: path, type: "website", siteName: SITE.name },
-    twitter: { card: "summary_large_image", title: full, description },
+    openGraph: {
+      title: full,
+      description,
+      url: path,
+      type: "website",
+      siteName: SITE.name,
+      images: [{ url: ogImageFor(path), width: 1200, height: 630, alt: full }],
+    },
+    twitter: { card: "summary_large_image", title: full, description, images: [ogImageFor(path)] },
     ...(noindex || !SITE.indexable ? { robots: { index: false, follow: !noindex } } : {}),
   };
 }
