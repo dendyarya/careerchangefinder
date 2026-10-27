@@ -18,7 +18,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 P = ROOT / "data" / "processed"
 BASE = sys.argv[1].rstrip("/")
 N = int(sys.argv[2]) if len(sys.argv) > 2 else 300
-MIN_EMP = 1000
+MIN_EMP = 5000  # keep in sync with STATE_INDEX_MIN_EMPLOYMENT in lib/salary.ts
 errors, checked = [], 0
 
 

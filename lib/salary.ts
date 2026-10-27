@@ -11,7 +11,9 @@ import { clip, inSentence, money, signedPct } from "@/lib/format";
 
 export const stateSlug = (name: string) => name.toLowerCase().replace(/[^a-z]+/g, "-");
 /** State pages with fewer workers than this are noindex (estimates for very small groups are less reliable). */
-export const STATE_INDEX_MIN_EMPLOYMENT = 1000;
+// Launch setting (27 Oct 2026): only states with 5,000+ jobs are indexed; lower to 1,000 once Search Console
+// shows these pages are indexed and get impressions. Small cells have high BLS sampling error.
+export const STATE_INDEX_MIN_EMPLOYMENT = 5000;
 
 const pctVs = (v: number | null, base: number | null) =>
   v == null || !base ? null : Math.round(((v - base) / base) * 100);
