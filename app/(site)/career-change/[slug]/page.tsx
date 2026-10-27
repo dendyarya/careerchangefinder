@@ -32,6 +32,8 @@ import { money, payChangeTone, signedPct } from "@/lib/format";
 import { pageMeta } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 import { SITUATION_SLUGS } from "@/lib/situations";
+import { readContent, type FromContent } from "@/lib/content";
+import { DraftBadge } from "@/components/page/DraftBadge";
 import { AlsoCalled } from "@/components/page/AlsoCalled";
 
 // One route for /career-change/from-*, to-* and at-* (Next.js cannot name a folder "from-[job]").
@@ -92,6 +94,7 @@ export default async function CareerChangePage({ params }: { params: Promise<{ s
   if (slug === "to-oil-and-gas") return <OilGasPage />;
   const m = parse(slug);
   if (!m) notFound();
+  const c = readContent<FromContent>("from", m.slug);
 
   const url = `${SITE.url}/career-change/${slug}`;
   return (
@@ -101,7 +104,8 @@ export default async function CareerChangePage({ params }: { params: Promise<{ s
       <section className="flex max-w-[920px] flex-col gap-[18px]">
         <PageTitle before="Jobs for " highlight={`Former ${m.name}`} />
         {!m.isHub && <AlsoCalled slug={m.slug} />}
-        <p className="m-0 text-lead">{m.intro}</p>
+        {c?.status === "draft" && <DraftBadge />}
+        <p className="m-0 text-lead">{c?.intro ?? m.intro}</p>
         <UpdatedLine />
       </section>
 
@@ -153,6 +157,25 @@ export default async function CareerChangePage({ params }: { params: Promise<{ s
           </p>
         </div>
       </section>
+
+      {c && (
+        <section aria-labelledby="why-h" className="grid gap-8 rounded-xl bg-panel p-6 md:grid-cols-[1.2fr_1fr] md:p-8">
+          <div className="flex flex-col gap-3">
+            <h2 id="why-h" className="m-0 font-display text-[28px] font-bold">
+              Why your skills carry over
+            </h2>
+            <p className="m-0">{c.why_it_works}</p>
+          </div>
+          <div className="flex flex-col gap-3">
+            <h2 className="m-0 font-display text-[28px] font-bold">Your next steps</h2>
+            <ol className="m-0 flex list-decimal flex-col gap-2 pl-5">
+              {c.tips.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
 
       <section aria-labelledby="up-close" className="flex flex-col gap-5">
         <H2 id="up-close">Your top 3 moves, up close</H2>
@@ -245,7 +268,7 @@ export default async function CareerChangePage({ params }: { params: Promise<{ s
 
       <FreeHelp who={`Former ${m.pluralLower}`} />
 
-      <FaqSection title={`Questions former ${m.pluralLower} ask`} items={m.faq} />
+      <FaqSection title={`Questions former ${m.pluralLower} ask`} items={c?.faq ?? m.faq} />
 
       <RelatedLinks
         links={[

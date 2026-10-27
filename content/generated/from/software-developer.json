@@ -1,0 +1,28 @@
+{
+  "status": "draft",
+  "intro": "Software developers build programming, systems analysis and judgment skills that carry straight into hardware, data and management roles. The closest of the 25 careers below is Computer Hardware Engineers, an 80% match with a BLS May 2025 median of $161,740.",
+  "why_it_works": "Writing software means breaking big problems into testable parts, judging tradeoffs and checking how systems behave. O*NET rates programming at 4 out of 5 for developers, and data science, hardware engineering and systems management all draw on it. Data Scientists use the same logic with statistics instead of features. Moving into management builds on the planning you do in sprints and code reviews. The main gaps are people and resource management, plus maintaining physical equipment for hardware roles.",
+  "tips": [
+    "Pick one direction first, such as data, hardware or management, because each needs different new skills.",
+    "Build a small public project in the new area, for example a data analysis or an embedded device, to show you can do the work.",
+    "Ask for a lead or architect role in your current team to gain the management experience that higher-paying matches expect."
+  ],
+  "faq": [
+    {
+      "q": "What can software developers do besides coding?",
+      "a": "The closest matches are Computer Hardware Engineers (80%), Data Scientists (78%) and Radio Frequency Identification Device Specialists (76%), based on O*NET 31.0. Computer and Information Systems Managers (70%) is the main step up for developers who want to lead teams rather than write code."
+    },
+    {
+      "q": "Which careers pay more than software development?",
+      "a": "5 of the 25 matches pay more than the $135,980 median for software developers. Computer and Information Systems Managers earn $175,140, a 29% increase, and Computer Hardware Engineers earn $161,740, a 19% increase, according to BLS May 2025 data. Data Scientists earn $120,230, 12% less."
+    },
+    {
+      "q": "Do developers need another degree to switch careers?",
+      "a": "Usually not. 21 of the 25 matches need no more education than a software developer usually has, based on O*NET Job Zones. 4 of them usually need a graduate degree, mostly research and science roles, so check the education column before you plan a move."
+    },
+    {
+      "q": "What jobs are similar to software development?",
+      "a": "Within computing, the nearest roles are Database Architects (88% match), Computer Network Architects (87%) and Data Warehousing Specialists (86%). These keep you in technical work but shift the focus from building applications to designing data and network systems."
+    }
+  ]
+}
