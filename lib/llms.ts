@@ -7,7 +7,13 @@ import { money } from "@/lib/format";
 import { LISTING_SLUGS, buildListing, type Listing } from "@/lib/listings";
 import { SITE } from "@/lib/site";
 
-const JZ: Record<number, string> = { 1: "a few months or less", 2: "up to a year", 3: "1-2 years", 4: "a bachelor's degree", 5: "a graduate degree" };
+const JZ: Record<number, string> = {
+  1: "a few months or less",
+  2: "up to a year",
+  3: "1-2 years",
+  4: "a bachelor's degree",
+  5: "a graduate degree",
+};
 const head = () => `# ${SITE.name}
 
 > ${SITE.description} Data: O*NET 31.0 (USDOL/ETA, CC BY 4.0), BLS Occupational Employment and Wage Statistics May 2025, BLS Current Population Survey 2025, NCES CIP 2020 to SOC 2018 crosswalk. Updated ${meta.built_at.slice(0, 10)}.
@@ -33,6 +39,11 @@ export function llmsTxt(): string {
 - ${AGE_SLUGS.map((s) => `[Career change at ${s.slice(3)}](${u(`/career-change/${s}`)})`).join(", ")}
 - [Career change to tech](${u("/career-change/to-tech")}), [healthcare](${u("/career-change/to-healthcare")}), [nursing](${u("/career-change/to-nursing")}), [skilled trades](${u("/career-change/to-skilled-trades")}), [government](${u("/career-change/to-government")}), [remote work](${u("/career-change/to-remote-work")})
 
+## About this site
+- [Methodology](${u("/methodology")}): how match scores, pay comparisons and lists are calculated
+- [Data Sources & Licenses](${u("/data-sources")})
+- [About](${u("/about")}), [Alternatives](${u("/alternatives")})
+
 ## Optional
 - [Full page list with key figures](${u("/llms-full.txt")})
 - [Sitemap](${u("/sitemap.xml")})
@@ -46,11 +57,18 @@ export function llmsFullTxt(): string {
     .sort((a, b) => a.title.localeCompare(b.title))
     .map((o) => {
       const w = o.wage;
-      const pay = w?.median ? `median pay ${money(w.median)}${w.is_group ? " (broader BLS group)" : ""}` : "pay not published";
+      const pay = w?.median
+        ? `median pay ${money(w.median)}${w.is_group ? " (broader BLS group)" : ""}`
+        : "pay not published";
       return `- [${o.title}](${u(`/careers/${o.slug}`)}): ${pay}; usual preparation ${o.job_zone ? JZ[o.job_zone] : "unknown"}`;
     });
   const kinds = Object.keys(LISTING_SLUGS) as Listing["kind"][];
-  const lists = kinds.flatMap((k) => LISTING_SLUGS[k].map((s) => buildListing(k, s)).filter((l) => l).map((l) => `- [${l!.h1}](${u(`/careers/${l!.kind}/${l!.slug}`)}): ${l!.rows.length} careers`));
+  const lists = kinds.flatMap((k) =>
+    LISTING_SLUGS[k]
+      .map((s) => buildListing(k, s))
+      .filter((l) => l)
+      .map((l) => `- [${l!.h1}](${u(`/careers/${l!.kind}/${l!.slug}`)}): ${l!.rows.length} careers`),
+  );
   const ages = AGE_SLUGS.map((s) => {
     const m = buildAgePage(s);
     return `- [Career change at ${m.age}](${u(`/career-change/${s}`)}): ${m.main.length} careers`;

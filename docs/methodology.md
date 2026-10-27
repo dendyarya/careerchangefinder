@@ -1,6 +1,4 @@
-# Methodology
-
-How careerchangefinder.com turns public data into career matches. This page is the source for the public "How we match careers" page.
+How Career Change Finder turns public U.S. government data into career matches, pay comparisons and career lists. Every rule that decides what appears on a page is written down here.
 
 ## Sources
 
@@ -10,7 +8,7 @@ How careerchangefinder.com turns public data into career matches. This page is t
 | Pay (national and by state) | BLS Occupational Employment and Wage Statistics, May 2025 | Public domain |
 | Majors linked to careers | NCES CIP 2020 to SOC 2018 crosswalk | Public domain |
 
-We do not edit source numbers. Every build is checked by `scripts/etl/verify.py`, which re-reads the raw files and compares every published value (270,904 values in the October 2026 build, 0 differences), including that every "top" list really holds the highest-rated items.
+We do not edit source numbers. Every build is checked by an automated test that re-reads the original government files and compares every published value with them (565,159 values in the October 2026 build, 0 differences), including that every "top" list really holds the highest-rated items.
 
 ## Which careers get a page
 
@@ -75,17 +73,17 @@ Every list uses careers with a full page only. The rule is printed on each page.
 | Holland code (6) | Careers whose highest interest score is that area | That score |
 | Salary (2) | Careers with their own BLS median (no group wages); "without a degree" adds education categories 1–2 | BLS median pay; top 50 |
 
-Every listing and every "Jobs similar to" row is re-checked against the data after each build (`scripts/qa/check_pages_vs_data.py`), with the listing order recomputed from the rules above.
+Every listing and every "Jobs similar to" row is re-checked against the data after each build, with the listing order recomputed from the rules above.
 
 ## Salary pages
 
-`/careers/[job]/salary` lists every state BLS publishes for the job (BLS OEWS May 2025 state file), highest median first, with the 10th and 90th percentiles, employment and the difference from the national median. `/careers/[job]/salary/[state]` shows one state, its rank, the states ranked just above and below, and the state median of up to 6 similar careers. Values BLS does not publish (`*`, or `#` for amounts above its highest published figure) are shown as "Not published". Group wages carry the broader BLS group label. Pay is not adjusted for living costs. State pages with fewer than 5,000 jobs are noindex at launch (7,244 indexed); the floor will be lowered to 1,000 if Search Console shows these pages are indexed and get impressions. Small state estimates have much higher BLS sampling error (median relative standard error 14.7% under 1,000 jobs vs 6.4% above). State pages are built on first visit and kept in memory; a sample of them is checked against the data in every deploy (`scripts/qa/check_state_pages.py`).
+Each career's salary page lists every state BLS publishes for the job (BLS OEWS May 2025 state file), highest median first, with the 10th and 90th percentiles, employment and the difference from the national median. Each state salary page shows one state, its rank, the states ranked just above and below, and the state median of up to 6 similar careers. Values BLS does not publish (marked * or, for amounts above its highest published figure, #) are shown as "Not published". Group wages carry the broader BLS group label. Pay is not adjusted for living costs. State pages are listed for search engines only where the state has at least 5,000 jobs in that career, because small state estimates have much higher BLS sampling error (median relative standard error 14.7% under 1,000 jobs vs 6.4% above). State pages are built on first visit and kept in memory; a sample of them is checked against the data in every release.
 
 ## "Career change at …" and "Career change to …" pages
 
-Extra sources, downloaded by hand from bls.gov (kept in `data/raw/bls`):
+Extra sources, downloaded from bls.gov:
 
-- **Worker age:** BLS Current Population Survey, 2025 annual averages, Table 11b (employed people by detailed occupation and age). 2025 is an 11-month average: October 2025 was not collected. CPS occupations carry titles, not SOC codes. They are matched to BLS OEWS SOC titles word for word (case and punctuation ignored); 18 titles that differ are mapped by hand in `scripts/etl/build_situations.py`. "Other …" catch-all rows are not used, except four clearly defined ones (other physicians, other mathematical science, other drafters, other engineering technicians). Shares are shown only where the CPS base is at least 50,000 workers, the same floor BLS uses for median age. When the CPS row covers several jobs the page says "Broader group".
+- **Worker age:** BLS Current Population Survey, 2025 annual averages, Table 11b (employed people by detailed occupation and age). 2025 is an 11-month average: October 2025 was not collected. CPS occupations carry titles, not SOC codes. They are matched to BLS OEWS SOC titles word for word (case and punctuation ignored); 18 titles that differ are mapped by hand. "Other …" catch-all rows are not used, except four clearly defined ones (other physicians, other mathematical science, other drafters, other engineering technicians). Shares are shown only where the CPS base is at least 50,000 workers, the same floor BLS uses for median age. When the CPS row covers several jobs the page says "Broader group".
 - **Government jobs:** BLS OEWS May 2025, national cross-industry estimates by ownership (federal, state, local government and private).
 
 **Career change at 30, 40 and 50.** Careers that pay at least the U.S. median for all occupations (BLS OEWS May 2025) and have at least the national share of workers in the age group that matters for that page. Supervisor and manager jobs are left out because they are usually filled by promotion. Highest median pay first.
@@ -108,7 +106,7 @@ Extra sources, downloaded by hand from bls.gov (kept in `data/raw/bls`):
 
 **"Read before you start" notes.** Where a career's Job Zone hides a large hurdle, the page adds a short note from an official source. Current notes: Commercial Pilots (FAA certificate requirements and costs, airline retirement at 65; sources FAA and the BLS Occupational Outlook Handbook).
 
-Every value is checked against the raw files by `scripts/etl/verify_situations.py`, and the page's lists are recomputed from these rules after each build.
+Every value is checked against the original BLS files (20,225 values, 0 differences), and the page's lists are recomputed from these rules after each build.
 
 ## Career Change Tool
 
@@ -116,7 +114,7 @@ The same data as the pages above. Filters: extra education (any, none, up to a c
 
 ## Big Five test and trait pages
 
-Scoring and the trait-to-career mapping are described in full on the tests page (docs/tests.md). In short: each trait is linked to two O*NET Work Styles, and careers are ranked by how much those styles matter in the job. Lists for the low end of a trait include only careers that usually need training (Job Zone 3+).
+Scoring and the trait-to-career mapping are explained on each test's results page. In short: each trait is linked to two O*NET Work Styles, and careers are ranked by how much those styles matter in the job. Lists for the low end of a trait include only careers that usually need training (Job Zone 3+).
 
 ## Other fields
 

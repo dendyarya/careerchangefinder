@@ -9,6 +9,7 @@ import { buildListing, LISTING_SLUGS, type Listing } from "@/lib/listings";
 import { careerChangeSources, occupations } from "@/lib/data/server";
 import { meta } from "@/lib/data";
 import { listGuides } from "@/lib/guides";
+import { STATIC_SLUGS } from "@/lib/staticPages";
 import { isPublished } from "@/lib/published";
 import { salarySlugs, stateSlug, STATE_INDEX_MIN_EMPLOYMENT } from "@/lib/salary";
 import { statePay } from "@/lib/careerProfile";
@@ -20,7 +21,15 @@ export interface Entry {
   path: string;
   lastmod: string;
 }
-export const SITEMAP_NAMES = ["pages", "career-change", "careers", "jobs-similar-to", "salary", "salary-states", "guides"] as const;
+export const SITEMAP_NAMES = [
+  "pages",
+  "career-change",
+  "careers",
+  "jobs-similar-to",
+  "salary",
+  "salary-states",
+  "guides",
+] as const;
 export type SitemapName = (typeof SITEMAP_NAMES)[number];
 
 const day = (iso: string) => iso.slice(0, 10);
@@ -39,6 +48,7 @@ export async function sitemapEntries(name: SitemapName): Promise<Entry[]> {
         "/tests",
         "/tests/results/big-five",
         "/tests/results/holland-codes",
+        ...STATIC_SLUGS.map((s) => `/${s}`),
         ...RESULT_SLUGS.filter((t) => isPublished("tests", `results/${t}`)).map((t) => `/tests/results/${t}`),
       ].map((p) => e(p));
     case "career-change":
@@ -58,7 +68,9 @@ export async function sitemapEntries(name: SitemapName): Promise<Entry[]> {
         "/careers/industry",
         "/careers/holland-code",
         ...kinds.flatMap((k) =>
-          LISTING_SLUGS[k].filter((s) => isPublished("careers-listings", `${k}/${s}`) && buildListing(k, s)).map((s) => `/careers/${k}/${s}`),
+          LISTING_SLUGS[k]
+            .filter((s) => isPublished("careers-listings", `${k}/${s}`) && buildListing(k, s))
+            .map((s) => `/careers/${k}/${s}`),
         ),
         ...occupations()
           .filter((o) => careerProfileIndexable(o.slug))
@@ -79,7 +91,12 @@ export async function sitemapEntries(name: SitemapName): Promise<Entry[]> {
       );
     case "guides": {
       const g = await listGuides();
-      return [e("/guides"), ...g.filter((x) => !x.draft).map((x) => e(`/guides/${x.slug}`, day(x.updatedAt || x.publishedAt || meta.built_at)))];
+      return [
+        e("/guides"),
+        ...g
+          .filter((x) => !x.draft)
+          .map((x) => e(`/guides/${x.slug}`, day(x.updatedAt || x.publishedAt || meta.built_at))),
+      ];
     }
   }
 }
@@ -87,11 +104,15 @@ export async function sitemapEntries(name: SitemapName): Promise<Entry[]> {
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 export function urlsetXml(base: string, entries: Entry[]): string {
-  const body = entries.map((x) => `<url><loc>${esc(base + x.path)}</loc><lastmod>${x.lastmod}</lastmod></url>`).join("\n");
+  const body = entries
+    .map((x) => `<url><loc>${esc(base + x.path)}</loc><lastmod>${x.lastmod}</lastmod></url>`)
+    .join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
 }
 
 export function indexXml(base: string, lastmod: string): string {
-  const body = SITEMAP_NAMES.map((n) => `<sitemap><loc>${base}/sitemaps/${n}.xml</loc><lastmod>${lastmod}</lastmod></sitemap>`).join("\n");
+  const body = SITEMAP_NAMES.map(
+    (n) => `<sitemap><loc>${base}/sitemaps/${n}.xml</loc><lastmod>${lastmod}</lastmod></sitemap>`,
+  ).join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</sitemapindex>\n`;
 }
