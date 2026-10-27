@@ -46,6 +46,7 @@ jobs:
         run: |
           npm ci
           pip install -r scripts/etl/requirements.txt
+          sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends poppler-utils
 
       - name: Security audit (fail on high or critical)
