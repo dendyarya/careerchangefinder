@@ -88,7 +88,15 @@ Extra sources, downloaded by hand from bls.gov (kept in `data/raw/bls`):
 - **Worker age:** BLS Current Population Survey, 2025 annual averages, Table 11b (employed people by detailed occupation and age). 2025 is an 11-month average: October 2025 was not collected. CPS occupations carry titles, not SOC codes. They are matched to BLS OEWS SOC titles word for word (case and punctuation ignored); 18 titles that differ are mapped by hand in `scripts/etl/build_situations.py`. "Other …" catch-all rows are not used, except four clearly defined ones (other physicians, other mathematical science, other drafters, other engineering technicians). Shares are shown only where the CPS base is at least 50,000 workers, the same floor BLS uses for median age. When the CPS row covers several jobs the page says "Broader group".
 - **Government jobs:** BLS OEWS May 2025, national cross-industry estimates by ownership (federal, state, local government and private).
 
-**Career change at 40.** Careers that usually take two years or less to prepare for (O*NET Job Zone 3 or lower), pay at least the U.S. median for all occupations (BLS OEWS May 2025), and have at least the national share of workers aged 45 or older. Supervisor and manager jobs are left out because they are usually filled by promotion. Highest median pay first. "Faster options" is the same list limited to Job Zone 2 or lower.
+**Career change at 30, 40 and 50.** Careers that pay at least the U.S. median for all occupations (BLS OEWS May 2025) and have at least the national share of workers in the age group that matters for that page. Supervisor and manager jobs are left out because they are usually filled by promotion. Highest median pay first.
+
+| Page | Preparation (O*NET Job Zone) | Age group (at least the U.S. share) | "Faster options" |
+|---|---|---|---|
+| at 30 | up to a bachelor's degree (≤4) | workers under 35 | Job Zone ≤3 |
+| at 40 | two years or less (≤3) | workers 45 or older | Job Zone ≤2 |
+| at 50 | two years or less (≤3) | workers 55 or older | Job Zone ≤2 |
+
+**"Read before you start" notes.** Where a career's Job Zone hides a large hurdle, the page adds a short note from an official source. Current notes: Commercial Pilots (FAA certificate requirements and costs, airline retirement at 65; sources FAA and the BLS Occupational Outlook Handbook).
 
 Every value is checked against the raw files by `scripts/etl/verify_situations.py`, and the page's lists are recomputed from these rules after each build.
 

@@ -14,8 +14,8 @@ import {
   SourcesBox,
   UpdatedLine,
 } from "@/components/page/Common";
-import { At40Page } from "@/components/situations/At40Page";
-import { buildAt40 } from "@/lib/agePages";
+import { AgePage } from "@/components/situations/AgePage";
+import { AGE_SLUGS, buildAgePage, type AgeSlug } from "@/lib/agePages";
 import { buildFromPage } from "@/lib/careerChangePage";
 import { careerChangeSources } from "@/lib/data/server";
 import { money, payChangeTone, signedPct } from "@/lib/format";
@@ -26,8 +26,9 @@ import { SITE } from "@/lib/site";
 // Phase 1 builds from-* pages; to-* and at-* come in phase 2.
 export const dynamicParams = false;
 
-// situation pages built so far (at-30/50, to-* follow after the at-40 example is approved)
-const SITUATIONS = ["at-40"];
+// situation pages built so far (to-* pages follow)
+const SITUATIONS: string[] = [...AGE_SLUGS];
+const isAge = (s: string): s is AgeSlug => (AGE_SLUGS as readonly string[]).includes(s);
 
 export function generateStaticParams() {
   return [...careerChangeSources().map((s) => ({ slug: `from-${s}` })), ...SITUATIONS.map((slug) => ({ slug }))];
@@ -39,9 +40,9 @@ function parse(slug: string) {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  if (slug === "at-40") {
-    const a = buildAt40();
-    return pageMeta({ title: a.title, description: a.description, path: "/career-change/at-40" });
+  if (isAge(slug)) {
+    const a = buildAgePage(slug);
+    return pageMeta({ title: a.title, description: a.description, path: `/career-change/${slug}` });
   }
   const m = parse(slug);
   if (!m) return {};
@@ -50,7 +51,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function CareerChangePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  if (slug === "at-40") return <At40Page />;
+  if (isAge(slug)) return <AgePage slug={slug} />;
   const m = parse(slug);
   if (!m) notFound();
 
