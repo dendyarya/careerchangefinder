@@ -264,6 +264,33 @@ def build_telework():
     return total, groups
 
 
+INDUSTRY_FILE = RAW / "oesm25in4" / "nat4d_M2025_dl.xlsx"
+# "Career change to oil and gas": the two oil-and-gas-only NAICS industries in the OEWS 4-digit file
+INDUSTRIES = {"211100": "oil-gas-extraction", "486100": "crude-oil-pipelines", "486200": "natural-gas-pipelines"}
+
+
+def build_industries():
+    out = {}
+    wb = openpyxl.load_workbook(INDUSTRY_FILE, read_only=True)
+    it = wb.worksheets[0].iter_rows(values_only=True)
+    h = next(it)
+    i = {k: h.index(k) for k in ("NAICS", "NAICS_TITLE", "OCC_CODE", "OCC_TITLE", "O_GROUP", "TOT_EMP", "A_MEDIAN", "A_PCT10", "A_PCT90", "PCT_TOTAL")}
+    for r in it:
+        n = str(r[i["NAICS"]])
+        if n not in INDUSTRIES:
+            continue
+        d = out.setdefault(n, {"naics": n, "title": r[i["NAICS_TITLE"]], "slug": INDUSTRIES[n], "occupations": []})
+        rec = {"soc": r[i["OCC_CODE"]], "title": r[i["OCC_TITLE"]], "employment": num(r[i["TOT_EMP"]]), "median": num(r[i["A_MEDIAN"]]),
+               "p10": num(r[i["A_PCT10"]]), "p90": num(r[i["A_PCT90"]]), "pct_of_industry": num(r[i["PCT_TOTAL"]])}
+        if r[i["O_GROUP"]] == "total":
+            d["total"] = rec
+        elif r[i["O_GROUP"]] == "detailed":
+            d["occupations"].append(rec)
+    for d in out.values():
+        d["occupations"].sort(key=lambda x: -(x["employment"] or 0))
+    return {"meta": {"source": "BLS OEWS May 2025, national industry-specific estimates (4-digit NAICS)"}, "industries": out}
+
+
 def build_remote(occ):
     codes = {o["code"] for o in occ}
     cx, cxp, im = {}, {}, {}
@@ -315,13 +342,15 @@ def main():
     age = build_age(occ)
     gov = build_government(occ)
     remote = build_remote(occ)
-    for name, obj in (("age", age), ("government", gov), ("remote", remote)):
+    industries = build_industries()
+    for name, obj in (("age", age), ("government", gov), ("remote", remote), ("industries", industries)):
         (OUT / f"{name}.json").write_text(json.dumps(obj, ensure_ascii=False, separators=(",", ":"), allow_nan=False))
     a = age["careers"]
     print(f"age: {len(a)} careers matched, {sum(1 for v in a.values() if v['enough_data'])} with enough data, "
           f"{sum(1 for v in a.values() if v['group'])} via a broader group; CPS rows used {age['meta']['cps_rows_used']}, "
           f"skipped {len(age['meta']['cps_rows_skipped'])}")
     print(f"government: {len(gov['careers'])} careers with government employment")
+    print("industries:", {k: (v["title"], v.get("total", {}).get("employment"), len(v["occupations"])) for k, v in industries["industries"].items()})
     r = remote["careers"]
     print(f"remote: {sum(1 for v in r.values() if v['remote_friendly'])} of {len(r)} careers remote-friendly")
 

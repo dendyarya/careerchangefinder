@@ -5,6 +5,8 @@ import { buildProfile } from "@/lib/careerProfile";
 import { buildFieldPage, FIELD_SLUGS, type FieldSlug } from "@/lib/fieldPages";
 import { money } from "@/lib/format";
 import { buildGovPage } from "@/lib/govPage";
+import { buildTarget, TARGETS } from "@/lib/careerTargets";
+import { buildOilGas } from "@/lib/oilGas";
 import { buildListing, type Listing } from "@/lib/listings";
 import { buildRemotePage } from "@/lib/remotePage";
 import { buildSalary, buildStateSalary } from "@/lib/salary";
@@ -51,6 +53,14 @@ export function ogCard(path: string): OgCard | null {
     if (s === "to-government") {
       const m = buildGovPage();
       return { eyebrow: "Career change", title: "Career change to government jobs", stat: { label: "Median pay, government", value: money(m.all.government.median) } };
+    }
+    if (s === "to-oil-and-gas") {
+      const m = buildOilGas();
+      return { eyebrow: "Career change", title: "Career change to oil and gas", stat: { label: "Median pay, oil and gas extraction", value: money(m.ex.total.median) } };
+    }
+    if (TARGETS[s]) {
+      const m = buildTarget(s);
+      return m ? { eyebrow: "Career change", title: `Career change to ${m.h1}`, stat: { label: `Median pay, ${m.name}`, value: money(m.primary.wage?.median) } } : null;
     }
     if (s === "to-remote-work") {
       const m = buildRemotePage();

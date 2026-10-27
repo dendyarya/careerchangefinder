@@ -153,6 +153,22 @@ for soc, t in TELEWORK_GROUPS.items():
     if g["at_work_k"] != r[1] or g["teleworkers_k"] != r[5] or g["pct_hours_teleworked"] != r[4]:
         err(f"telework group {soc} differs from Table 62")
 
+# ------------------------------------------------------------------ industries (oil and gas)
+ind = json.loads((P / "situations" / "industries.json").read_text())["industries"]
+raw = {}
+it = openpyxl.load_workbook(RAW / "oesm25in4" / "nat4d_M2025_dl.xlsx", read_only=True).worksheets[0].iter_rows(values_only=True)
+hh = next(it)
+for r in it:
+    if str(r[hh.index("NAICS")]) in ind:
+        raw[(str(r[hh.index("NAICS")]), r[hh.index("OCC_CODE")])] = r
+for n, d in ind.items():
+    for rec in d["occupations"] + [d["total"]]:
+        r = raw.get((n, rec["soc"]))
+        for field, col in (("employment", "TOT_EMP"), ("median", "A_MEDIAN"), ("p10", "A_PCT10"), ("p90", "A_PCT90")):
+            checked += 1
+            if r is None or rec[field] != num(r[hh.index(col)]):
+                err(f"industry {n} {rec['soc']} {field}: {rec[field]} != {None if r is None else r[hh.index(col)]}")
+
 print(f"{checked:,} situation values checked, {len(errors)} problems")
 for e in errors[:40]:
     print("  -", e)

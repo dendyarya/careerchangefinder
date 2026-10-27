@@ -349,6 +349,35 @@ if f.exists():
     if want not in text(f.read_text()):
         errors.append(f"to-nursing: missing '{want}'")
 
+# ---------------------------------------------------------------- career change to [career] and oil and gas
+byslug_tr = lambda s: json.loads((P / "transitions" / f"{s}.json").read_text()) if (P / "transitions" / f"{s}.json").exists() else None
+for f in sorted((APP / "career-change").glob("to-*.html")):
+    page = f.read_text()
+    if "The best jobs to switch from" not in page:
+        continue
+    head = page.split("The best jobs to switch from", 1)[1]
+    tb = re.search(r"<tbody>(.*?)</tbody>", head, re.S).group(1)
+    for r in re.findall(r"<tr[^>]*>(.*?)</tr>", tb, re.S):
+        cells = [text(c) for c in re.findall(r"<td[^>]*>(.*?)</td>", r, re.S)]
+        src = next((o for o in good if o["title"] == cells[0]), None)
+        tr = byslug_tr(src["slug"]) if src else None
+        match_cell = next(c for c in cells if re.fullmatch(r"\d+%", c))
+        targets = {x["title"]: x["match"] for x in (tr or {}).get("top", [])}
+        checked += 2
+        if not tr or not any(f"{m}%" == match_cell and title in page for title, m in targets.items()):
+            errors.append(f"{f.stem}: switch-from row {cells[0]} {match_cell} not in its transitions")
+oil = APP / "career-change" / "to-oil-and-gas.html"
+if oil.exists():
+    ind = json.loads((P / "situations" / "industries.json").read_text())["industries"]["211100"]
+    page = oil.read_text()
+    first = re.search(r"<tbody>(.*?)</tbody>", page, re.S).group(1)
+    rows_ = [[text(c) for c in re.findall(r"<td[^>]*>(.*?)</td>", r, re.S)] for r in re.findall(r"<tr[^>]*>(.*?)</tr>", first, re.S)]
+    exp = [x for x in ind["occupations"] if x["employment"] is not None]
+    for cells, x in zip(rows_, exp):
+        checked += 3
+        if (cells[1], cells[2], cells[3]) != (x["title"], f"{x['employment']:,}", money(x["median"])):
+            errors.append(f"to-oil-and-gas: row {cells[0]} {cells[1:4]} != {x['title']}")
+
 print(f"{checked:,} values checked on built pages, {len(errors)} mismatches")
 for e in errors[:30]:
     print("  -", e)

@@ -19,6 +19,10 @@ import { GovPage } from "@/components/situations/GovPage";
 import { buildGovPage } from "@/lib/govPage";
 import { RemotePage } from "@/components/situations/RemotePage";
 import { FieldPage } from "@/components/situations/FieldPage";
+import { TargetPage } from "@/components/situations/TargetPage";
+import { OilGasPage } from "@/components/situations/OilGasPage";
+import { buildOilGas } from "@/lib/oilGas";
+import { buildTarget, TARGETS } from "@/lib/careerTargets";
 import { FIELD_SLUGS, buildFieldPage, type FieldSlug } from "@/lib/fieldPages";
 import { buildRemotePage } from "@/lib/remotePage";
 import { AGE_SLUGS, buildAgePage, type AgeSlug } from "@/lib/agePages";
@@ -49,6 +53,14 @@ function parse(slug: string) {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  if (slug === "to-oil-and-gas") {
+    const g = buildOilGas();
+    return pageMeta({ title: g.title, description: g.description, path: "/career-change/to-oil-and-gas" });
+  }
+  if (TARGETS[slug]) {
+    const t = buildTarget(slug)!;
+    return pageMeta({ title: t.title, description: t.description, path: `/career-change/${slug}` });
+  }
   if (isField(slug)) {
     const f = buildFieldPage(slug);
     return pageMeta({ title: f.title, description: f.description, path: `/career-change/${slug}` });
@@ -76,6 +88,8 @@ export default async function CareerChangePage({ params }: { params: Promise<{ s
   if (slug === "to-government") return <GovPage />;
   if (slug === "to-remote-work") return <RemotePage />;
   if (isField(slug)) return <FieldPage slug={slug} />;
+  if (TARGETS[slug]) return <TargetPage slug={slug} />;
+  if (slug === "to-oil-and-gas") return <OilGasPage />;
   const m = parse(slug);
   if (!m) notFound();
 
