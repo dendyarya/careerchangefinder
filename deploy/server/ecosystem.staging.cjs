@@ -1,6 +1,7 @@
 // PM2 app for staging. Installed as /var/www/careerchangefinder/staging/ecosystem.config.cjs
 // Keystatic (CMS) secrets live outside the repo and the release, in keystatic.env next to this file
 // (written by "setup-vps.sh --keystatic", root:ccf 640). Without that file Keystatic stays off (404).
+// eslint-disable-next-line @typescript-eslint/no-require-imports -- PM2 loads this file as plain CommonJS
 const fs = require("fs");
 const secrets = {};
 try {
