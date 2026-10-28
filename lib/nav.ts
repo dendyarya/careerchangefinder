@@ -237,6 +237,7 @@ export const MENUS: NavMenu[] = [
         title: "Resources",
         links: [
           { label: "Glossary", href: "/glossary" },
+          { label: "Research: Better-Paying Careers", href: "/research/better-paying-careers" },
           { label: "Methodology", href: "/methodology" },
           { label: "Data Sources & Licenses", href: "/data-sources" },
         ],

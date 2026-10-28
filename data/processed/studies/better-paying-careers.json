@@ -1,0 +1,743 @@
+{
+ "slug": "better-paying-careers",
+ "rules": {
+  "raise_min": 0.1,
+  "top_n": 25,
+  "excludes": "group wages, higher Job Zone, managers and supervisors"
+ },
+ "national": {
+  "jobs": 732,
+  "jobs_with_move": 648,
+  "share_jobs": 0.8852,
+  "workers": 139154480,
+  "workers_with_move": 121133480,
+  "share_workers": 0.8705,
+  "median_closest_raise": 0.2436
+ },
+ "examples": [
+  {
+   "slug": "retail-salespersons",
+   "title": "Retail Salespersons",
+   "median": 35410,
+   "employment": 3897860,
+   "moves": 9,
+   "to": {
+    "slug": "door-to-door-sales-workers-news-and-street-vendors-and-related-workers",
+    "title": "Door-to-Door Sales Workers, News and Street Vendors, and Related Workers",
+    "match": 90,
+    "median": 41380,
+    "raise": 0.1686
+   }
+  },
+  {
+   "slug": "fast-food-and-counter-workers",
+   "title": "Fast Food and Counter Workers",
+   "median": 31200,
+   "employment": 3854050,
+   "moves": 15,
+   "to": {
+    "slug": "food-preparation-workers",
+    "title": "Food Preparation Workers",
+    "match": 83,
+    "median": 35320,
+    "raise": 0.1321
+   }
+  },
+  {
+   "slug": "general-and-operations-managers",
+   "title": "General and Operations Managers",
+   "median": 105770,
+   "employment": 3503020,
+   "moves": 0
+  },
+  {
+   "slug": "registered-nurses",
+   "title": "Registered Nurses",
+   "median": 97550,
+   "employment": 3379720,
+   "moves": 1,
+   "to": {
+    "slug": "medical-dosimetrists",
+    "title": "Medical Dosimetrists",
+    "match": 66,
+    "median": 147470,
+    "raise": 0.5117
+   }
+  },
+  {
+   "slug": "cashiers",
+   "title": "Cashiers",
+   "median": 32880,
+   "employment": 3089410,
+   "moves": 17,
+   "to": {
+    "slug": "tellers",
+    "title": "Tellers",
+    "match": 93,
+    "median": 43030,
+    "raise": 0.3087
+   }
+  },
+  {
+   "slug": "laborers-and-freight-stock-and-material-movers-hand",
+   "title": "Laborers and Freight, Stock, and Material Movers, Hand",
+   "median": 40240,
+   "employment": 2950280,
+   "moves": 17,
+   "to": {
+    "slug": "crushing-grinding-and-polishing-machine-setters-operators-and-tenders",
+    "title": "Crushing, Grinding, and Polishing Machine Setters, Operators, and Tenders",
+    "match": 78,
+    "median": 48540,
+    "raise": 0.2063
+   }
+  },
+  {
+   "slug": "stockers-and-order-fillers",
+   "title": "Stockers and Order Fillers",
+   "median": 37330,
+   "employment": 2833810,
+   "moves": 9,
+   "to": {
+    "slug": "shipping-receiving-and-inventory-clerks",
+    "title": "Shipping, Receiving, and Inventory Clerks",
+    "match": 88,
+    "median": 45260,
+    "raise": 0.2124
+   }
+  },
+  {
+   "slug": "customer-service-representatives",
+   "title": "Customer Service Representatives",
+   "median": 44770,
+   "employment": 2595750,
+   "moves": 5,
+   "to": {
+    "slug": "sales-representatives-of-services-except-advertising-insurance-financial-services-and-travel",
+    "title": "Sales Representatives of Services, Except Advertising, Insurance, Financial Services, and Travel",
+    "match": 90,
+    "median": 69990,
+    "raise": 0.5633
+   }
+  },
+  {
+   "slug": "office-clerks",
+   "title": "Office Clerks, General",
+   "median": 45010,
+   "employment": 2464940,
+   "moves": 4,
+   "to": {
+    "slug": "title-examiners-abstractors-and-searchers",
+    "title": "Title Examiners, Abstractors, and Searchers",
+    "match": 81,
+    "median": 58650,
+    "raise": 0.303
+   }
+  },
+  {
+   "slug": "waiters-and-waitresses",
+   "title": "Waiters and Waitresses",
+   "median": 35230,
+   "employment": 2270910,
+   "moves": 4,
+   "to": {
+    "slug": "postal-service-clerks",
+    "title": "Postal Service Clerks",
+    "match": 75,
+    "median": 62130,
+    "raise": 0.7636
+   }
+  },
+  {
+   "slug": "janitors-and-cleaners",
+   "title": "Janitors and Cleaners, Except Maids and Housekeeping Cleaners",
+   "median": 36840,
+   "employment": 2209760,
+   "moves": 16,
+   "to": {
+    "slug": "hazardous-materials-removal-workers",
+    "title": "Hazardous Materials Removal Workers",
+    "match": 77,
+    "median": 49450,
+    "raise": 0.3423
+   }
+  },
+  {
+   "slug": "heavy-and-tractor-trailer-truck-drivers",
+   "title": "Heavy and Tractor-Trailer Truck Drivers",
+   "median": 58640,
+   "employment": 2062040,
+   "moves": 8,
+   "to": {
+    "slug": "loading-and-moving-machine-operators",
+    "title": "Loading and Moving Machine Operators, Underground Mining",
+    "match": 83,
+    "median": 74500,
+    "raise": 0.2705
+   }
+  }
+ ],
+ "states": [
+  {
+   "abbr": "WV",
+   "state": "West Virginia",
+   "jobs": 551,
+   "jobs_with_move": 475,
+   "share_jobs": 0.8621,
+   "workers": 623750,
+   "workers_with_move": 573630,
+   "share_workers": 0.9196,
+   "median_closest_raise": 0.2735
+  },
+  {
+   "abbr": "IA",
+   "state": "Iowa",
+   "jobs": 633,
+   "jobs_with_move": 546,
+   "share_jobs": 0.8626,
+   "workers": 1399880,
+   "workers_with_move": 1285310,
+   "share_workers": 0.9182,
+   "median_closest_raise": 0.2731
+  },
+  {
+   "abbr": "KS",
+   "state": "Kansas",
+   "jobs": 610,
+   "jobs_with_move": 529,
+   "share_jobs": 0.8672,
+   "workers": 1295470,
+   "workers_with_move": 1154980,
+   "share_workers": 0.8916,
+   "median_closest_raise": 0.2903
+  },
+  {
+   "abbr": "SD",
+   "state": "South Dakota",
+   "jobs": 519,
+   "jobs_with_move": 427,
+   "share_jobs": 0.8227,
+   "workers": 423050,
+   "workers_with_move": 376320,
+   "share_workers": 0.8895,
+   "median_closest_raise": 0.2447
+  },
+  {
+   "abbr": "WY",
+   "state": "Wyoming",
+   "jobs": 453,
+   "jobs_with_move": 381,
+   "share_jobs": 0.8411,
+   "workers": 249720,
+   "workers_with_move": 221750,
+   "share_workers": 0.888,
+   "median_closest_raise": 0.2639
+  },
+  {
+   "abbr": "KY",
+   "state": "Kentucky",
+   "jobs": 628,
+   "jobs_with_move": 529,
+   "share_jobs": 0.8424,
+   "workers": 1805890,
+   "workers_with_move": 1601070,
+   "share_workers": 0.8866,
+   "median_closest_raise": 0.2689
+  },
+  {
+   "abbr": "OK",
+   "state": "Oklahoma",
+   "jobs": 638,
+   "jobs_with_move": 561,
+   "share_jobs": 0.8793,
+   "workers": 1591150,
+   "workers_with_move": 1405580,
+   "share_workers": 0.8834,
+   "median_closest_raise": 0.2632
+  },
+  {
+   "abbr": "OR",
+   "state": "Oregon",
+   "jobs": 635,
+   "jobs_with_move": 546,
+   "share_jobs": 0.8598,
+   "workers": 1715860,
+   "workers_with_move": 1511370,
+   "share_workers": 0.8808,
+   "median_closest_raise": 0.2674
+  },
+  {
+   "abbr": "WI",
+   "state": "Wisconsin",
+   "jobs": 652,
+   "jobs_with_move": 549,
+   "share_jobs": 0.842,
+   "workers": 2613390,
+   "workers_with_move": 2301450,
+   "share_workers": 0.8806,
+   "median_closest_raise": 0.2441
+  },
+  {
+   "abbr": "MO",
+   "state": "Missouri",
+   "jobs": 650,
+   "jobs_with_move": 556,
+   "share_jobs": 0.8554,
+   "workers": 2598330,
+   "workers_with_move": 2283050,
+   "share_workers": 0.8787,
+   "median_closest_raise": 0.2423
+  },
+  {
+   "abbr": "LA",
+   "state": "Louisiana",
+   "jobs": 602,
+   "jobs_with_move": 506,
+   "share_jobs": 0.8405,
+   "workers": 1678460,
+   "workers_with_move": 1469920,
+   "share_workers": 0.8758,
+   "median_closest_raise": 0.2749
+  },
+  {
+   "abbr": "MS",
+   "state": "Mississippi",
+   "jobs": 603,
+   "jobs_with_move": 518,
+   "share_jobs": 0.859,
+   "workers": 1045610,
+   "workers_with_move": 915160,
+   "share_workers": 0.8752,
+   "median_closest_raise": 0.2635
+  },
+  {
+   "abbr": "AR",
+   "state": "Arkansas",
+   "jobs": 600,
+   "jobs_with_move": 518,
+   "share_jobs": 0.8633,
+   "workers": 1181760,
+   "workers_with_move": 1030440,
+   "share_workers": 0.872,
+   "median_closest_raise": 0.2572
+  },
+  {
+   "abbr": "NV",
+   "state": "Nevada",
+   "jobs": 592,
+   "jobs_with_move": 507,
+   "share_jobs": 0.8564,
+   "workers": 1402810,
+   "workers_with_move": 1220050,
+   "share_workers": 0.8697,
+   "median_closest_raise": 0.2878
+  },
+  {
+   "abbr": "FL",
+   "state": "Florida",
+   "jobs": 692,
+   "jobs_with_move": 606,
+   "share_jobs": 0.8757,
+   "workers": 9104940,
+   "workers_with_move": 7903360,
+   "share_workers": 0.868,
+   "median_closest_raise": 0.2619
+  },
+  {
+   "abbr": "AZ",
+   "state": "Arizona",
+   "jobs": 633,
+   "jobs_with_move": 546,
+   "share_jobs": 0.8626,
+   "workers": 2936780,
+   "workers_with_move": 2547810,
+   "share_workers": 0.8676,
+   "median_closest_raise": 0.2499
+  },
+  {
+   "abbr": "NC",
+   "state": "North Carolina",
+   "jobs": 661,
+   "jobs_with_move": 570,
+   "share_jobs": 0.8623,
+   "workers": 4466990,
+   "workers_with_move": 3868130,
+   "share_workers": 0.8659,
+   "median_closest_raise": 0.2525
+  },
+  {
+   "abbr": "NJ",
+   "state": "New Jersey",
+   "jobs": 652,
+   "jobs_with_move": 562,
+   "share_jobs": 0.862,
+   "workers": 3784610,
+   "workers_with_move": 3265170,
+   "share_workers": 0.8627,
+   "median_closest_raise": 0.2705
+  },
+  {
+   "abbr": "ID",
+   "state": "Idaho",
+   "jobs": 558,
+   "jobs_with_move": 459,
+   "share_jobs": 0.8226,
+   "workers": 772340,
+   "workers_with_move": 664850,
+   "share_workers": 0.8608,
+   "median_closest_raise": 0.2617
+  },
+  {
+   "abbr": "IN",
+   "state": "Indiana",
+   "jobs": 673,
+   "jobs_with_move": 572,
+   "share_jobs": 0.8499,
+   "workers": 2892170,
+   "workers_with_move": 2476560,
+   "share_workers": 0.8563,
+   "median_closest_raise": 0.2585
+  },
+  {
+   "abbr": "GA",
+   "state": "Georgia",
+   "jobs": 659,
+   "jobs_with_move": 574,
+   "share_jobs": 0.871,
+   "workers": 4305470,
+   "workers_with_move": 3679020,
+   "share_workers": 0.8545,
+   "median_closest_raise": 0.268
+  },
+  {
+   "abbr": "AL",
+   "state": "Alabama",
+   "jobs": 625,
+   "jobs_with_move": 535,
+   "share_jobs": 0.856,
+   "workers": 1909800,
+   "workers_with_move": 1628190,
+   "share_workers": 0.8525,
+   "median_closest_raise": 0.2718
+  },
+  {
+   "abbr": "IL",
+   "state": "Illinois",
+   "jobs": 662,
+   "jobs_with_move": 581,
+   "share_jobs": 0.8776,
+   "workers": 5465920,
+   "workers_with_move": 4649450,
+   "share_workers": 0.8506,
+   "median_closest_raise": 0.2671
+  },
+  {
+   "abbr": "WA",
+   "state": "Washington",
+   "jobs": 673,
+   "jobs_with_move": 578,
+   "share_jobs": 0.8588,
+   "workers": 3116580,
+   "workers_with_move": 2649810,
+   "share_workers": 0.8502,
+   "median_closest_raise": 0.2785
+  },
+  {
+   "abbr": "ND",
+   "state": "North Dakota",
+   "jobs": 495,
+   "jobs_with_move": 392,
+   "share_jobs": 0.7919,
+   "workers": 382630,
+   "workers_with_move": 324240,
+   "share_workers": 0.8474,
+   "median_closest_raise": 0.2596
+  },
+  {
+   "abbr": "PA",
+   "state": "Pennsylvania",
+   "jobs": 686,
+   "jobs_with_move": 598,
+   "share_jobs": 0.8717,
+   "workers": 5350770,
+   "workers_with_move": 4533480,
+   "share_workers": 0.8473,
+   "median_closest_raise": 0.2561
+  },
+  {
+   "abbr": "DE",
+   "state": "Delaware",
+   "jobs": 460,
+   "jobs_with_move": 364,
+   "share_jobs": 0.7913,
+   "workers": 419230,
+   "workers_with_move": 354600,
+   "share_workers": 0.8458,
+   "median_closest_raise": 0.2607
+  },
+  {
+   "abbr": "SC",
+   "state": "South Carolina",
+   "jobs": 640,
+   "jobs_with_move": 542,
+   "share_jobs": 0.8469,
+   "workers": 2098880,
+   "workers_with_move": 1774640,
+   "share_workers": 0.8455,
+   "median_closest_raise": 0.2695
+  },
+  {
+   "abbr": "MI",
+   "state": "Michigan",
+   "jobs": 689,
+   "jobs_with_move": 578,
+   "share_jobs": 0.8389,
+   "workers": 3914800,
+   "workers_with_move": 3309540,
+   "share_workers": 0.8454,
+   "median_closest_raise": 0.2678
+  },
+  {
+   "abbr": "OH",
+   "state": "Ohio",
+   "jobs": 687,
+   "jobs_with_move": 586,
+   "share_jobs": 0.853,
+   "workers": 5014040,
+   "workers_with_move": 4221990,
+   "share_workers": 0.842,
+   "median_closest_raise": 0.2718
+  },
+  {
+   "abbr": "TX",
+   "state": "Texas",
+   "jobs": 704,
+   "jobs_with_move": 612,
+   "share_jobs": 0.8693,
+   "workers": 12694060,
+   "workers_with_move": 10673250,
+   "share_workers": 0.8408,
+   "median_closest_raise": 0.2753
+  },
+  {
+   "abbr": "CA",
+   "state": "California",
+   "jobs": 702,
+   "jobs_with_move": 607,
+   "share_jobs": 0.8647,
+   "workers": 15537730,
+   "workers_with_move": 13040980,
+   "share_workers": 0.8393,
+   "median_closest_raise": 0.2716
+  },
+  {
+   "abbr": "MD",
+   "state": "Maryland",
+   "jobs": 644,
+   "jobs_with_move": 552,
+   "share_jobs": 0.8571,
+   "workers": 2390330,
+   "workers_with_move": 2005180,
+   "share_workers": 0.8389,
+   "median_closest_raise": 0.2695
+  },
+  {
+   "abbr": "CT",
+   "state": "Connecticut",
+   "jobs": 602,
+   "jobs_with_move": 502,
+   "share_jobs": 0.8339,
+   "workers": 1480500,
+   "workers_with_move": 1241040,
+   "share_workers": 0.8383,
+   "median_closest_raise": 0.2576
+  },
+  {
+   "abbr": "CO",
+   "state": "Colorado",
+   "jobs": 653,
+   "jobs_with_move": 558,
+   "share_jobs": 0.8545,
+   "workers": 2544570,
+   "workers_with_move": 2125030,
+   "share_workers": 0.8351,
+   "median_closest_raise": 0.237
+  },
+  {
+   "abbr": "MT",
+   "state": "Montana",
+   "jobs": 532,
+   "jobs_with_move": 438,
+   "share_jobs": 0.8233,
+   "workers": 452870,
+   "workers_with_move": 377290,
+   "share_workers": 0.8331,
+   "median_closest_raise": 0.2401
+  },
+  {
+   "abbr": "UT",
+   "state": "Utah",
+   "jobs": 615,
+   "jobs_with_move": 528,
+   "share_jobs": 0.8585,
+   "workers": 1544330,
+   "workers_with_move": 1283390,
+   "share_workers": 0.831,
+   "median_closest_raise": 0.2782
+  },
+  {
+   "abbr": "TN",
+   "state": "Tennessee",
+   "jobs": 645,
+   "jobs_with_move": 549,
+   "share_jobs": 0.8512,
+   "workers": 2947940,
+   "workers_with_move": 2446100,
+   "share_workers": 0.8298,
+   "median_closest_raise": 0.2514
+  },
+  {
+   "abbr": "NY",
+   "state": "New York",
+   "jobs": 693,
+   "jobs_with_move": 598,
+   "share_jobs": 0.8629,
+   "workers": 8353750,
+   "workers_with_move": 6914440,
+   "share_workers": 0.8277,
+   "median_closest_raise": 0.2942
+  },
+  {
+   "abbr": "VA",
+   "state": "Virginia",
+   "jobs": 665,
+   "jobs_with_move": 577,
+   "share_jobs": 0.8677,
+   "workers": 3649940,
+   "workers_with_move": 2996920,
+   "share_workers": 0.8211,
+   "median_closest_raise": 0.2366
+  },
+  {
+   "abbr": "ME",
+   "state": "Maine",
+   "jobs": 568,
+   "jobs_with_move": 455,
+   "share_jobs": 0.8011,
+   "workers": 560990,
+   "workers_with_move": 460330,
+   "share_workers": 0.8206,
+   "median_closest_raise": 0.2433
+  },
+  {
+   "abbr": "MN",
+   "state": "Minnesota",
+   "jobs": 643,
+   "jobs_with_move": 530,
+   "share_jobs": 0.8243,
+   "workers": 2568410,
+   "workers_with_move": 2091550,
+   "share_workers": 0.8143,
+   "median_closest_raise": 0.2675
+  },
+  {
+   "abbr": "NE",
+   "state": "Nebraska",
+   "jobs": 592,
+   "jobs_with_move": 472,
+   "share_jobs": 0.7973,
+   "workers": 943030,
+   "workers_with_move": 765590,
+   "share_workers": 0.8118,
+   "median_closest_raise": 0.2592
+  },
+  {
+   "abbr": "NM",
+   "state": "New Mexico",
+   "jobs": 570,
+   "jobs_with_move": 469,
+   "share_jobs": 0.8228,
+   "workers": 760500,
+   "workers_with_move": 613950,
+   "share_workers": 0.8073,
+   "median_closest_raise": 0.2926
+  },
+  {
+   "abbr": "AK",
+   "state": "Alaska",
+   "jobs": 457,
+   "jobs_with_move": 364,
+   "share_jobs": 0.7965,
+   "workers": 284810,
+   "workers_with_move": 226930,
+   "share_workers": 0.7968,
+   "median_closest_raise": 0.2768
+  },
+  {
+   "abbr": "MA",
+   "state": "Massachusetts",
+   "jobs": 640,
+   "jobs_with_move": 547,
+   "share_jobs": 0.8547,
+   "workers": 3213890,
+   "workers_with_move": 2554950,
+   "share_workers": 0.795,
+   "median_closest_raise": 0.2557
+  },
+  {
+   "abbr": "NH",
+   "state": "New Hampshire",
+   "jobs": 556,
+   "jobs_with_move": 439,
+   "share_jobs": 0.7896,
+   "workers": 614100,
+   "workers_with_move": 474250,
+   "share_workers": 0.7723,
+   "median_closest_raise": 0.2528
+  },
+  {
+   "abbr": "RI",
+   "state": "Rhode Island",
+   "jobs": 489,
+   "jobs_with_move": 371,
+   "share_jobs": 0.7587,
+   "workers": 431580,
+   "workers_with_move": 332320,
+   "share_workers": 0.77,
+   "median_closest_raise": 0.2638
+  },
+  {
+   "abbr": "HI",
+   "state": "Hawaii",
+   "jobs": 468,
+   "jobs_with_move": 378,
+   "share_jobs": 0.8077,
+   "workers": 554440,
+   "workers_with_move": 421560,
+   "share_workers": 0.7603,
+   "median_closest_raise": 0.278
+  },
+  {
+   "abbr": "VT",
+   "state": "Vermont",
+   "jobs": 466,
+   "jobs_with_move": 349,
+   "share_jobs": 0.7489,
+   "workers": 254090,
+   "workers_with_move": 189900,
+   "share_workers": 0.7474,
+   "median_closest_raise": 0.2464
+  },
+  {
+   "abbr": "DC",
+   "state": "District of Columbia",
+   "jobs": 411,
+   "jobs_with_move": 318,
+   "share_jobs": 0.7737,
+   "workers": 556300,
+   "workers_with_move": 377090,
+   "share_workers": 0.6779,
+   "median_closest_raise": 0.269
+  }
+ ]
+}

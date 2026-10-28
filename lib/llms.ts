@@ -39,6 +39,9 @@ export function llmsTxt(): string {
 - ${AGE_SLUGS.map((s) => `[Career change at ${s.slice(3)}](${u(`/career-change/${s}`)})`).join(", ")}
 - [Career change to tech](${u("/career-change/to-tech")}), [healthcare](${u("/career-change/to-healthcare")}), [nursing](${u("/career-change/to-nursing")}), [skilled trades](${u("/career-change/to-skilled-trades")}), [government](${u("/career-change/to-government")}), [remote work](${u("/career-change/to-remote-work")})
 
+## Research
+- [Better-paying careers within reach](${u("/research/better-paying-careers")}): share of U.S. careers, nationally and by state, with a close match that pays at least 10% more and needs no more preparation
+
 ## About this site
 - [Methodology](${u("/methodology")}): how match scores, pay comparisons and lists are calculated
 - [Data Sources & Licenses](${u("/data-sources")})

@@ -10,6 +10,7 @@ import { careerChangeSources, occupations } from "@/lib/data/server";
 import { meta } from "@/lib/data";
 import { listGuides } from "@/lib/guides";
 import { STATIC_SLUGS } from "@/lib/staticPages";
+import { STUDIES } from "@/lib/studies";
 import { isPublished } from "@/lib/published";
 import { salarySlugs, stateSlug, STATE_INDEX_MIN_EMPLOYMENT } from "@/lib/salary";
 import { statePay } from "@/lib/careerProfile";
@@ -49,6 +50,7 @@ export async function sitemapEntries(name: SitemapName): Promise<Entry[]> {
         "/tests/results/big-five",
         "/tests/results/holland-codes",
         ...STATIC_SLUGS.map((s) => `/${s}`),
+        ...STUDIES.map((s) => `/research/${s.slug}`),
         ...RESULT_SLUGS.filter((t) => isPublished("tests", `results/${t}`)).map((t) => `/tests/results/${t}`),
       ].map((p) => e(p));
     case "career-change":

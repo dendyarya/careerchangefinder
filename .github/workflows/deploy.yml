@@ -67,6 +67,7 @@ jobs:
           python scripts/etl/verify_situations.py
           python scripts/etl/verify_short_names.py
           python scripts/etl/verify_tests.py
+          python scripts/etl/verify_studies.py
 
       - name: Build
         run: npm run build
