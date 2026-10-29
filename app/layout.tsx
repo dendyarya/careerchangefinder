@@ -28,6 +28,8 @@ export const metadata: Metadata = {
   robots: SITE.indexable ? { index: true, follow: true } : { index: false, follow: false },
   // Search Console ownership (HTML-tag method), production only
   ...(TRACKING.siteVerification ? { verification: { google: TRACKING.siteVerification } } : {}),
+  // AdSense site ownership (meta-tag method): plain HTML, so the AdSense crawler sees it without running JS
+  ...(TRACKING.adsenseClient ? { other: { "google-adsense-account": TRACKING.adsenseClient } } : {}),
 };
 
 export const viewport: Viewport = { themeColor: "#1D62AF", width: "device-width", initialScale: 1 };
