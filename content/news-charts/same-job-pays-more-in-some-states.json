@@ -1,0 +1,17 @@
+{
+  "kicker": "Career Change Finder research",
+  "title": "The same job pays up to 22% more, or 19% less, depending on the state",
+  "subtitle": "Same-job pay index: state pay vs. the national median for the same careers",
+  "unit": "pct",
+  "bars": [
+    { "label": "District of Columbia", "value": 22.3, "highlight": true },
+    { "label": "Washington", "value": 19.5, "highlight": true },
+    { "label": "California", "value": 14.8, "highlight": true },
+    { "label": "Massachusetts", "value": 14.5, "highlight": true },
+    { "label": "Louisiana", "value": -16.6 },
+    { "label": "Arkansas", "value": -17.3 },
+    { "label": "Mississippi", "value": -19.1 }
+  ],
+  "source": "Chart: Career Change Finder. Data: BLS OEWS, May 2025.",
+  "note": "Not adjusted for cost of living."
+}

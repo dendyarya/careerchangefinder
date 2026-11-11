@@ -109,6 +109,18 @@ function Drawer({ menus, onClose, onSearch }: { menus: NavMenu[]; onClose: () =>
         <ul className="m-0 mt-2 list-none p-0">
           {menus.map((m) => {
             const open = openId === m.id;
+            if (m.link)
+              return (
+                <li key={m.id} className="border-b-[1.5px] border-mist">
+                  <Link
+                    href={m.href}
+                    onClick={onClose}
+                    className="flex w-full py-4 font-display text-[22px] font-bold text-ink no-underline"
+                  >
+                    {m.label}
+                  </Link>
+                </li>
+              );
             return (
               <li key={m.id} className="border-b-[1.5px] border-mist">
                 <button
@@ -226,6 +238,19 @@ export function Header({ careerCount, menus, popular }: { careerCount: number; m
               {menus.map((m) => {
                 const open = openMenu === m.id;
                 const current = pathname === m.href || pathname.startsWith(`${m.href}/`);
+                if (m.link)
+                  return (
+                    <li key={m.id}>
+                      <Link
+                        href={m.href}
+                        aria-current={current ? "page" : undefined}
+                        onClick={() => setOpenMenu(null)}
+                        className={`-mx-3 -my-1.5 flex items-center rounded-full px-3 py-1.5 whitespace-nowrap no-underline ${current ? "text-ink" : "text-slate hover:text-ink"}`}
+                      >
+                        {m.label}
+                      </Link>
+                    </li>
+                  );
                 return (
                   <li key={m.id}>
                     <button

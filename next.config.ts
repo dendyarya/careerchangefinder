@@ -66,6 +66,8 @@ const common = [
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // the news sitemap is built per request (last 48 hours), so it reads content/news at run time
+  outputFileTracingIncludes: { "/news-sitemap.xml": ["./content/news/**/*"] },
   // on-demand pages (state salary) are cached in memory only: releases are read-only on the server
   experimental: { isrFlushToDisk: false },
   trailingSlash: false,

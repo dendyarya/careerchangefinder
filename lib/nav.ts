@@ -15,6 +15,8 @@ export interface NavMenu {
   label: string;
   href: string;
   groups: NavGroup[];
+  /** a plain link in the menu bar, no dropdown */
+  link?: boolean;
   promo?: { title: string; text: string; cta: string; href: string };
 }
 
@@ -276,6 +278,7 @@ export const MENUS: NavMenu[] = [
       href: "/research",
     },
   },
+  { id: "news", label: "News", href: "/news", groups: [], link: true },
 ];
 
 export const CTA: NavLink = { label: "Free Career Test", href: "/career-test" };
@@ -313,6 +316,8 @@ export const FOOTER_COLUMNS: NavGroup[] = [
     links: [
       { label: "About", href: "/about" },
       { label: "Research", href: "/research" },
+      { label: "News", href: "/news" },
+      { label: "Editorial Policy", href: "/editorial-policy" },
       { label: "Methodology", href: "/methodology" },
       { label: "Data Sources & Licenses", href: "/data-sources" },
       { label: "Privacy Policy", href: "/privacy" },

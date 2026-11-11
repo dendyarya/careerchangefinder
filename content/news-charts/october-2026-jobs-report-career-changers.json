@@ -1,0 +1,13 @@
+{
+  "kicker": "October 2026 jobs report",
+  "title": "Business services and health care led October's 165,000 job gain",
+  "subtitle": "Change in payroll jobs from September to October 2026, selected industries",
+  "unit": "jobs",
+  "bars": [
+    { "label": "Professional & business services", "value": 70000, "highlight": true },
+    { "label": "Health care", "value": 42000, "highlight": true },
+    { "label": "Transportation & warehousing", "value": 25000 },
+    { "label": "Manufacturing", "value": 19000 }
+  ],
+  "source": "Chart: Career Change Finder. Data: BLS, The Employment Situation, October 2026 (released Nov. 6, 2026)."
+}

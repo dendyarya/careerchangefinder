@@ -1,6 +1,6 @@
 /**
  * Sitemap entries, one list per section (runbook Tahap 6). Only published pages that are indexed:
- * no thin career profiles. State salary pages redirect to the career salary page (Nov 2026).
+ * no thin career profiles. Google News also gets /news-sitemap.xml (last 2 days only). State salary pages redirect to the career salary page (Nov 2026).
  * scripts/qa/check_sitemaps.py checks every URL against the built pages.
  */
 import "server-only";
@@ -9,6 +9,7 @@ import { buildListing, LISTING_SLUGS, type Listing } from "@/lib/listings";
 import { careerChangeSources, occupations } from "@/lib/data/server";
 import { meta } from "@/lib/data";
 import { listGuides } from "@/lib/guides";
+import { listNews } from "@/lib/news";
 import { STATIC_SLUGS } from "@/lib/staticPages";
 import { STUDIES } from "@/lib/studies";
 import { isPublished } from "@/lib/published";
@@ -28,6 +29,7 @@ export const SITEMAP_NAMES = [
   "jobs-similar-to",
   "salary",
   "guides",
+  "news",
 ] as const;
 export type SitemapName = (typeof SITEMAP_NAMES)[number];
 
@@ -89,6 +91,13 @@ export async function sitemapEntries(name: SitemapName): Promise<Entry[]> {
         ...g
           .filter((x) => !x.draft)
           .map((x) => e(`/guides/${x.slug}`, day(x.updatedAt || x.publishedAt || meta.built_at))),
+      ];
+    }
+    case "news": {
+      const n = await listNews();
+      return [
+        e("/news", n[0] ? day(n[0].updatedAt ?? n[0].publishedAt) : built),
+        ...n.filter((x) => !x.draft).map((x) => e(`/news/${x.slug}`, day(x.updatedAt ?? x.publishedAt))),
       ];
     }
   }

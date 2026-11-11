@@ -41,6 +41,7 @@ export function llmsTxt(): string {
 
 ## Research
 - [Better-paying careers within reach](${u("/research/better-paying-careers")}): share of U.S. careers, nationally and by state, with a close match that pays at least 10% more and needs no more preparation
+- [News](${u("/news")}): jobs, pay and hiring news from official BLS releases and our own research ([RSS](${u("/news/feed.xml")}); [editorial policy](${u("/editorial-policy")}))
 - [Same job, different pay](${u("/research/same-job-different-pay")}): how much the state changes pay for the same job: a same-job pay index for every state and the gap between the highest- and lowest-paying state for every career with enough state data (CSV downloads)
 
 ## About this site

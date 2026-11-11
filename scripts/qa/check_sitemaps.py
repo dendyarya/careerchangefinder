@@ -86,6 +86,23 @@ for u in other:
         errors.append(f"{u}: HTTP {c}")
     elif PROD and re.search(r'<meta name="robots" content="noindex', body):
         errors.append(f"{u}: noindex page in sitemap")
+# Google News sitemap: valid, only articles from the last 2 days, each one also in the regular news sitemap
+import datetime as _dt
+c, body = get("/news-sitemap.xml")
+checked += 1
+if c != 200:
+    errors.append(f"/news-sitemap.xml: HTTP {c}")
+else:
+    regular = {u for u, k in urls.items() if k == "news.xml"}
+    for loc, when, title in re.findall(r"<loc>([^<]+)</loc>.*?<news:publication_date>([^<]+)</news:publication_date>\s*<news:title>([^<]*)</news:title>", body, re.S):
+        checked += 1
+        age = _dt.datetime.now(_dt.timezone.utc) - _dt.datetime.fromisoformat(when.replace("Z", "+00:00"))
+        if age.total_seconds() > 2 * 86400 or age.total_seconds() < -300:
+            errors.append(f"news sitemap: {loc} published {when} is outside the 2-day window")
+        if loc.replace(SITE, "") not in regular:
+            errors.append(f"news sitemap: {loc} missing from sitemaps/news.xml")
+        if not title.strip():
+            errors.append(f"news sitemap: {loc} has no title")
 print(f"{len(maps)} sitemaps, {len(urls):,} URLs; {checked:,} checks, {len(errors)} problems")
 for k in sorted(set(urls.values())):
     print(f"  {k:24} {sum(1 for v in urls.values() if v == k):>6,}")

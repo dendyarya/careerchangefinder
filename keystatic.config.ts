@@ -1,7 +1,7 @@
 import { collection, config, fields } from "@keystatic/core";
 
 /**
- * Keystatic CMS for Guides articles.
+ * Keystatic CMS for Guides articles and News.
  * - Local mode while developing (files are written straight into content/guides).
  * - GitHub mode everywhere else: each save is a commit to the repo. Only GitHub users with
  *   write access to dendyarya/careerchangefinder (a private repo) can sign in.
@@ -59,6 +59,53 @@ export default config({
           label: "Body",
           options: {
             image: { directory: "public/images/guides", publicPath: "/images/guides/" },
+          },
+        }),
+      },
+    }),
+    news: collection({
+      label: "News",
+      slugField: "title",
+      path: "content/news/*",
+      format: { contentField: "body" },
+      entryLayout: "content",
+      columns: ["title", "publishedAt"],
+      schema: {
+        title: fields.slug({
+          name: { label: "Headline", validation: { isRequired: true, length: { min: 20, max: 110 } } },
+          slug: { label: "Slug", description: "Lowercase words joined by hyphens. Becomes /news/[slug]." },
+        }),
+        description: fields.text({
+          label: "Summary / meta description",
+          description: "70–160 characters. Shown under the headline and in Google results.",
+          multiline: true,
+          validation: { isRequired: true, length: { min: 70, max: 160 } },
+        }),
+        author: fields.text({
+          label: "Byline",
+          defaultValue: "Career Change Finder News Desk",
+          validation: { isRequired: true },
+        }),
+        publishedAt: fields.datetime({
+          label: "Published (UTC)",
+          description: "Date and time in UTC. Jakarta is UTC+7, New York UTC−5.",
+          validation: { isRequired: true },
+        }),
+        updatedAt: fields.datetime({ label: "Updated (UTC)" }),
+        heroImage: fields.image({
+          label: "Lead image",
+          description: "1200×675 PNG, JPG or WebP, at least 1200 px wide (Google News and Discover). Our own charts only.",
+          directory: "public/images/news",
+          publicPath: "/images/news/",
+          validation: { isRequired: true },
+        }),
+        heroImageAlt: fields.text({ label: "Lead image alt text", validation: { isRequired: true } }),
+        heroImageCaption: fields.text({ label: "Lead image caption", description: "e.g. Chart: Career Change Finder. Data: BLS." }),
+        draft: fields.checkbox({ label: "Draft (not published)", defaultValue: true }),
+        body: fields.mdx({
+          label: "Body",
+          options: {
+            image: { directory: "public/images/news", publicPath: "/images/news/" },
           },
         }),
       },

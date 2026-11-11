@@ -83,6 +83,15 @@ export const STATIC_PAGES = {
     file: "pages/disclaimer.md",
     type: "WebPage",
   },
+  "editorial-policy": {
+    title: "Editorial Policy & Corrections",
+    h1: ["Editorial policy & ", "corrections"],
+    description:
+      "How Career Change Finder reports news and research: sources, fact checks, use of AI tools, independence from advertisers, and how we correct errors.",
+    file: "pages/editorial-policy.md",
+    type: "WebPage",
+    toc: true,
+  },
   alternatives: {
     title: "My Next Move & CareerExplorer Alternatives (Free)",
     h1: ["Free alternatives to My Next Move and ", "CareerExplorer"],

@@ -35,7 +35,7 @@ export async function liveNav(): Promise<{ menus: NavMenu[]; footer: NavGroup[];
       groups: m.groups.map(group).filter((g) => g.links.length > 0),
       promo: m.promo && ok({ label: "", href: m.promo.href }) ? m.promo : undefined,
     }))
-    .filter((m) => m.groups.length > 0);
+    .filter((m) => m.link || m.groups.length > 0);
   const footer = FOOTER_COLUMNS.map(group).filter((g) => g.links.length > 0);
   return { menus, footer, popular: POPULAR_SEARCHES.filter(ok) };
 }

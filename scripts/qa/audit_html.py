@@ -75,7 +75,7 @@ for t, pages in titles.items():
         errors.append(f"duplicate title on {len(pages)} pages: {t} ({pages[:3]})")
 built = {"/" + str(f.relative_to(ROOT)).removesuffix(".html").replace("(site)/", "") for f in ROOT.rglob("*.html")}
 built = {"/" if b == "/index" else b for b in built}
-statics = {"/search-index.json", "/hubs.json", "/big-five-data.json", "/icon.svg", "/apple-icon.png"}
+statics = {"/news/feed.xml", "/news-sitemap.xml", "/search-index.json", "/hubs.json", "/big-five-data.json", "/icon.svg", "/apple-icon.png"}
 PUBLIC = ROOT.parents[2] / "public"  # files served as-is (e.g. research CSV downloads)
 statics |= {"/" + str(f.relative_to(PUBLIC)) for f in PUBLIC.rglob("*") if f.is_file()}
 # state salary pages redirect to the career salary page (Nov 2026): no internal link may point at one

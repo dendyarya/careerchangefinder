@@ -1,0 +1,13 @@
+{
+  "kicker": "JOLTS, September 2026",
+  "title": "Quits rose to 3.4 million in September while hiring held steady",
+  "subtitle": "Job openings and worker flows, September 2026 (millions)",
+  "unit": "millions",
+  "bars": [
+    { "label": "Job openings", "value": 7.5 },
+    { "label": "Hires", "value": 5.4 },
+    { "label": "Quits", "value": 3.4, "highlight": true },
+    { "label": "Layoffs & discharges", "value": 1.6 }
+  ],
+  "source": "Chart: Career Change Finder. Data: BLS, Job Openings and Labor Turnover Survey, Sept. 2026 (released Nov. 3, 2026)."
+}

@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
   if (!SITE.indexable) return { rules: [{ userAgent: "*", disallow: "/" }] };
   return {
     rules: [{ userAgent: "*", allow: "/", disallow: ["/keystatic", "/api/"] }],
-    sitemap: `${SITE.url}/sitemap.xml`,
+    sitemap: [`${SITE.url}/sitemap.xml`, `${SITE.url}/news-sitemap.xml`],
   };
 }

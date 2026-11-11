@@ -12,7 +12,8 @@ export type Section =
   | "jobs-similar-to"
   | "salary"
   | "tests"
-  | "guides";
+  | "guides"
+  | "news";
 
 const cfg = published as unknown as Record<Section, "all" | string[]>;
 
