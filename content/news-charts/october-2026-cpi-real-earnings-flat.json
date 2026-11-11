@@ -1,0 +1,40 @@
+{
+  "kicker": "CPI and Real Earnings, October 2026",
+  "title": "Pay rose 0.4% in October, the same as consumer prices",
+  "subtitle": "Change from September to October 2026, seasonally adjusted (percent)",
+  "unit": "pct",
+  "bars": [
+    {
+      "label": "Average hourly earnings",
+      "value": 0.4,
+      "highlight": true
+    },
+    {
+      "label": "All items (CPI-U)",
+      "value": 0.4,
+      "highlight": true
+    },
+    {
+      "label": "Electricity",
+      "value": 0.9
+    },
+    {
+      "label": "Food",
+      "value": 0.5
+    },
+    {
+      "label": "Shelter",
+      "value": 0.3
+    },
+    {
+      "label": "Medical care services",
+      "value": 0.3
+    },
+    {
+      "label": "Used cars and trucks",
+      "value": -1.2
+    }
+  ],
+  "source": "Chart: Career Change Finder. Data: BLS, CPI and Real Earnings, Oct. 2026 (released Nov. 10, 2026).",
+  "note": "Hourly earnings: all employees on private nonfarm payrolls."
+}
