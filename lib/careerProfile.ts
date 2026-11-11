@@ -12,6 +12,7 @@ import {
   transitionsFor,
   type Occupation,
 } from "@/lib/data/server";
+import { type CareerContent, readContent } from "@/lib/content";
 import { clip, inSentence, money } from "@/lib/format";
 import { fitTitle, seoName } from "@/lib/seoName";
 import { socGroupOf } from "@/lib/soc";
@@ -143,6 +144,8 @@ export interface ProfileModel {
   fromPage: string | null; // /career-change/from-* page for this job
   title: string;
   description: string;
+  /** written text (content/generated/careers), when there is one */
+  content: CareerContent | null;
 }
 
 export function profileSlugs(): string[] {
@@ -192,6 +195,7 @@ export function buildProfile(slug: string): ProfileModel | null {
     fromPage,
     title,
     description,
+    content: o.thin ? null : readContent<CareerContent>("careers", slug),
   };
 }
 

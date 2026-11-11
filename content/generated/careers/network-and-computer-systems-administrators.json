@@ -1,0 +1,23 @@
+{
+ "status": "approved",
+ "overview": "Network and computer systems administrators keep an organization's computers, servers and networks running. They install and update systems, manage user accounts, set up security measures, run backups and fix problems when something breaks. O*NET rates knowledge of computers and electronics at 4.63 out of 5 for this job and telecommunications at 3.57. Many start with an associate degree or certifications, though employers often prefer a bachelor's degree. The BLS May 2025 median is $99,130 across 314,340 jobs. Outages create tight deadlines, and mistakes can have serious consequences.",
+ "pay": "Systems administrators earn a median of $99,130, and the top 10% earn $155,050 or more. Pay is fairly even across states: Maryland has the highest state median at $118,290, 19% above the national figure. Texas has the most jobs, 34,840, at a median of $101,240, ahead of Florida and California.",
+ "faq": [
+  {
+   "q": "How much do network and systems administrators make?",
+   "a": "The BLS May 2025 median is $99,130 a year. The middle half earn between $78,010 and $126,640. Maryland, New Jersey ($116,420) and Massachusetts ($110,980) have the highest state medians, while South Dakota ($75,010) and West Virginia ($74,490) pay the least."
+  },
+  {
+   "q": "Do you need a degree to be a systems administrator?",
+   "a": "Not always. O*NET places the job in Job Zone 3, which means vocational training or an associate degree. Many administrators build on IT support experience and industry certifications. There are 3 related majors, including network and system administration and information assurance."
+  },
+  {
+   "q": "What does a systems administrator do every day?",
+   "a": "A typical day includes monitoring systems, applying updates, answering user requests, managing backups and fixing network issues. O*NET rates active listening at 4 out of 5 for this job, and monitoring and critical thinking at 3.88. On-call work after hours is common."
+  },
+  {
+   "q": "What can systems administrators move into?",
+   "a": "Computer Hardware Engineers are a 63% match and earn $161,740, 63% more, according to BLS May 2025 data. Robotics Engineers are a 61% match. Many administrators also move into cloud, security or network architecture roles, which build on the same daily work."
+  }
+ ]
+}

@@ -28,6 +28,14 @@ export interface SimilarContent {
   faq: Faq[];
 }
 
+/** Career profile (/careers/[slug]): a written overview, a note on pay, and four FAQ answers. */
+export interface CareerContent {
+  status: "draft" | "approved";
+  overview: string;
+  pay: string;
+  faq: Faq[];
+}
+
 const DIR = path.join(process.cwd(), "content", "generated");
 
 export function readContent<T extends { status: string }>(template: Template, slug: string): T | null {

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdSlot } from "@/components/AdSlot";
 import { FitCheck } from "@/components/career/FitCheck";
-import { Breadcrumbs, FreeHelp, H2, JsonLd, RelatedLinks, SourcesBox, UpdatedLine } from "@/components/page/Common";
+import { Breadcrumbs, FaqSection, FreeHelp, H2, JsonLd, RelatedLinks, SourcesBox, UpdatedLine } from "@/components/page/Common";
 import { buildProfile, profileSlugs } from "@/lib/careerProfile";
 import { money, payChangeTone, signedPct } from "@/lib/format";
 import { stateSlug } from "@/lib/salary";
@@ -92,7 +92,9 @@ export default async function CareerProfile({ params }: { params: Promise<{ slug
   const groupNote = w?.is_group ? `Pay for the broader BLS group “${w.bls_title}”` : undefined;
   const url = `${SITE.url}/careers/${slug}`;
 
+  const c = m.content;
   const toc = [
+    c ? ["overview", "Overview"] : null,
     m.fit.length ? ["fit", "Fit check"] : null,
     m.states.length ? ["pay", "Pay by state"] : null,
     ["work", "What they do"],
@@ -100,6 +102,7 @@ export default async function CareerProfile({ params }: { params: Promise<{ slug
     o.riasec ? ["interests", "Interests"] : null,
     m.out.length || m.into.length ? ["change", "Career changes"] : null,
     o.majors.length ? ["majors", "Majors"] : null,
+    c ? ["faq", "FAQ"] : null,
   ].filter(Boolean) as [string, string][];
 
   return (
@@ -171,6 +174,12 @@ export default async function CareerProfile({ params }: { params: Promise<{ slug
 
       <div className="mx-auto flex w-full max-w-[1312px] flex-col gap-12 px-4 pt-10 pb-[88px] md:px-8">
         <UpdatedLine />
+        {c && (
+          <section id="overview" aria-labelledby="overview-h" className="flex max-w-[860px] scroll-mt-6 flex-col gap-3">
+            <H2 id="overview-h">{m.name} at a glance</H2>
+            <p className="m-0 text-[19px] leading-relaxed">{c.overview}</p>
+          </section>
+        )}
         {m.fit.length > 0 && (
           <section
             id="fit"
@@ -203,6 +212,7 @@ export default async function CareerProfile({ params }: { params: Promise<{ slug
         {m.states.length > 0 && (
           <section id="pay" aria-labelledby="pay-h" className="flex scroll-mt-6 flex-col gap-5">
             <H2 id="pay-h">{m.name} pay by state</H2>
+            {c && <p className="m-0 max-w-[860px]">{c.pay}</p>}
             <div className="grid gap-8 md:grid-cols-2">
               <div className="flex flex-col gap-3">
                 <h3 className="m-0 text-h3">Highest-paying states</h3>
@@ -402,6 +412,8 @@ export default async function CareerProfile({ params }: { params: Promise<{ slug
             <p className="m-0 text-small text-muted">From the NCES CIP 2020 to SOC 2018 crosswalk.</p>
           </section>
         )}
+
+        {c && <FaqSection title={`Questions about ${m.nameLower}`} items={c.faq} />}
 
         <FreeHelp />
 

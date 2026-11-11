@@ -1,4 +1,6 @@
 import { buildFromPage } from "@/lib/careerChangePage";
+import { buildProfile, profileSlugs } from "@/lib/careerProfile";
+import { occBySlug } from "@/lib/data/server";
 import { careerChangeSources } from "@/lib/data/server";
 import { SITE } from "@/lib/site";
 import { buildSimilar, similarSlugs } from "@/lib/similarJobs";
@@ -13,6 +15,9 @@ export function generateStaticParams() {
   return [
     ...careerChangeSources().map((slug) => ({ kind: "from", slug })),
     ...similarSlugs().map((slug) => ({ kind: "similar", slug })),
+    ...profileSlugs()
+      .filter((slug) => !occBySlug(slug)?.thin)
+      .map((slug) => ({ kind: "careers", slug })),
   ];
 }
 
@@ -32,6 +37,35 @@ export async function GET(_: Request, { params }: { params: Promise<{ kind: stri
       careers: s.rows.map((r, i) => ({ rank: i + 1, title: r.title, match: r.match, median: r.median, pay_change_pct: r.payChange, job_zone: r.jobZone, same_field: r.sameField })),
       pay_more_same_prep: s.payMore.map((r) => r.title),
       less_prep: s.lessPrep.map((r) => r.title),
+    });
+  }
+  if (kind === "careers") {
+    const p = buildProfile(slug);
+    if (!p || p.o.thin) return new Response("Not found", { status: 404 });
+    const { o } = p;
+    const w = o.wage;
+    return Response.json({
+      page: `/careers/${slug}`,
+      name: p.name,
+      wage: w
+        ? { median: w.median, p10: w.p10, p25: w.p25, p75: w.p75, p90: w.p90, employment: w.employment, is_group: w.is_group, bls_title: w.bls_title }
+        : null,
+      states: p.states.map((s) => ({ state: s.state, median: s.median, employment: s.employment })),
+      job_zone: o.job_zone,
+      education_label: o.first_step.education_label,
+      education_dist: o.education_dist.map((e) => ({ label: e.label, pct: Math.round(e.pct) })),
+      holland: o.holland,
+      riasec: o.riasec,
+      essential_skills: o.essential_skills,
+      knowledge: o.knowledge.slice(0, 5),
+      work_styles: o.work_styles,
+      downsides: o.downsides.map((d) => d.label),
+      tasks: o.tasks.slice(0, 6),
+      fit: p.fit.map((f) => ({ text: f.text, percentile: f.percentile })),
+      out: p.out,
+      into: p.into,
+      majors: o.majors.map((x) => x.title),
+      alt_titles: o.alt_titles.slice(0, 6),
     });
   }
   if (kind !== "from") return new Response("Not found", { status: 404 });

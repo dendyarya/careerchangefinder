@@ -1,7 +1,7 @@
 """Check written page content (runbook Tahap 7) against the page data. Run with a staging/local server up.
 
 Usage: python3 scripts/qa/check_content.py http://127.0.0.1:3210
-For content/generated/from/<slug>.json:
+For content/generated/from/<slug>.json (similar/ and careers/ have their own shape rules below):
 - shape and length rules from Prompt 7A (intro <= 55 words; why 60-90; 3 tips; 4 FAQ answers of 40-60 words,
   each with at least one number)
 - every number in the text appears in the page data (or is a count derived from it)
@@ -173,7 +173,89 @@ for (a, ta), (b, tb) in itertools.combinations(texts.items(), 2):
     checked += 1
     if j >= 0.30:
         errors.append(f"{a} and {b}: {j:.0%} overlap (max 30%)")
-print(f"{len(texts) + len(sim_texts)} content files, {checked:,} checks, {len(errors)} problems")
+# ---- content/generated/careers/<slug>.json (career profiles)
+def career_facts(slug):
+    with urllib.request.urlopen(f"{BASE}/content-facts/careers/{slug}", timeout=60) as r:
+        return json.loads(r.read())
+
+
+def career_numbers(f):
+    nums = set()
+    def add(v):
+        if v is not None:
+            nums.add(abs(int(round(v))))
+    w = f["wage"] or {}
+    for k in ("median", "p10", "p25", "p75", "p90", "employment"):
+        add(w.get(k))
+    med = w.get("median")
+    for s in f["states"]:
+        add(s["median"]); add(s["employment"])
+        if med:  # "X% above the national median" for a state
+            add((s["median"] - med) / med * 100)
+    if med and w.get("p10") and w.get("p90"):
+        add((w["p90"] - w["p10"]) / w["p10"] * 100)
+        add(w["p90"] / w["p10"])
+    add(len(f["states"]))
+    add(f["job_zone"])
+    for e in f["education_dist"]:
+        add(e["pct"])
+    for v in (f["riasec"] or {}).values():
+        nums.add(round(v, 2)); add(v)
+    for sk in f["essential_skills"] + f["knowledge"]:
+        nums.add(sk["value"]); add(sk["value"])
+    for x in f["out"]:
+        add(x["match"]); add(x["median"]); add(x["payChange"])
+    for x in f["into"]:
+        add(x["match"]); add(x["median"])
+        if med and x["median"]:
+            add((x["median"] - med) / med * 100)
+    for x in f["fit"]:  # percentile is 0-1; "above 98% of U.S. jobs" (floor) or rounded
+        for v in (x["percentile"] * 100, 100 - x["percentile"] * 100):
+            add(v); nums.add(int(v))
+    nums.update([len(f["majors"]), len(f["out"]), len(f["into"]), len(f["tasks"]), len(f["downsides"])])
+    nums.update(range(0, 11))
+    nums.update({31, 2025, 2026, 2018, 2020, 50, 40})  # 50 states, 40-hour week
+    return nums
+
+
+car_texts = {}
+for f in sorted((ROOT / "content" / "generated" / "careers").glob("*.json")) if (ROOT / "content" / "generated" / "careers").exists() else []:
+    slug = f.stem
+    c = json.loads(f.read_text())
+    fx = career_facts(slug)
+    tag = f"careers/{slug}"
+    if c.get("status") not in ("draft", "approved"):
+        errors.append(f"{tag}: bad status")
+    if not 70 <= words(c["overview"]) <= 110:
+        errors.append(f"{tag}: overview {words(c['overview'])} words (70-110)")
+    if not 40 <= words(c["pay"]) <= 75:
+        errors.append(f"{tag}: pay {words(c['pay'])} words (40-75)")
+    if len(c["faq"]) != 4:
+        errors.append(f"{tag}: {len(c['faq'])} FAQ (4)")
+    for qa in c["faq"]:
+        n = words(qa["a"])
+        if not 40 <= n <= 60:
+            errors.append(f"{tag}: FAQ answer {n} words (40-60): {qa['q']}")
+        if not numbers_in(qa["a"]):
+            errors.append(f"{tag}: FAQ answer without a number: {qa['q']}")
+    allowed = career_numbers(fx)
+    blob = " ".join([c["overview"], c["pay"], *[q["q"] + " " + q["a"] for q in c["faq"]]])
+    for tok, v in numbers_in(blob):
+        checked += 1
+        if v not in allowed and round(v) not in allowed and round(v, 2) not in allowed:
+            errors.append(f"{tag}: number {tok} is not in the page data")
+    for b in BANNED:
+        if re.search(b, blob, re.I):
+            errors.append(f"{tag}: banned phrase /{b}/")
+    car_texts[tag] = blob
+for (a, ta), (b, tb) in itertools.combinations(car_texts.items(), 2):
+    sa, sb = shingles(ta), shingles(tb)
+    j = len(sa & sb) / max(1, len(sa | sb))
+    checked += 1
+    if j >= 0.30:
+        errors.append(f"{a} and {b}: {j:.0%} overlap (max 30%)")
+
+print(f"{len(texts) + len(sim_texts) + len(car_texts)} content files, {checked:,} checks, {len(errors)} problems")
 for e in errors[:40]:
     print("  -", e)
 sys.exit(1 if errors else 0)

@@ -1,0 +1,23 @@
+{
+ "status": "approved",
+ "overview": "Data scientists turn large, messy data sets into answers and predictions. They clean and process data, build statistical and machine learning models, test them, and use charts to explain results to decision makers. O*NET rates mathematics at 4.38 out of 5 for this job and their investigative interest at 6.98 out of 7. Most hold at least a bachelor's degree in computer science, statistics or math, and many have a master's. The BLS May 2025 median is $120,230 across 262,440 jobs. The work is mostly independent, at a desk, with tight deadlines.",
+ "pay": "Data scientists earn a median of $120,230, and the top 10% earn $199,130 or more. Washington has the highest state median at $163,350, 36% above the national figure, followed by California at $141,590. California also has the most jobs, 39,310, ahead of Texas with 25,860.",
+ "faq": [
+  {
+   "q": "How much do data scientists make?",
+   "a": "The BLS May 2025 median is $120,230 a year. The middle half earn between $85,660 and $158,880. Washington, California and Maryland ($136,370) have the highest state medians, while Louisiana ($78,760) and Mississippi ($69,490) pay the least. Tech and finance firms usually pay the most."
+  },
+  {
+   "q": "What degree do you need to be a data scientist?",
+   "a": "Most data scientists have a bachelor's degree in computer science, statistics, math or a related field, and O*NET places the job in Job Zone 4. Many also hold a master's degree. There are 12 related majors, including artificial intelligence and data modeling."
+  },
+  {
+   "q": "What skills do data scientists need?",
+   "a": "O*NET rates mathematics at 4.38 out of 5 for this job and critical thinking at 4.25. Knowledge of computers and electronics is rated 4.24. Programming, statistics and clear charts matter, and in O*NET data the job ranks above 98% of U.S. jobs for working on your own."
+  },
+  {
+   "q": "What jobs are similar to data scientist?",
+   "a": "The closest moves are Data Warehousing Specialists (84% match), Database Architects (84%) and Computer and Information Research Scientists (81%), based on O*NET 31.0. Research scientists earn $140,300, 17% more, according to BLS May 2025 data, and Database Architects earn $139,500, 16% more."
+  }
+ ]
+}
