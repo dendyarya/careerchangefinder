@@ -48,6 +48,7 @@ export async function sitemapEntries(name: SitemapName): Promise<Entry[]> {
         "/tests/results/big-five",
         "/tests/results/holland-codes",
         ...STATIC_SLUGS.map((s) => `/${s}`),
+        "/research",
         ...STUDIES.map((s) => `/research/${s.slug}`),
         ...RESULT_SLUGS.filter((t) => isPublished("tests", `results/${t}`)).map((t) => `/tests/results/${t}`),
       ].map((p) => e(p));

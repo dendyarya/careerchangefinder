@@ -82,7 +82,7 @@ function Drawer({ menus, onClose, onSearch }: { menus: NavMenu[]; onClose: () =>
       role="dialog"
       aria-modal="true"
       aria-label="Menu"
-      className="fixed inset-0 z-50 flex flex-col bg-white md:hidden"
+      className="fixed inset-0 z-50 flex flex-col bg-white xl:hidden"
       onKeyDown={(e) => e.key === "Escape" && onClose()}
     >
       <div className="flex items-center gap-2.5 border-b-[1.5px] border-mist px-4 py-3.5">
@@ -217,12 +217,12 @@ export function Header({ careerCount, menus, popular }: { careerCount: number; m
         Skip to content
       </a>
       <header ref={headerRef} className="relative z-40 border-b-[1.5px] border-mist bg-white">
-        <div className="mx-auto flex max-w-[1312px] items-center gap-2.5 px-4 py-3.5 md:gap-6 md:px-8">
-          <div className="flex-1 md:flex-none">
+        <div className="mx-auto flex max-w-[1312px] items-center gap-2.5 px-4 py-3.5 md:gap-4 md:px-8 2xl:gap-6">
+          <div className="flex-1 xl:flex-none">
             <Logo />
           </div>
-          <nav aria-label="Main" className="hidden flex-1 justify-center md:flex">
-            <ul className="m-0 flex list-none gap-[30px] p-0 text-ui font-bold">
+          <nav aria-label="Main" className="hidden flex-1 justify-center xl:flex">
+            <ul className="m-0 flex list-none gap-6 p-0 text-[16px] font-bold 2xl:gap-[30px] 2xl:text-ui">
               {menus.map((m) => {
                 const open = openMenu === m.id;
                 const current = pathname === m.href || pathname.startsWith(`${m.href}/`);
@@ -235,7 +235,7 @@ export function Header({ careerCount, menus, popular }: { careerCount: number; m
                       aria-controls={`mega-${m.id}`}
                       aria-current={current ? "true" : undefined}
                       onClick={() => setOpenMenu(open ? null : m.id)}
-                      className={`-mx-3 -my-1.5 flex items-center gap-1.5 rounded-full px-3 py-1.5 ${open ? "bg-mist text-ink" : current ? "text-ink" : "text-slate hover:text-ink"}`}
+                      className={`-mx-3 -my-1.5 flex items-center gap-1.5 rounded-full px-3 py-1.5 whitespace-nowrap ${open ? "bg-mist text-ink" : current ? "text-ink" : "text-slate hover:text-ink"}`}
                     >
                       {m.label} <Chevron open={open} />
                     </button>
@@ -258,7 +258,7 @@ export function Header({ careerCount, menus, popular }: { careerCount: number; m
           </button>
           <Link
             href={CTA.href}
-            className="hidden h-12 shrink-0 items-center rounded-full bg-primary px-[22px] text-ui font-extrabold whitespace-nowrap text-white no-underline hover:bg-ink hover:text-white md:inline-flex"
+            className="hidden h-12 shrink-0 items-center rounded-full bg-primary px-[18px] text-[16px] font-extrabold whitespace-nowrap text-white no-underline hover:bg-ink hover:text-white lg:inline-flex 2xl:px-[22px] 2xl:text-ui"
           >
             {CTA.label}
           </Link>
@@ -267,7 +267,7 @@ export function Header({ careerCount, menus, popular }: { careerCount: number; m
             aria-label="Open menu"
             aria-haspopup="dialog"
             onClick={() => setDrawerOpen(true)}
-            className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-[10px] bg-primary text-white md:hidden"
+            className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-[10px] bg-primary text-white xl:hidden"
           >
             <MenuIcon />
           </button>
@@ -277,7 +277,7 @@ export function Header({ careerCount, menus, popular }: { careerCount: number; m
       {active && (
         <div
           aria-hidden="true"
-          className="fixed inset-0 z-30 hidden bg-[rgba(28,28,28,0.28)] md:block"
+          className="fixed inset-0 z-30 hidden bg-[rgba(28,28,28,0.28)] xl:block"
           onClick={() => setOpenMenu(null)}
         />
       )}

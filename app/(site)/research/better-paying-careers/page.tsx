@@ -67,7 +67,7 @@ export default function Page() {
     <>
       <section className="border-b-[1.5px] border-mist bg-ice">
         <div className="mx-auto flex max-w-[1180px] flex-col gap-4 px-4 pt-8 pb-10 md:px-8">
-          <Breadcrumbs items={[{ name: "Research" }, { name: "Better-paying careers" }]} />
+          <Breadcrumbs items={[{ name: "Research", href: "/research" }, { name: "Better-paying careers" }]} />
           <PageTitle before="Nearly 9 in 10 U.S. careers have a " highlight="better-paying move" after=" within reach" />
           <p className="m-0 max-w-[760px] text-[20px] text-slate">
             We checked every U.S. career with its own BLS pay figure for a close match that pays at least {raisePct}% more

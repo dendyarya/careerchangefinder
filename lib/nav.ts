@@ -241,13 +241,40 @@ export const MENUS: NavMenu[] = [
         title: "Resources",
         links: [
           { label: "Glossary", href: "/glossary" },
-          { label: "Research: Better-Paying Careers", href: "/research/better-paying-careers" },
-          { label: "Research: Same Job, Different Pay", href: "/research/same-job-different-pay" },
           { label: "Methodology", href: "/methodology" },
           { label: "Data Sources & Licenses", href: "/data-sources" },
         ],
       },
     ],
+  },
+  {
+    id: "research",
+    label: "Research",
+    href: "/research",
+    groups: [
+      {
+        title: "Data Studies",
+        links: [
+          { label: "Same Job, Different Pay", href: "/research/same-job-different-pay" },
+          { label: "Better-Paying Careers Within Reach", href: "/research/better-paying-careers" },
+        ],
+        more: { label: "All research →", href: "/research" },
+      },
+      {
+        title: "About Our Data",
+        links: [
+          { label: "Methodology", href: "/methodology" },
+          { label: "Data Sources & Licenses", href: "/data-sources" },
+          { label: "Glossary", href: "/glossary" },
+        ],
+      },
+    ],
+    promo: {
+      title: "Use our data",
+      text: "Journalists and researchers may quote and chart any figure with a link. Tables come as CSV downloads.",
+      cta: "See all studies",
+      href: "/research",
+    },
   },
 ];
 
@@ -285,6 +312,7 @@ export const FOOTER_COLUMNS: NavGroup[] = [
     title: "About",
     links: [
       { label: "About", href: "/about" },
+      { label: "Research", href: "/research" },
       { label: "Methodology", href: "/methodology" },
       { label: "Data Sources & Licenses", href: "/data-sources" },
       { label: "Privacy Policy", href: "/privacy" },
