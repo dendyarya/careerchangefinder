@@ -1,0 +1,28 @@
+{
+ "status": "approved",
+ "intro": "Computer programmers write and debug code with precision, a skill at the center of data science and engineering careers. The closest of the 25 careers below is Data Scientists, with an 81% skill match and a BLS May 2025 median of $120,230, which is 20% more than the $100,390 computer programmers earn.",
+ "why_it_works": "Programming means turning requirements into working code, testing edge cases and fixing what breaks. O*NET rates programming at 4.75 out of 5 for this job, one of the highest skill scores on the site, and complex problem solving at 3.75. Data science, hardware engineering and IT management build on the same base. Most matches need no new degree. The gaps are teaching others and service.",
+ "tips": [
+  "Data science is the closest step up; add statistics and machine learning to your coding.",
+  "Computer and Information Systems Managers earn $175,140, which is 74% more, after leading teams.",
+  "Mentor junior developers now; instructing is your most common skill gap."
+ ],
+ "faq": [
+  {
+   "q": "What jobs can former computer programmers do?",
+   "a": "The closest matches are Data Scientists (81%), Computer Hardware Engineers (77%) and Computer and Information Systems Managers (74%), based on O*NET 31.0. Statisticians are 72% matched and earn $105,650, which is 5% more than programmers, though they usually need a graduate degree."
+  },
+  {
+   "q": "Which careers for computer programmers pay more?",
+   "a": "12 of the 25 matches pay more than $100,390. IT managers earn $175,140 (74% more), Physicists $172,250 (72% more) and Computer Hardware Engineers $161,740 (61% more), according to BLS May 2025 data. Physics usually needs a graduate degree."
+  },
+  {
+   "q": "Do computer programmers need another degree?",
+   "a": "Usually not. 21 of the 25 matches need no more education than programmers already have, while 4 usually need a graduate degree. A bachelor's degree is common, held by 48% of workers in a close match, and portfolios count heavily."
+  },
+  {
+   "q": "What skills should computer programmers learn?",
+   "a": "The skills that most often need work are instructing, equipment selection, operation and control and service orientation. Systems analysis already rates 3.38 out of 5 for programmers in O*NET, so leading people and working with users are the main steps toward management."
+  }
+ ]
+}

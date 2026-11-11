@@ -1,0 +1,28 @@
+{
+ "status": "approved",
+ "intro": "Web and interface designers combine design judgment with programming, a mix that data and technology careers reward. The closest of the 25 careers below is business intelligence analysis, with a 74% match, while Data Scientists are 72% matched and earn a BLS May 2025 median of $120,230, or 16% more.",
+ "why_it_works": "Designing an interface means understanding users, sketching options, writing front-end code and testing what works. O*NET rates judgment at 3.5 out of 5 for this job, complex problem solving at 3.38 and programming at 3.25. Data science, technical writing and IT management use the same blend of analysis and building. Most matches need no new degree. The gaps are systems analysis and teaching others.",
+ "tips": [
+  "Data science is the closest well-paid move if you enjoy analytics and experiments.",
+  "Computer and Information Systems Managers earn $175,140, which is 68% more, after leading teams.",
+  "Technical Writers are a 70% match if you like explaining products, though pay is lower at $90,390."
+ ],
+ "faq": [
+  {
+   "q": "What jobs can former web designers do?",
+   "a": "The closest matches are business intelligence analysts (74%), Data Scientists (72%) and Technical Writers (70%), based on O*NET 31.0. Clinical Data Managers are 69% matched, with a median of $120,230 for their broader group, compared with the $104,000 median for web and digital interface designers."
+  },
+  {
+   "q": "Which careers for web designers pay more?",
+   "a": "9 of the 25 matches pay more. Computer and Information Systems Managers earn $175,140 (68% more), Computer Hardware Engineers $161,740 (56% more) and Aerospace Engineers $134,960 (30% more), according to BLS May 2025 data. Engineering roles usually need an engineering degree."
+  },
+  {
+   "q": "Do web designers need another degree to switch?",
+   "a": "Usually not. 21 of the 25 matches need no more education than web and interface designers already have, while 4 usually need a graduate degree. A bachelor's degree is common, held by 68% of workers in a close match, but a strong portfolio often matters as much."
+  },
+  {
+   "q": "What skills should web designers build?",
+   "a": "The skills that most often need work are systems analysis, instructing, systems evaluation and complex problem solving. Operations analysis already rates 3 out of 5 for this job in O*NET, so analyzing systems and data is the main step toward analytics and management."
+  }
+ ]
+}
