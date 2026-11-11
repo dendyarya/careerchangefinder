@@ -1,1 +1,1 @@
-{"code":"35-2013.00","bls_code":"35-2013","states":[{"state":"New York","abbr":"NY","median":37440,"p10":36310,"p90":42860,"employment":140}]}
+{"code":"35-2013.00","bls_code":"35-2013","states":[{"state":"New York","abbr":"NY","median":37440,"p10":36310,"p25":37120,"p75":41860,"p90":42860,"hourly_median":18.0,"employment":140,"jobs_per_1000":0.015,"lq":2.12,"emp_rse":29.2}]}

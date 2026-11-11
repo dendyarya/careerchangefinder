@@ -1,1 +1,1 @@
-{"code":"51-7031.00","bls_code":"51-7031","states":[{"state":"Ohio","abbr":"OH","median":35900,"p10":34800,"p90":37330,"employment":null}]}
+{"code":"51-7031.00","bls_code":"51-7031","states":[{"state":"Ohio","abbr":"OH","median":35900,"p10":34800,"p25":34800,"p75":36660,"p90":37330,"hourly_median":17.26,"employment":null,"jobs_per_1000":null,"lq":null,"emp_rse":null}]}

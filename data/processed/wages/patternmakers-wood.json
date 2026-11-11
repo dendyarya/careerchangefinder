@@ -1,1 +1,1 @@
-{"code":"51-7032.00","bls_code":"51-7032","states":[{"state":"Pennsylvania","abbr":"PA","median":55020,"p10":49220,"p90":81100,"employment":null}]}
+{"code":"51-7032.00","bls_code":"51-7032","states":[{"state":"Pennsylvania","abbr":"PA","median":55020,"p10":49220,"p25":50120,"p75":55920,"p90":81100,"hourly_median":26.45,"employment":null,"jobs_per_1000":null,"lq":null,"emp_rse":null}]}

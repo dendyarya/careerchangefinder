@@ -41,6 +41,12 @@ def profile(df: pd.DataFrame, scale: str) -> pd.DataFrame:
                            values="Data Value", aggfunc="mean")
 
 
+def decimal(v, places):
+    if isinstance(v, (int, float)) and not pd.isna(v):
+        return round(float(v), places)
+    return None
+
+
 def money(v):
     if isinstance(v, (int, float)) and not pd.isna(v):
         return int(round(v))
@@ -69,12 +75,26 @@ def load_bls():
             continue
         states.setdefault(r["OCC_CODE"], []).append({
             "state": r["AREA_TITLE"], "abbr": r["PRIM_STATE"], "median": med,
-            "p10": money(r["A_PCT10"]), "p90": money(r["A_PCT90"]),
+            "p10": money(r["A_PCT10"]), "p25": money(r["A_PCT25"]),
+            "p75": money(r["A_PCT75"]), "p90": money(r["A_PCT90"]),
+            "hourly_median": decimal(r["H_MEDIAN"], 2),
             "employment": money(r["TOT_EMP"]),
+            # jobs per 1,000 jobs in the state, location quotient (state share / U.S. share),
+            # relative standard error of the employment estimate (%), all as published by BLS
+            "jobs_per_1000": decimal(r["JOBS_1000"], 3), "lq": decimal(r["LOC_QUOTIENT"], 2),
+            "emp_rse": decimal(r["EMP_PRSE"], 1),
         })
     for v in states.values():
         v.sort(key=lambda x: -x["median"])
     return wages, states
+
+
+def load_state_totals():
+    """All occupations (00-0000) per state: total jobs and the median pay of all jobs in the state."""
+    st = pd.read_excel(RAW / "bls" / C.BLS_STATE, engine="openpyxl")
+    st = st[(st["OCC_CODE"] == "00-0000") & (~st["AREA_TITLE"].isin(["Guam", "Puerto Rico", "Virgin Islands"]))]
+    return {r["PRIM_STATE"]: {"state": r["AREA_TITLE"], "employment": money(r["TOT_EMP"]), "median": money(r["A_MEDIAN"]),
+                               "hourly_median": decimal(r["H_MEDIAN"], 2)} for _, r in st.iterrows()}
 
 
 # ---------------------------------------------------------------- helpers
@@ -448,6 +468,7 @@ def main() -> None:
         w = occ_wage[code]
         if w and code[:7] in states:
             dump(OUT / "wages" / f"{slugs[code]}.json", {"code": code, "bls_code": code[:7], "states": states[code[:7]]})
+    dump(OUT / "state_totals.json", load_state_totals())
 
     print("Writing transitions ...")
     all_tr = {code: transitions(code) for code in codes if not thin[code]}

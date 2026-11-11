@@ -1,1 +1,1 @@
-{"code":"51-2061.00","bls_code":"51-2061","states":[{"state":"Pennsylvania","abbr":"PA","median":71770,"p10":56310,"p90":78280,"employment":null}]}
+{"code":"51-2061.00","bls_code":"51-2061","states":[{"state":"Pennsylvania","abbr":"PA","median":71770,"p10":56310,"p25":64790,"p75":78270,"p90":78280,"hourly_median":34.5,"employment":null,"jobs_per_1000":null,"lq":null,"emp_rse":null}]}

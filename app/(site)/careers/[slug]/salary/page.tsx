@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdSlot } from "@/components/AdSlot";
 import { Breadcrumbs, FaqSection, H2, JsonLd, PageTitle, RelatedLinks, SourcesBox, UpdatedLine } from "@/components/page/Common";
-import { money, payChangeTone, signedPct } from "@/lib/format";
+import { money, payChangeTone, per1000, signedPct } from "@/lib/format";
 import { buildSalary, salarySlugs } from "@/lib/salary";
 import { pageMeta } from "@/lib/seo";
 import { SITE } from "@/lib/site";
@@ -104,6 +104,52 @@ export default async function SalaryPage({ params }: { params: Promise<{ slug: s
         </p>
       </section>
 
+      <div className="grid gap-10 lg:grid-cols-2">
+        {m.concentrated.length > 0 && (
+          <section aria-labelledby="h-common" className="flex flex-col gap-4">
+            <H2 id="h-common">Where the job is most common</H2>
+            <p className="m-0">
+              Jobs per 1,000 jobs in each state. A high share means employers there rely on {m.nameLower} more than
+              the U.S. average.
+            </p>
+            <ol className="m-0 flex list-none flex-col gap-2 p-0">
+              {m.concentrated.map((r, i) => (
+                <li key={r.abbr} className="flex items-baseline justify-between gap-3 border-b border-mist pb-2">
+                  <Link href={`/careers/${m.o.slug}/salary/${r.slug}`} className="font-bold text-ink">
+                    {i + 1}. {r.state}
+                  </Link>
+                  <span className="tabular text-small">
+                    <strong>{per1000(r.jobs_per_1000!)}</strong> per 1,000
+                    {r.lq != null ? ` · ${r.lq.toFixed(2)}× U.S.` : ""}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+        {m.vsLocal.length > 0 && (
+          <section aria-labelledby="h-local" className="flex flex-col gap-4">
+            <H2 id="h-local">Where it pays most compared with local jobs</H2>
+            <p className="m-0">
+              Median pay for {m.nameLower} divided by the median for all jobs in the same state. This shows how the job
+              compares with other work nearby, not living costs.
+            </p>
+            <ol className="m-0 flex list-none flex-col gap-2 p-0">
+              {m.vsLocal.map((r, i) => (
+                <li key={r.abbr} className="flex items-baseline justify-between gap-3 border-b border-mist pb-2">
+                  <Link href={`/careers/${m.o.slug}/salary/${r.slug}`} className="font-bold text-ink">
+                    {i + 1}. {r.state}
+                  </Link>
+                  <span className="tabular text-small">
+                    <strong>{r.ratio.toFixed(2)}×</strong> the state median ({money(r.median)} vs. {money(r.local)})
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+      </div>
+
       <FaqSection title={`${m.name} salary questions`} items={m.faq} />
       <RelatedLinks
         links={[
@@ -115,7 +161,8 @@ export default async function SalaryPage({ params }: { params: Promise<{ slug: s
       />
       <SourcesBox>
         Pay and employment: U.S. Bureau of Labor Statistics, Occupational Employment and Wage Statistics, May 2025
-        (national and state files).
+        (national and state files, including jobs per 1,000, location quotients and each state&apos;s all-occupations
+        median).
       </SourcesBox>
       <JsonLd
         data={{

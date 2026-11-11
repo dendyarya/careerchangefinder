@@ -1,6 +1,6 @@
 /**
  * Sitemap entries, one list per section (runbook Tahap 6). Only published pages that are indexed:
- * no thin career profiles, and state salary pages only above STATE_INDEX_MIN_EMPLOYMENT.
+ * no thin career profiles, and state salary pages only when stateIndexable() (enough jobs, reliable BLS estimate).
  * scripts/qa/check_sitemaps.py checks every URL against the built pages.
  */
 import "server-only";
@@ -12,7 +12,7 @@ import { listGuides } from "@/lib/guides";
 import { STATIC_SLUGS } from "@/lib/staticPages";
 import { STUDIES } from "@/lib/studies";
 import { isPublished } from "@/lib/published";
-import { salarySlugs, stateSlug, STATE_INDEX_MIN_EMPLOYMENT } from "@/lib/salary";
+import { salarySlugs, stateIndexable, stateSlug } from "@/lib/salary";
 import { statePay } from "@/lib/careerProfile";
 import { similarSlugs } from "@/lib/similarJobs";
 import { SITUATION_SLUGS } from "@/lib/situations";
@@ -86,7 +86,7 @@ export async function sitemapEntries(name: SitemapName): Promise<Entry[]> {
     case "salary-states":
       return salarySlugs().flatMap((s) =>
         statePay(s)
-          .filter((st) => st.employment != null && st.employment >= STATE_INDEX_MIN_EMPLOYMENT)
+          .filter((st) => stateIndexable(st))
           .map((st) => `/careers/${s}/salary/${stateSlug(st.state)}`)
           .filter((p) => isPublished("salary-states", p.replace("/careers/", "").replace("/salary/", "/")))
           .map((p) => e(p)),

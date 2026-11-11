@@ -24,8 +24,18 @@ export interface StatePay {
   abbr: string;
   median: number;
   p10: number | null;
+  p25: number | null;
+  p75: number | null;
   p90: number | null;
+  /** BLS H_MEDIAN (null when BLS publishes annual pay only) */
+  hourly_median: number | null;
   employment: number | null;
+  /** jobs per 1,000 jobs in the state, as published by BLS */
+  jobs_per_1000: number | null;
+  /** location quotient: the job's share of state employment / its share of U.S. employment */
+  lq: number | null;
+  /** relative standard error of the employment estimate, % */
+  emp_rse: number | null;
 }
 
 export function statePay(slug: string): StatePay[] {

@@ -32,3 +32,6 @@ export const clip = (s: string, max: number) => {
   const cut = s.slice(0, max - 1);
   return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
 };
+
+/** BLS "jobs per 1,000 jobs" exactly as published (up to 3 decimals), e.g. 18.609 or 0.38. */
+export const per1000 = (n: number) => String(n);

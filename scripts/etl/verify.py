@@ -39,6 +39,16 @@ def rows(path, sheet=None):
     wb.close()
 
 
+def dec(v):
+    """BLS decimal cell (hourly pay, jobs per 1,000, location quotient, RSE) -> float as published, or None."""
+    if v is None:
+        return None
+    try:
+        return float(str(v).replace(",", "").strip())
+    except ValueError:
+        return None
+
+
 def num(v):
     """BLS cell -> int or None ('*', '**', '#' and blanks mean no figure)."""
     if v is None:
@@ -313,10 +323,33 @@ for f in glob.glob(str(P / "wages" / "*.json")):
         if r is None:
             err(f"{d['bls_code']} {s['abbr']} not in state file")
             continue
-        for k, col in (("median", "A_MEDIAN"), ("p10", "A_PCT10"), ("p90", "A_PCT90"), ("employment", "TOT_EMP")):
+        for k, col in (("median", "A_MEDIAN"), ("p10", "A_PCT10"), ("p25", "A_PCT25"), ("p75", "A_PCT75"),
+                       ("p90", "A_PCT90"), ("employment", "TOT_EMP")):
             bump("state wage cells")
             if s[k] != num(r[col]):
                 err(f"{d['bls_code']} {s['abbr']} {k} {s[k]} != BLS {r[col]}")
+        for k, col in (("hourly_median", "H_MEDIAN"), ("jobs_per_1000", "JOBS_1000"), ("lq", "LOC_QUOTIENT"), ("emp_rse", "EMP_PRSE")):
+            bump("state wage cells")
+            if s[k] != dec(r[col]):
+                err(f"{d['bls_code']} {s['abbr']} {k} {s[k]} != BLS {r[col]}")
+
+print("BLS state totals ...")
+tot = json.loads((P / "state_totals.json").read_text())
+src = {str(r["PRIM_STATE"]).strip(): r for r in rows(RAW / "bls" / "state_M2025_dl.xlsx") if str(r["OCC_CODE"]).strip() == "00-0000"}
+for a, t in tot.items():
+    r = src.get(a)
+    if r is None:
+        err(f"state total {a} not in BLS file")
+        continue
+    for k, col in (("employment", "TOT_EMP"), ("median", "A_MEDIAN")):
+        bump("state total cells")
+        if t[k] != num(r[col]):
+            err(f"state total {a} {k} {t[k]} != BLS {r[col]}")
+    bump("state total cells")
+    if t["hourly_median"] != dec(r["H_MEDIAN"]):
+        err(f"state total {a} hourly {t['hourly_median']} != BLS {r['H_MEDIAN']}")
+if len(tot) != 51:
+    err(f"state totals: {len(tot)} areas, expected 51")
 
 # ---------------------------------------------------------------- NCES
 print("NCES crosswalk ...")
