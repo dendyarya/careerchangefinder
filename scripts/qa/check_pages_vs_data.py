@@ -138,6 +138,7 @@ for (kind, slug), titles in expected.items():
         errors.append(f"listing {kind}/{slug}: order differs at row {diff + 1} ({len(got)} vs {len(titles)} rows)")
 
 # ---------------------------------------------------------------- salary by state
+TOTALS = json.loads((P / "state_totals.json").read_text())
 for slug, o in occ.items():
     wf = P / "wages" / f"{slug}.json"
     f = APP / "careers" / slug / "salary.html"
@@ -154,14 +155,22 @@ for slug, o in occ.items():
     np_ = lambda v: "Not published" if v is None else money(v)
     if len(rows) != len(states):
         errors.append(f"salary {slug}: {len(rows)} rows != {len(states)}")
-    for i, (row, s_) in enumerate(zip(rows, states)):
-        cells = [text(c) for c in re.findall(r"<td[^>]*>(.*?)</td>", row, re.S)]
+    rows_html = re.findall(r"<tr([^>]*)>(.*?)</tr>", re.search(r"<tbody>(.*?)</tbody>", f.read_text(), re.S).group(1), re.S)
+    for i, ((attrs, row), s_) in enumerate(zip(rows_html, states)):
+        cells = [text(c) for c in re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", row, re.S)]
         vs = None if not nat else math.floor((s_["median"] - nat) / nat * 100 + 0.5)  # JS Math.round
+        tot = TOTALS.get(s_["abbr"])
+        vl = None if not tot else math.floor((s_["median"] - tot["median"]) / tot["median"] * 100 + 0.5)
         exp = (str(i + 1), s_["state"], money(s_["median"]), pct(vs), np_(s_["p10"]), np_(s_["p90"]),
-               "Not published" if s_["employment"] is None else f"{s_['employment']:,}")
-        checked += 7
+               "Not published" if s_["employment"] is None else f"{s_['employment']:,}",
+               "Not published" if s_["jobs_per_1000"] is None else str(s_["jobs_per_1000"]).removesuffix(".0"),
+               pct(vl))
+        checked += 9
         if tuple(cells) != exp:
             errors.append(f"salary {slug} row {i + 1}: page {tuple(cells)} != data {exp}")
+        anchor = re.sub(r"[^a-z]+", "-", s_["state"].lower())
+        if f'id="{anchor}"' not in attrs:  # old /careers/x/salary/<state> URLs redirect to this anchor
+            errors.append(f"salary {slug} row {i + 1}: no id={anchor}")
 
 # ---------------------------------------------------------------- career change at 30/40/50 (rules recomputed)
 age = json.loads((P / "situations" / "age.json").read_text())
