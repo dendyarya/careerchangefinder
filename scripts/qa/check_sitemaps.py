@@ -2,8 +2,9 @@
 
 Usage: python3 scripts/qa/check_sitemaps.py http://127.0.0.1:3210 [--production]
 - index lists every section sitemap; each has at most 50,000 URLs and valid lastmod dates
-- every URL (all non-state pages, a sample of 400 state pages) answers 200 and is not a redirect
-- no thin career profile and no state page under the index floor is listed
+- every URL answers 200 and is not a redirect
+- no thin career profile and no state salary page is listed; old state salary URLs redirect (301) to the
+  career's salary page, on that state's row
 - with --production: no listed page carries a noindex robots tag
 """
 import json
@@ -19,7 +20,6 @@ P = ROOT / "data" / "processed"
 BASE = sys.argv[1].rstrip("/")
 PROD = "--production" in sys.argv
 SITE = "https://careerchangefinder.com"
-MIN_EMP = 5000
 errors, checked = [], 0
 
 
@@ -64,25 +64,29 @@ dups = len(urls)
 state = [u for u in urls if re.fullmatch(r"/careers/[^/]+/salary/[^/]+", u)]
 other = [u for u in urls if u not in set(state)]
 for u in state:
-    _, slug, _, st = u.strip("/").split("/")
-    f = P / "wages" / f"{slug}.json"
-    rec = next((s for s in json.loads(f.read_text())["states"] if re.sub(r"[^a-z]+", "-", s["state"].lower()) == st), None) if f.exists() else None
-    checked += 1
-    if not rec or rec["employment"] is None or rec["employment"] < MIN_EMP:
-        errors.append(f"{u}: state page under the index floor or unknown")
+    errors.append(f"{u}: state salary page in sitemap (these redirect now)")
+for old, new in (("/careers/registered-nurses/salary/ohio", "/careers/registered-nurses/salary#ohio"),
+                 ("/careers/electricians/salary/new-york", "/careers/electricians/salary#new-york")):
+    try:
+        opener.open(BASE + old, timeout=60)
+        errors.append(f"{old}: no redirect")
+    except urllib.error.HTTPError as e:
+        checked += 1
+        if e.code != 301 or e.headers.get("Location", "").replace(BASE, "") != new:
+            errors.append(f"{old}: {e.code} -> {e.headers.get('Location')} (want 301 -> {new})")
 for u in other:
     m = re.fullmatch(r"/careers/([^/]+)", u)
     if m and m.group(1) in occ and occ[m.group(1)]["thin"]:
         errors.append(f"{u}: thin profile in sitemap")
 random.seed(7)
-for u in other + random.sample(state, min(400, len(state))):
+for u in other:
     c, body = get(u)
     checked += 1
     if c != 200:
         errors.append(f"{u}: HTTP {c}")
     elif PROD and re.search(r'<meta name="robots" content="noindex', body):
         errors.append(f"{u}: noindex page in sitemap")
-print(f"{len(maps)} sitemaps, {len(urls):,} URLs ({len(state):,} state pages); {checked:,} checks, {len(errors)} problems")
+print(f"{len(maps)} sitemaps, {len(urls):,} URLs; {checked:,} checks, {len(errors)} problems")
 for k in sorted(set(urls.values())):
     print(f"  {k:24} {sum(1 for v in urls.values() if v == k):>6,}")
 for e in errors[:30]:

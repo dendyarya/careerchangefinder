@@ -65,7 +65,7 @@ export default async function SalaryPage({ params }: { params: Promise<{ slug: s
       <section aria-labelledby="h-states" className="flex flex-col gap-5">
         <H2 id="h-states">Median pay in {m.statesLabel}</H2>
         <div className="overflow-x-auto rounded-lg border-[1.5px] border-mist">
-          <table className="w-full min-w-[640px] border-collapse text-body">
+          <table className="w-full min-w-[880px] border-collapse text-body">
             <caption className="sr-only">{m.name} pay by state, highest median first</caption>
             <thead>
               <tr className="border-b-[1.5px] border-mist bg-panel text-left">
@@ -76,22 +76,24 @@ export default async function SalaryPage({ params }: { params: Promise<{ slug: s
                 <th scope="col" className="px-4 py-3.5 text-small font-extrabold">Lowest 10%</th>
                 <th scope="col" className="px-4 py-3.5 text-small font-extrabold">Top 10%</th>
                 <th scope="col" className="px-4 py-3.5 text-small font-extrabold">Jobs</th>
+                <th scope="col" className="px-4 py-3.5 text-small font-extrabold">Per 1,000 jobs</th>
+                <th scope="col" className="px-4 py-3.5 text-small font-extrabold">vs. all jobs in state</th>
               </tr>
             </thead>
             <tbody>
               {m.rows.map((r) => (
-                <tr key={r.abbr} className="border-t border-mist">
+                <tr key={r.abbr} id={r.slug} className="scroll-mt-24 border-t border-mist target:bg-ice">
                   <td className="px-4 py-2.5 font-display font-bold text-muted">{r.rank}</td>
-                  <td className="px-4 py-2.5">
-                    <Link href={`/careers/${m.o.slug}/salary/${r.slug}`} className="font-bold text-ink">
-                      {r.state}
-                    </Link>
-                  </td>
+                  <th scope="row" className="px-4 py-2.5 text-left font-bold">
+                    {r.state}
+                  </th>
                   <td className="px-4 py-2.5 font-display font-semibold tabular">{money(r.median)}</td>
                   <td className={`px-4 py-2.5 font-bold tabular ${payChangeTone(r.vsNational)}`}>{signedPct(r.vsNational)}</td>
                   <td className="px-4 py-2.5 tabular">{np(r.p10)}</td>
                   <td className="px-4 py-2.5 tabular">{np(r.p90)}</td>
                   <td className="px-4 py-2.5 tabular">{r.employment == null ? "Not published" : r.employment.toLocaleString("en-US")}</td>
+                  <td className="px-4 py-2.5 tabular">{r.jobs_per_1000 == null ? "Not published" : per1000(r.jobs_per_1000)}</td>
+                  <td className={`px-4 py-2.5 font-bold tabular ${payChangeTone(r.vsLocal)}`}>{signedPct(r.vsLocal)}</td>
                 </tr>
               ))}
             </tbody>
@@ -100,7 +102,8 @@ export default async function SalaryPage({ params }: { params: Promise<{ slug: s
         <p className="m-0 text-small text-muted">
           BLS OEWS May 2025 state estimates{m.group ? ` for the broader group “${w.bls_title}”` : ""}. States without
           published data are not listed. “Not published”: BLS withheld the value or it is above the highest amount BLS
-          publishes. Pay is not adjusted for living costs.
+          publishes. “Per 1,000 jobs”: how many of every 1,000 jobs in the state are this job. “vs. all jobs in state”:
+          this median compared with the median for all jobs in that state. Pay is not adjusted for living costs.
         </p>
       </section>
 
@@ -115,7 +118,7 @@ export default async function SalaryPage({ params }: { params: Promise<{ slug: s
             <ol className="m-0 flex list-none flex-col gap-2 p-0">
               {m.concentrated.map((r, i) => (
                 <li key={r.abbr} className="flex items-baseline justify-between gap-3 border-b border-mist pb-2">
-                  <Link href={`/careers/${m.o.slug}/salary/${r.slug}`} className="font-bold text-ink">
+                  <Link href={`#${r.slug}`} className="font-bold text-ink">
                     {i + 1}. {r.state}
                   </Link>
                   <span className="tabular text-small">
@@ -137,7 +140,7 @@ export default async function SalaryPage({ params }: { params: Promise<{ slug: s
             <ol className="m-0 flex list-none flex-col gap-2 p-0">
               {m.vsLocal.map((r, i) => (
                 <li key={r.abbr} className="flex items-baseline justify-between gap-3 border-b border-mist pb-2">
-                  <Link href={`/careers/${m.o.slug}/salary/${r.slug}`} className="font-bold text-ink">
+                  <Link href={`#${r.slug}`} className="font-bold text-ink">
                     {i + 1}. {r.state}
                   </Link>
                   <span className="tabular text-small">

@@ -11,7 +11,6 @@ export type Section =
   | "careers-listings"
   | "jobs-similar-to"
   | "salary"
-  | "salary-states"
   | "tests"
   | "guides";
 

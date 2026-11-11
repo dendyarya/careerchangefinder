@@ -9,7 +9,7 @@ import { buildTarget, TARGETS } from "@/lib/careerTargets";
 import { buildOilGas } from "@/lib/oilGas";
 import { buildListing, type Listing } from "@/lib/listings";
 import { buildRemotePage } from "@/lib/remotePage";
-import { buildSalary, buildStateSalary } from "@/lib/salary";
+import { buildSalary } from "@/lib/salary";
 import { buildSimilar } from "@/lib/similarJobs";
 import { SITUATION_SLUGS } from "@/lib/situations";
 import type { OgCard } from "@/lib/og";
@@ -26,10 +26,6 @@ export function ogCard(path: string): OgCard | null {
   if (p[0] === "careers" && p.length === 3 && p[2] === "salary") {
     const m = buildSalary(p[1]!);
     return m ? { eyebrow: "Salary by state", title: m.name, stat: { label: `Highest: ${m.hi.state}`, value: money(m.hi.median) } } : null;
-  }
-  if (p[0] === "careers" && p.length === 4 && p[2] === "salary") {
-    const m = buildStateSalary(p[1]!, p[3]!);
-    return m ? { eyebrow: `Salary in ${m.s.state}`, title: m.name, stat: { label: "Median pay", value: money(m.s.median) } } : null;
   }
   if (p[0] === "careers" && p.length === 3) {
     const l = buildListing(p[1] as Listing["kind"], p[2]!);

@@ -78,7 +78,10 @@ const nextConfig: NextConfig = {
       process.env.SITE_ENV === "staging"
         ? [{ source: "/keystatic", destination: "/keystatic/branch/staging", permanent: false }]
         : [];
-    return [...cms, ...hubRedirects()];
+    // State salary pages were folded into each career's salary page (Nov 2026): one page per career with every
+    // state in a table, instead of ~7,200 near-identical state pages. Old URLs land on that state's row.
+    const states = [{ source: "/careers/:slug/salary/:state", destination: "/careers/:slug/salary#:state", statusCode: 301 as const }];
+    return [...cms, ...states, ...hubRedirects()];
   },
   async headers() {
     return [

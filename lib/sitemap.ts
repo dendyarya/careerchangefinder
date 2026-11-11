@@ -1,6 +1,6 @@
 /**
  * Sitemap entries, one list per section (runbook Tahap 6). Only published pages that are indexed:
- * no thin career profiles, and state salary pages only when stateIndexable() (enough jobs, reliable BLS estimate).
+ * no thin career profiles. State salary pages redirect to the career salary page (Nov 2026).
  * scripts/qa/check_sitemaps.py checks every URL against the built pages.
  */
 import "server-only";
@@ -12,8 +12,7 @@ import { listGuides } from "@/lib/guides";
 import { STATIC_SLUGS } from "@/lib/staticPages";
 import { STUDIES } from "@/lib/studies";
 import { isPublished } from "@/lib/published";
-import { salarySlugs, stateIndexable, stateSlug } from "@/lib/salary";
-import { statePay } from "@/lib/careerProfile";
+import { salarySlugs } from "@/lib/salary";
 import { similarSlugs } from "@/lib/similarJobs";
 import { SITUATION_SLUGS } from "@/lib/situations";
 import { RESULT_SLUGS } from "@/lib/traits";
@@ -28,7 +27,6 @@ export const SITEMAP_NAMES = [
   "careers",
   "jobs-similar-to",
   "salary",
-  "salary-states",
   "guides",
 ] as const;
 export type SitemapName = (typeof SITEMAP_NAMES)[number];
@@ -83,14 +81,6 @@ export async function sitemapEntries(name: SitemapName): Promise<Entry[]> {
       return ["/jobs-similar-to", ...similarSlugs().map((s) => `/jobs-similar-to/${s}`)].map((p) => e(p));
     case "salary":
       return salarySlugs().map((s) => e(`/careers/${s}/salary`));
-    case "salary-states":
-      return salarySlugs().flatMap((s) =>
-        statePay(s)
-          .filter((st) => stateIndexable(st))
-          .map((st) => `/careers/${s}/salary/${stateSlug(st.state)}`)
-          .filter((p) => isPublished("salary-states", p.replace("/careers/", "").replace("/salary/", "/")))
-          .map((p) => e(p)),
-      );
     case "guides": {
       const g = await listGuides();
       return [

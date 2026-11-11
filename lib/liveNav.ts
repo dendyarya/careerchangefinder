@@ -14,7 +14,7 @@ function livePaths() {
   cache ??= (async () => {
     const live = new Set<string>();
     // state salary pages are never linked from the menus; skip the 7,000+ entries
-    for (const n of SITEMAP_NAMES.filter((x) => x !== "salary-states"))
+    for (const n of SITEMAP_NAMES)
       for (const e of await sitemapEntries(n)) live.add(e.path);
     return live;
   })();

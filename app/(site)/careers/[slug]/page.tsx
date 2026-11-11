@@ -207,14 +207,14 @@ export default async function CareerProfile({ params }: { params: Promise<{ slug
               <div className="flex flex-col gap-3">
                 <h3 className="m-0 text-h3">Highest-paying states</h3>
                 {top.map((s) => (
-                  <HBar key={s.abbr} label={s.state} value={s.median} max={maxState} right={money(s.median)} href={o.thin ? undefined : `/careers/${o.slug}/salary/${stateSlug(s.state)}`} />
+                  <HBar key={s.abbr} label={s.state} value={s.median} max={maxState} right={money(s.median)} href={o.thin ? undefined : `/careers/${o.slug}/salary#${stateSlug(s.state)}`} />
                 ))}
               </div>
               {m.states.length > 5 && (
                 <div className="flex flex-col gap-3">
                   <h3 className="m-0 text-h3">Lowest-paying states</h3>
                   {low.map((s) => (
-                    <HBar key={s.abbr} label={s.state} value={s.median} max={maxState} right={money(s.median)} href={o.thin ? undefined : `/careers/${o.slug}/salary/${stateSlug(s.state)}`} />
+                    <HBar key={s.abbr} label={s.state} value={s.median} max={maxState} right={money(s.median)} href={o.thin ? undefined : `/careers/${o.slug}/salary#${stateSlug(s.state)}`} />
                   ))}
                 </div>
               )}

@@ -4,7 +4,9 @@ import { JsonLd } from "@/components/page/Common";
 import { careerCount, hubs, meta } from "@/lib/data";
 import { occBySlug, transitionsFor } from "@/lib/data/server";
 import { money, shortTitle, signedPct } from "@/lib/format";
+import { listGuides } from "@/lib/guides";
 import { pageMeta } from "@/lib/seo";
+import { betterPayStudy, pct1, STUDIES } from "@/lib/studies";
 import { SITE } from "@/lib/site";
 
 export const metadata = pageMeta({
@@ -51,8 +53,10 @@ const PATHS = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
   const ex = exampleRoute();
+  const guides = (await listGuides()).slice(0, 6);
+  const study = betterPayStudy().national;
   return (
     <>
       <section className="mx-auto flex max-w-[1312px] flex-wrap items-center gap-14 px-4 pt-12 pb-16 md:px-8 md:pt-[72px] md:pb-20">
@@ -138,6 +142,67 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <section aria-labelledby="research" className="mx-auto max-w-[1312px] px-4 pb-[88px] md:px-8">
+        <h2 id="research" className="m-0 mb-7 text-h2 leading-[1.08] tracking-[-0.03em]">
+          Our research
+        </h2>
+        <Link
+          href={`/research/${STUDIES[0].slug}`}
+          className="grid gap-6 rounded-lg border-[1.5px] border-mist bg-white p-[30px] text-ink no-underline shadow-md hover:border-primary hover:text-ink md:grid-cols-[1.4fr_1fr] md:items-center"
+        >
+          <span className="flex flex-col gap-3">
+            <span className="font-display text-small font-bold text-primary">Data study · November 2026</span>
+            <span className="font-display text-[26px] leading-tight font-bold">
+              Nearly 9 in 10 U.S. careers have a better-paying move within reach
+            </span>
+            <span className="text-muted">
+              We checked every career with its own BLS pay figure for a close match that pays at least 10% more and
+              usually needs no extra schooling, nationally and in every state.
+            </span>
+            <span className="font-extrabold text-primary">Read the study →</span>
+          </span>
+          <span className="grid grid-cols-2 gap-3">
+            <span className="flex flex-col gap-1 rounded-[16px] bg-ice px-5 py-4">
+              <span className="font-display text-[30px] leading-none font-bold tabular">{pct1(study.share_jobs)}</span>
+              <span className="text-small text-muted">of {study.jobs} careers have one</span>
+            </span>
+            <span className="flex flex-col gap-1 rounded-[16px] bg-ice px-5 py-4">
+              <span className="font-display text-[30px] leading-none font-bold tabular">{pct1(study.median_closest_raise)}</span>
+              <span className="text-small text-muted">typical pay gap to the closest one</span>
+            </span>
+          </span>
+        </Link>
+      </section>
+
+      {guides.length > 0 && (
+        <section aria-labelledby="guides" className="mx-auto max-w-[1312px] px-4 pb-[88px] md:px-8">
+          <div className="mb-7 flex flex-wrap items-end justify-between gap-3">
+            <h2 id="guides" className="m-0 text-h2 leading-[1.08] tracking-[-0.03em]">
+              Guides
+            </h2>
+            <Link href="/guides" className="font-extrabold">
+              All guides →
+            </Link>
+          </div>
+          <ul className="m-0 grid list-none gap-5 p-0 md:grid-cols-2 lg:grid-cols-3">
+            {guides.map((g) => (
+              <li key={g.slug}>
+                <Link
+                  href={`/guides/${g.slug}`}
+                  className="flex h-full flex-col gap-2 rounded-lg border-[1.5px] border-mist bg-white p-6 text-ink no-underline hover:border-primary hover:text-ink"
+                >
+                  <span className="text-small font-bold text-primary">
+                    {g.category === "choosing-a-major" ? "Choosing a major" : "Career change"}
+                  </span>
+                  <span className="font-display text-[20px] leading-snug font-bold">{g.title}</span>
+                  <span className="text-small text-muted">{g.description}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section aria-labelledby="popular" className="border-y-[1.5px] border-mist bg-ice">
         <div className="mx-auto max-w-[1312px] px-4 py-16 md:px-8 md:py-[72px]">
