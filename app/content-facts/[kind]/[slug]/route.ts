@@ -3,11 +3,13 @@ import { careerChangeSources } from "@/lib/data/server";
 import { SITE } from "@/lib/site";
 import { buildSimilar, similarSlugs } from "@/lib/similarJobs";
 
-// The data behind each page, for writing and checking its text (Tahap 7). Never built on production.
+// The data behind each page, for writing and checking its text (Tahap 7). Built only locally (no SITE_ENV):
+// never on production, and not on staging, where ~1,750 extra files only slowed the upload.
+const LOCAL_ONLY = !SITE.indexable && !process.env.SITE_ENV;
 export const dynamic = "force-static";
 export const dynamicParams = false;
 export function generateStaticParams() {
-  if (SITE.indexable) return [{ kind: "none", slug: "none" }];
+  if (!LOCAL_ONLY) return [{ kind: "none", slug: "none" }];
   return [
     ...careerChangeSources().map((slug) => ({ kind: "from", slug })),
     ...similarSlugs().map((slug) => ({ kind: "similar", slug })),
@@ -16,7 +18,7 @@ export function generateStaticParams() {
 
 export async function GET(_: Request, { params }: { params: Promise<{ kind: string; slug: string }> }) {
   const { kind, slug } = await params;
-  if (SITE.indexable) return new Response("Not found", { status: 404 });
+  if (!LOCAL_ONLY) return new Response("Not found", { status: 404 });
   if (kind === "similar") {
     const s = buildSimilar(slug);
     if (!s) return new Response("Not found", { status: 404 });
