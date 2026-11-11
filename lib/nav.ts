@@ -217,6 +217,8 @@ export const MENUS: NavMenu[] = [
         title: "Career Change Guides",
         links: [
           { label: "How to Change Careers", href: "/guides/how-to-change-careers" },
+          { label: "Is It Too Late to Change Careers?", href: "/guides/is-it-too-late-to-change-careers" },
+          { label: "Change Careers Without a Pay Cut", href: "/guides/how-to-change-careers-without-a-pay-cut" },
           { label: "Best Careers to Switch To", href: "/guides/best-careers-to-switch-to" },
           { label: "Transferable Skills List", href: "/guides/transferable-skills-list" },
           { label: "Career Change Resume", href: "/guides/career-change-resume" },
@@ -227,6 +229,8 @@ export const MENUS: NavMenu[] = [
         title: "Choosing a Major",
         links: [
           { label: "How to Choose a Major", href: "/guides/how-to-choose-a-major" },
+          { label: "Is a College Degree Worth It?", href: "/guides/is-a-college-degree-worth-it" },
+          { label: "What Is a Holland Code?", href: "/guides/holland-code-riasec-explained" },
           { label: "What Major Should I Choose?", href: "/guides/what-major-should-i-choose" },
           { label: "Should I Change My Major?", href: "/guides/should-i-change-my-major" },
           { label: "Does Your Major Matter?", href: "/guides/does-your-major-matter" },
