@@ -16,6 +16,7 @@ import {
 import { clip, inSentence, listJoin, money, signedPct } from "@/lib/format";
 import { fitTitle, seoName } from "@/lib/seoName";
 import { isPublished } from "@/lib/published";
+import { readContent, type SimilarContent } from "@/lib/content";
 
 export const SIMILAR_N = 20;
 const JZ_TEXT: Record<number, string> = {
@@ -53,6 +54,9 @@ export interface SimilarModel {
   into: { slug: string; title: string; match: number }[];
   fromPage: string;
   faq: Faq[];
+  /** written text (content/generated/similar), when there is one */
+  shared: string | null;
+  sourceSkills: { name: string; value: number }[];
 }
 
 export function similarSlugs(): string[] {
@@ -132,7 +136,7 @@ export function buildSimilar(slug: string): SimilarModel | null {
     },
   ];
 
-  return {
+  const model: SimilarModel = {
     slug,
     name,
     nameLower,
@@ -148,5 +152,16 @@ export function buildSimilar(slug: string): SimilarModel | null {
     into,
     fromPage: `/career-change/from-${folded.get(slug) ?? slug}`,
     faq,
+    shared: null,
+    sourceSkills: tr.source_skills,
   };
+  const c = readContent<SimilarContent>("similar", slug);
+  if (c) {
+    model.intro = c.intro;
+    model.shared = c.shared;
+    // written answers first; drop the automatic pay answer (every written text covers pay), keep the
+    // "most similar" list and the method note
+    model.faq = [...c.faq, faq[0]!, faq[2]!];
+  }
+  return model;
 }

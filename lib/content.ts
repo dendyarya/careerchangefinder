@@ -10,13 +10,21 @@ import path from "node:path";
 import type { Faq } from "@/components/page/Common";
 import { SITE } from "@/lib/site";
 
-export type Template = "from" | "careers" | "situations";
+export type Template = "from" | "careers" | "situations" | "similar";
 
 export interface FromContent {
   status: "draft" | "approved";
   intro: string;
   why_it_works: string;
   tips: string[];
+  faq: Faq[];
+}
+
+/** "Jobs Similar to [job]": a written intro, what the similar jobs share, and two extra FAQ answers. */
+export interface SimilarContent {
+  status: "draft" | "approved";
+  intro: string;
+  shared: string;
   faq: Faq[];
 }
 

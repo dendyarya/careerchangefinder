@@ -107,13 +107,73 @@ for f in sorted((ROOT / "content" / "generated" / "from").glob("*.json")):
             errors.append(f"{tag}: banned phrase /{b}/")
     # names of careers in the text must be careers on the page (or the job itself)
     texts[tag] = blob
+
+# ---- content/generated/similar/<slug>.json ("Jobs Similar to" pages)
+def similar_facts(slug):
+    with urllib.request.urlopen(f"{BASE}/content-facts/similar/{slug}", timeout=60) as r:
+        return json.loads(r.read())
+
+
+def similar_numbers(f):
+    nums = set()
+    for v in [f["median"]] + [x for c in f["careers"] for x in (c["match"], c["median"], c["pay_change_pct"])]:
+        if v is not None:
+            nums.add(abs(int(round(v))))
+    for sk in f["source_skills"]:
+        nums.add(sk["value"])
+    cs = f["careers"]
+    nums.update([len(cs), len(f["pay_more_same_prep"]), len(f["less_prep"]),
+                 sum(1 for c in cs if (c["pay_change_pct"] or 0) > 0),
+                 sum(1 for c in cs if c["same_field"])])
+    nums.update(range(0, 11))
+    nums.update({31, 2025, 2026})
+    return nums
+
+
+sim_texts = {}
+for f in sorted((ROOT / "content" / "generated" / "similar").glob("*.json")):
+    slug = f.stem
+    c = json.loads(f.read_text())
+    fx = similar_facts(slug)
+    tag = f"similar/{slug}"
+    if c.get("status") not in ("draft", "approved"):
+        errors.append(f"{tag}: bad status")
+    if words(c["intro"]) > 55:
+        errors.append(f"{tag}: intro {words(c['intro'])} words (max 55)")
+    if not 60 <= words(c["shared"]) <= 90:
+        errors.append(f"{tag}: shared {words(c['shared'])} words (60-90)")
+    if len(c["faq"]) != 2:
+        errors.append(f"{tag}: {len(c['faq'])} FAQ (2)")
+    for qa in c["faq"]:
+        n = words(qa["a"])
+        if not 40 <= n <= 60:
+            errors.append(f"{tag}: FAQ answer {n} words (40-60): {qa['q']}")
+        if not numbers_in(qa["a"]):
+            errors.append(f"{tag}: FAQ answer without a number: {qa['q']}")
+    allowed = similar_numbers(fx)
+    blob = " ".join([c["intro"], c["shared"], *[q["q"] + " " + q["a"] for q in c["faq"]]])
+    for tok, v in numbers_in(blob):
+        checked += 1
+        if v not in allowed and round(v) not in allowed:
+            errors.append(f"{tag}: number {tok} is not in the page data")
+    for b in BANNED:
+        if re.search(b, blob, re.I):
+            errors.append(f"{tag}: banned phrase /{b}/")
+    sim_texts[tag] = blob
+for (a, ta), (b, tb) in itertools.combinations(sim_texts.items(), 2):
+    sa, sb = shingles(ta), shingles(tb)
+    j = len(sa & sb) / max(1, len(sa | sb))
+    checked += 1
+    if j >= 0.30:
+        errors.append(f"{a} and {b}: {j:.0%} overlap (max 30%)")
+
 for (a, ta), (b, tb) in itertools.combinations(texts.items(), 2):
     sa, sb = shingles(ta), shingles(tb)
     j = len(sa & sb) / max(1, len(sa | sb))
     checked += 1
     if j >= 0.30:
         errors.append(f"{a} and {b}: {j:.0%} overlap (max 30%)")
-print(f"{len(texts)} content files, {checked:,} checks, {len(errors)} problems")
+print(f"{len(texts) + len(sim_texts)} content files, {checked:,} checks, {len(errors)} problems")
 for e in errors[:40]:
     print("  -", e)
 sys.exit(1 if errors else 0)

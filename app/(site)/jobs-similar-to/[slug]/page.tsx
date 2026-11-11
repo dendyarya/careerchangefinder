@@ -50,6 +50,13 @@ export default async function SimilarPage({ params }: { params: Promise<{ slug: 
         </p>
       </section>
 
+      {m.shared && (
+        <section aria-labelledby="h-shared" className="flex max-w-[920px] flex-col gap-3">
+          <H2 id="h-shared">What these jobs have in common</H2>
+          <p className="m-0">{m.shared}</p>
+        </section>
+      )}
+
       {m.payMore.length > 0 && (
         <section aria-labelledby="h-pay" className="flex flex-col gap-5">
           <H2 id="h-pay">Similar jobs that pay more</H2>

@@ -84,10 +84,10 @@ export const STATIC_PAGES = {
     type: "WebPage",
   },
   alternatives: {
-    title: "Free Career Test Sites Compared",
-    h1: ["Career test ", "alternatives"],
+    title: "My Next Move & CareerExplorer Alternatives (Free)",
+    h1: ["Free alternatives to My Next Move and ", "CareerExplorer"],
     description:
-      "Career Change Finder compared with My Next Move, CareerExplorer, Truity and 123test: cost, test length, what each test measures and when to pick each.",
+      "Free alternatives to My Next Move and CareerExplorer compared: cost, sign-up, test length and career data, plus Truity and 123test. Pick the right career test.",
     file: "pages/alternatives.md",
     type: "WebPage",
   },
