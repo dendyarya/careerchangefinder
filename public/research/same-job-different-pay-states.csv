@@ -1,0 +1,52 @@
+rank,state,same_job_pay_index_pct,careers_compared,share_paying_above_us_median_pct,careers_where_state_pays_most
+1,District of Columbia,22.3,283,91.5,83
+2,Washington,19.5,570,87.9,72
+3,California,14.8,641,90.6,63
+4,Massachusetts,14.5,488,90.8,22
+5,New York,13.0,599,85.1,28
+6,Alaska,9.9,297,74.1,17
+7,New Jersey,9.2,509,81.5,14
+8,Colorado,8.6,531,76.8,7
+9,Hawaii,8.4,321,67.0,26
+10,Oregon,7.6,531,75.7,12
+11,Connecticut,7.4,465,80.2,5
+12,Minnesota,5.3,517,73.3,11
+13,Vermont,3.9,292,63.7,1
+14,Maryland,3.4,487,76.6,7
+15,Rhode Island,3.3,321,67.3,10
+16,New Hampshire,3.1,370,67.6,9
+17,Delaware,1.2,310,60.3,6
+18,Illinois,0.9,541,56.4,5
+19,Maine,0.6,388,48.2,2
+20,Arizona,-0.2,491,38.5,0
+21,North Dakota,-0.2,344,45.6,6
+22,Virginia,-0.5,545,48.3,1
+23,Wisconsin,-0.7,555,45.6,3
+24,Nevada,-2.0,413,47.7,2
+25,Pennsylvania,-2.2,587,33.4,0
+26,Michigan,-3.3,577,30.9,1
+27,Montana,-3.6,378,32.5,1
+28,Utah,-4.0,485,34.8,5
+29,Indiana,-4.0,565,23.0,1
+30,Ohio,-4.3,594,25.4,0
+31,Wyoming,-4.8,290,28.6,10
+32,Idaho,-4.8,406,23.4,0
+33,Georgia,-5.1,543,22.1,1
+34,Iowa,-5.2,504,26.0,2
+35,Florida,-5.2,575,15.1,1
+36,Nebraska,-5.3,451,21.7,0
+37,Missouri,-6.0,521,20.3,0
+38,North Carolina,-6.1,568,16.9,1
+39,New Mexico,-6.3,422,27.3,5
+40,Texas,-6.7,624,22.4,1
+41,South Dakota,-7.7,381,22.1,3
+42,Kansas,-8.1,468,16.7,2
+43,Tennessee,-8.5,541,12.0,0
+44,South Carolina,-9.8,520,14.6,0
+45,Kentucky,-11.0,493,15.8,0
+46,Alabama,-14.0,496,10.7,0
+47,Oklahoma,-14.5,500,9.2,3
+48,West Virginia,-16.4,409,10.3,2
+49,Louisiana,-16.6,457,15.8,3
+50,Arkansas,-17.3,472,6.8,0
+51,Mississippi,-19.1,478,6.1,0

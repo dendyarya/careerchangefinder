@@ -6,7 +6,7 @@ import { occBySlug, transitionsFor } from "@/lib/data/server";
 import { money, shortTitle, signedPct } from "@/lib/format";
 import { listGuides } from "@/lib/guides";
 import { pageMeta } from "@/lib/seo";
-import { betterPayStudy, pct1, STUDIES } from "@/lib/studies";
+import { betterPayStudy, pct1, sameJobStudy, STUDIES } from "@/lib/studies";
 import { SITE } from "@/lib/site";
 
 export const metadata = pageMeta({
@@ -57,6 +57,7 @@ export default async function Home() {
   const ex = exampleRoute();
   const guides = (await listGuides()).slice(0, 6);
   const study = betterPayStudy().national;
+  const sameJob = sameJobStudy();
   return (
     <>
       <section className="mx-auto flex max-w-[1312px] flex-wrap items-center gap-14 px-4 pt-12 pb-16 md:px-8 md:pt-[72px] md:pb-20">
@@ -170,6 +171,32 @@ export default async function Home() {
             <span className="flex flex-col gap-1 rounded-[16px] bg-ice px-5 py-4">
               <span className="font-display text-[30px] leading-none font-bold tabular">{pct1(study.median_closest_raise)}</span>
               <span className="text-small text-muted">typical pay gap to the closest one</span>
+            </span>
+          </span>
+        </Link>
+        <Link
+          href={`/research/${STUDIES[1].slug}`}
+          className="mt-6 grid gap-6 rounded-lg border-[1.5px] border-mist bg-white p-[30px] text-ink no-underline shadow-md hover:border-primary hover:text-ink md:grid-cols-[1.4fr_1fr] md:items-center"
+        >
+          <span className="flex flex-col gap-3">
+            <span className="font-display text-small font-bold text-primary">Data study · November 2026</span>
+            <span className="font-display text-[26px] leading-tight font-bold">
+              Same job, different pay: how much your state changes your salary
+            </span>
+            <span className="text-muted">
+              We compared state pay for {sameJob.national.careers} careers. For the typical career, the best-paying state
+              pays {Math.round(sameJob.national.median_gap * 100)}% more than the lowest-paying one.
+            </span>
+            <span className="font-extrabold text-primary">Read the study →</span>
+          </span>
+          <span className="grid grid-cols-2 gap-3">
+            <span className="flex flex-col gap-1 rounded-[16px] bg-ice px-5 py-4">
+              <span className="font-display text-[30px] leading-none font-bold tabular">{pct1(sameJob.national.share_double)}</span>
+              <span className="text-small text-muted">of careers pay at least double in the top state</span>
+            </span>
+            <span className="flex flex-col gap-1 rounded-[16px] bg-ice px-5 py-4">
+              <span className="font-display text-[30px] leading-none font-bold tabular">+{pct1(sameJob.states[0]!.index)}</span>
+              <span className="text-small text-muted">same-job pay in {sameJob.states[0]!.state}</span>
             </span>
           </span>
         </Link>

@@ -242,6 +242,7 @@ export const MENUS: NavMenu[] = [
         links: [
           { label: "Glossary", href: "/glossary" },
           { label: "Research: Better-Paying Careers", href: "/research/better-paying-careers" },
+          { label: "Research: Same Job, Different Pay", href: "/research/same-job-different-pay" },
           { label: "Methodology", href: "/methodology" },
           { label: "Data Sources & Licenses", href: "/data-sources" },
         ],

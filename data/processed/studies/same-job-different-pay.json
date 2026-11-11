@@ -1,0 +1,957 @@
+{
+ "slug": "same-job-different-pay",
+ "rules": {
+  "min_employment": 100,
+  "max_rse": 25,
+  "min_states": 30
+ },
+ "national": {
+  "careers": 454,
+  "workers": 134754710,
+  "median_gap": 0.8332,
+  "careers_double": 167,
+  "share_double": 0.3678,
+  "workers_double": 35041860,
+  "share_workers_double": 0.26,
+  "careers_50": 409,
+  "share_50": 0.9009
+ },
+ "largest": [
+  {
+   "slug": "retail-salespersons",
+   "title": "Retail Salespersons",
+   "median": 35410,
+   "employment": 3897860,
+   "states": 51,
+   "high": {
+    "abbr": "WA",
+    "state": "Washington",
+    "median": 39560
+   },
+   "low": {
+    "abbr": "MS",
+    "state": "Mississippi",
+    "median": 28640
+   },
+   "gap": 0.3813
+  },
+  {
+   "slug": "fast-food-and-counter-workers",
+   "title": "Fast Food and Counter Workers",
+   "median": 31200,
+   "employment": 3854050,
+   "states": 51,
+   "high": {
+    "abbr": "CA",
+    "state": "California",
+    "median": 42280
+   },
+   "low": {
+    "abbr": "MS",
+    "state": "Mississippi",
+    "median": 22610
+   },
+   "gap": 0.87
+  },
+  {
+   "slug": "general-and-operations-managers",
+   "title": "General and Operations Managers",
+   "median": 105770,
+   "employment": 3503020,
+   "states": 51,
+   "high": {
+    "abbr": "NJ",
+    "state": "New Jersey",
+    "median": 173690
+   },
+   "low": {
+    "abbr": "AR",
+    "state": "Arkansas",
+    "median": 74050
+   },
+   "gap": 1.3456
+  },
+  {
+   "slug": "registered-nurses",
+   "title": "Registered Nurses",
+   "median": 97550,
+   "employment": 3379720,
+   "states": 51,
+   "high": {
+    "abbr": "CA",
+    "state": "California",
+    "median": 140270
+   },
+   "low": {
+    "abbr": "AL",
+    "state": "Alabama",
+    "median": 77080
+   },
+   "gap": 0.8198
+  },
+  {
+   "slug": "cashiers",
+   "title": "Cashiers",
+   "median": 32880,
+   "employment": 3089410,
+   "states": 51,
+   "high": {
+    "abbr": "DC",
+    "state": "District of Columbia",
+    "median": 38880
+   },
+   "low": {
+    "abbr": "WV",
+    "state": "West Virginia",
+    "median": 26370
+   },
+   "gap": 0.4744
+  },
+  {
+   "slug": "laborers-and-freight-stock-and-material-movers-hand",
+   "title": "Laborers and Freight, Stock, and Material Movers, Hand",
+   "median": 40240,
+   "employment": 2950280,
+   "states": 51,
+   "high": {
+    "abbr": "MN",
+    "state": "Minnesota",
+    "median": 46280
+   },
+   "low": {
+    "abbr": "LA",
+    "state": "Louisiana",
+    "median": 35340
+   },
+   "gap": 0.3096
+  },
+  {
+   "slug": "stockers-and-order-fillers",
+   "title": "Stockers and Order Fillers",
+   "median": 37330,
+   "employment": 2833810,
+   "states": 51,
+   "high": {
+    "abbr": "WA",
+    "state": "Washington",
+    "median": 44620
+   },
+   "low": {
+    "abbr": "MS",
+    "state": "Mississippi",
+    "median": 34270
+   },
+   "gap": 0.302
+  },
+  {
+   "slug": "customer-service-representatives",
+   "title": "Customer Service Representatives",
+   "median": 44770,
+   "employment": 2595750,
+   "states": 51,
+   "high": {
+    "abbr": "WA",
+    "state": "Washington",
+    "median": 50330
+   },
+   "low": {
+    "abbr": "MS",
+    "state": "Mississippi",
+    "median": 36380
+   },
+   "gap": 0.3835
+  },
+  {
+   "slug": "office-clerks",
+   "title": "Office Clerks, General",
+   "median": 45010,
+   "employment": 2464940,
+   "states": 51,
+   "high": {
+    "abbr": "DC",
+    "state": "District of Columbia",
+    "median": 55040
+   },
+   "low": {
+    "abbr": "AL",
+    "state": "Alabama",
+    "median": 31200
+   },
+   "gap": 0.7641
+  },
+  {
+   "slug": "waiters-and-waitresses",
+   "title": "Waiters and Waitresses",
+   "median": 35230,
+   "employment": 2270910,
+   "states": 51,
+   "high": {
+    "abbr": "HI",
+    "state": "Hawaii",
+    "median": 62390
+   },
+   "low": {
+    "abbr": "LA",
+    "state": "Louisiana",
+    "median": 15080
+   },
+   "gap": 3.1373
+  },
+  {
+   "slug": "janitors-and-cleaners",
+   "title": "Janitors and Cleaners, Except Maids and Housekeeping Cleaners",
+   "median": 36840,
+   "employment": 2209760,
+   "states": 51,
+   "high": {
+    "abbr": "MA",
+    "state": "Massachusetts",
+    "median": 45580
+   },
+   "low": {
+    "abbr": "MS",
+    "state": "Mississippi",
+    "median": 28380
+   },
+   "gap": 0.6061
+  },
+  {
+   "slug": "heavy-and-tractor-trailer-truck-drivers",
+   "title": "Heavy and Tractor-Trailer Truck Drivers",
+   "median": 58640,
+   "employment": 2062040,
+   "states": 51,
+   "high": {
+    "abbr": "AK",
+    "state": "Alaska",
+    "median": 70100
+   },
+   "low": {
+    "abbr": "LA",
+    "state": "Louisiana",
+    "median": 49320
+   },
+   "gap": 0.4213
+  }
+ ],
+ "widest": [
+  {
+   "slug": "general-internal-medicine-physicians",
+   "title": "General Internal Medicine Physicians",
+   "median": 256560,
+   "employment": 67150,
+   "states": 33,
+   "high": {
+    "abbr": "GA",
+    "state": "Georgia",
+    "median": 425460
+   },
+   "low": {
+    "abbr": "WV",
+    "state": "West Virginia",
+    "median": 72680
+   },
+   "gap": 4.8539
+  },
+  {
+   "slug": "judges-magistrate-judges-and-magistrates",
+   "title": "Judges, Magistrate Judges, and Magistrates",
+   "median": 153990,
+   "employment": 24030,
+   "states": 35,
+   "high": {
+    "abbr": "RI",
+    "state": "Rhode Island",
+    "median": 239760
+   },
+   "low": {
+    "abbr": "MS",
+    "state": "Mississippi",
+    "median": 49960
+   },
+   "gap": 3.799
+  },
+  {
+   "slug": "psychiatrists",
+   "title": "Psychiatrists",
+   "median": 281870,
+   "employment": 27980,
+   "states": 30,
+   "high": {
+    "abbr": "CA",
+    "state": "California",
+    "median": 353500
+   },
+   "low": {
+    "abbr": "ID",
+    "state": "Idaho",
+    "median": 75470
+   },
+   "gap": 3.684
+  },
+  {
+   "slug": "waiters-and-waitresses",
+   "title": "Waiters and Waitresses",
+   "median": 35230,
+   "employment": 2270910,
+   "states": 51,
+   "high": {
+    "abbr": "HI",
+    "state": "Hawaii",
+    "median": 62390
+   },
+   "low": {
+    "abbr": "LA",
+    "state": "Louisiana",
+    "median": 15080
+   },
+   "gap": 3.1373
+  },
+  {
+   "slug": "air-traffic-controllers",
+   "title": "Air Traffic Controllers",
+   "median": 148080,
+   "employment": 22510,
+   "states": 34,
+   "high": {
+    "abbr": "VA",
+    "state": "Virginia",
+    "median": 191820
+   },
+   "low": {
+    "abbr": "DC",
+    "state": "District of Columbia",
+    "median": 47760
+   },
+   "gap": 3.0163
+  },
+  {
+   "slug": "broadcast-technicians",
+   "title": "Broadcast Technicians",
+   "median": 59570,
+   "employment": 21110,
+   "states": 34,
+   "high": {
+    "abbr": "DC",
+    "state": "District of Columbia",
+    "median": 108270
+   },
+   "low": {
+    "abbr": "WV",
+    "state": "West Virginia",
+    "median": 27310
+   },
+   "gap": 2.9645
+  },
+  {
+   "slug": "bartenders",
+   "title": "Bartenders",
+   "median": 34340,
+   "employment": 756390,
+   "states": 51,
+   "high": {
+    "abbr": "HI",
+    "state": "Hawaii",
+    "median": 76490
+   },
+   "low": {
+    "abbr": "SC",
+    "state": "South Carolina",
+    "median": 19370
+   },
+   "gap": 2.9489
+  },
+  {
+   "slug": "emergency-management-directors",
+   "title": "Emergency Management Directors",
+   "median": 93330,
+   "employment": 13500,
+   "states": 36,
+   "high": {
+    "abbr": "DC",
+    "state": "District of Columbia",
+    "median": 184350
+   },
+   "low": {
+    "abbr": "MS",
+    "state": "Mississippi",
+    "median": 48650
+   },
+   "gap": 2.7893
+  },
+  {
+   "slug": "massage-therapists",
+   "title": "Massage Therapists",
+   "median": 58450,
+   "employment": 98790,
+   "states": 42,
+   "high": {
+    "abbr": "AK",
+    "state": "Alaska",
+    "median": 134930
+   },
+   "low": {
+    "abbr": "LA",
+    "state": "Louisiana",
+    "median": 36480
+   },
+   "gap": 2.6987
+  },
+  {
+   "slug": "bus-drivers-school",
+   "title": "Bus Drivers, School",
+   "median": 47920,
+   "employment": 402930,
+   "states": 50,
+   "high": {
+    "abbr": "MA",
+    "state": "Massachusetts",
+    "median": 65170
+   },
+   "low": {
+    "abbr": "AL",
+    "state": "Alabama",
+    "median": 17630
+   },
+   "gap": 2.6965
+  },
+  {
+   "slug": "securities-commodities-and-financial-services-sales-agents",
+   "title": "Securities, Commodities, and Financial Services Sales Agents",
+   "median": 78660,
+   "employment": 489570,
+   "states": 46,
+   "high": {
+    "abbr": "NY",
+    "state": "New York",
+    "median": 168340
+   },
+   "low": {
+    "abbr": "MS",
+    "state": "Mississippi",
+    "median": 46680
+   },
+   "gap": 2.6063
+  },
+  {
+   "slug": "photographers",
+   "title": "Photographers",
+   "median": 44660,
+   "employment": 51760,
+   "states": 44,
+   "high": {
+    "abbr": "DC",
+    "state": "District of Columbia",
+    "median": 110970
+   },
+   "low": {
+    "abbr": "AR",
+    "state": "Arkansas",
+    "median": 32810
+   },
+   "gap": 2.3822
+  }
+ ],
+ "narrowest": [
+  {
+   "slug": "postal-service-mail-carriers",
+   "title": "Postal Service Mail Carriers",
+   "median": 60550,
+   "employment": 328820,
+   "states": 51,
+   "high": {
+    "abbr": "DC",
+    "state": "District of Columbia",
+    "median": 64250
+   },
+   "low": {
+    "abbr": "MS",
+    "state": "Mississippi",
+    "median": 57470
+   },
+   "gap": 0.118
+  },
+  {
+   "slug": "postal-service-clerks",
+   "title": "Postal Service Clerks",
+   "median": 62130,
+   "employment": 73720,
+   "states": 51,
+   "high": {
+    "abbr": "DC",
+    "state": "District of Columbia",
+    "median": 67790
+   },
+   "low": {
+    "abbr": "AK",
+    "state": "Alaska",
+    "median": 57820
+   },
+   "gap": 0.1724
+  },
+  {
+   "slug": "stockers-and-order-fillers",
+   "title": "Stockers and Order Fillers",
+   "median": 37330,
+   "employment": 2833810,
+   "states": 51,
+   "high": {
+    "abbr": "WA",
+    "state": "Washington",
+    "median": 44620
+   },
+   "low": {
+    "abbr": "MS",
+    "state": "Mississippi",
+    "median": 34270
+   },
+   "gap": 0.302
+  },
+  {
+   "slug": "pharmacists",
+   "title": "Pharmacists",
+   "median": 140910,
+   "employment": 321970,
+   "states": 51,
+   "high": {
+    "abbr": "AK",
+    "state": "Alaska",
+    "median": 167310
+   },
+   "low": {
+    "abbr": "RI",
+    "state": "Rhode Island",
+    "median": 128180
+   },
+   "gap": 0.3053
+  },
+  {
+   "slug": "laborers-and-freight-stock-and-material-movers-hand",
+   "title": "Laborers and Freight, Stock, and Material Movers, Hand",
+   "median": 40240,
+   "employment": 2950280,
+   "states": 51,
+   "high": {
+    "abbr": "MN",
+    "state": "Minnesota",
+    "median": 46280
+   },
+   "low": {
+    "abbr": "LA",
+    "state": "Louisiana",
+    "median": 35340
+   },
+   "gap": 0.3096
+  }
+ ],
+ "states": [
+  {
+   "abbr": "DC",
+   "state": "District of Columbia",
+   "careers": 283,
+   "index": 0.2228,
+   "share_above": 0.9152,
+   "top_in": 83
+  },
+  {
+   "abbr": "WA",
+   "state": "Washington",
+   "careers": 570,
+   "index": 0.1953,
+   "share_above": 0.8789,
+   "top_in": 72
+  },
+  {
+   "abbr": "CA",
+   "state": "California",
+   "careers": 641,
+   "index": 0.1484,
+   "share_above": 0.9064,
+   "top_in": 63
+  },
+  {
+   "abbr": "MA",
+   "state": "Massachusetts",
+   "careers": 488,
+   "index": 0.145,
+   "share_above": 0.9078,
+   "top_in": 22
+  },
+  {
+   "abbr": "NY",
+   "state": "New York",
+   "careers": 599,
+   "index": 0.1298,
+   "share_above": 0.8514,
+   "top_in": 28
+  },
+  {
+   "abbr": "AK",
+   "state": "Alaska",
+   "careers": 297,
+   "index": 0.0994,
+   "share_above": 0.7407,
+   "top_in": 17
+  },
+  {
+   "abbr": "NJ",
+   "state": "New Jersey",
+   "careers": 509,
+   "index": 0.0917,
+   "share_above": 0.8153,
+   "top_in": 14
+  },
+  {
+   "abbr": "CO",
+   "state": "Colorado",
+   "careers": 531,
+   "index": 0.0856,
+   "share_above": 0.7684,
+   "top_in": 7
+  },
+  {
+   "abbr": "HI",
+   "state": "Hawaii",
+   "careers": 321,
+   "index": 0.0842,
+   "share_above": 0.6698,
+   "top_in": 26
+  },
+  {
+   "abbr": "OR",
+   "state": "Oregon",
+   "careers": 531,
+   "index": 0.076,
+   "share_above": 0.7571,
+   "top_in": 12
+  },
+  {
+   "abbr": "CT",
+   "state": "Connecticut",
+   "careers": 465,
+   "index": 0.0742,
+   "share_above": 0.8022,
+   "top_in": 5
+  },
+  {
+   "abbr": "MN",
+   "state": "Minnesota",
+   "careers": 517,
+   "index": 0.0529,
+   "share_above": 0.7331,
+   "top_in": 11
+  },
+  {
+   "abbr": "VT",
+   "state": "Vermont",
+   "careers": 292,
+   "index": 0.0389,
+   "share_above": 0.637,
+   "top_in": 1
+  },
+  {
+   "abbr": "MD",
+   "state": "Maryland",
+   "careers": 487,
+   "index": 0.0338,
+   "share_above": 0.7659,
+   "top_in": 7
+  },
+  {
+   "abbr": "RI",
+   "state": "Rhode Island",
+   "careers": 321,
+   "index": 0.0328,
+   "share_above": 0.6729,
+   "top_in": 10
+  },
+  {
+   "abbr": "NH",
+   "state": "New Hampshire",
+   "careers": 370,
+   "index": 0.0312,
+   "share_above": 0.6757,
+   "top_in": 9
+  },
+  {
+   "abbr": "DE",
+   "state": "Delaware",
+   "careers": 310,
+   "index": 0.012,
+   "share_above": 0.6032,
+   "top_in": 6
+  },
+  {
+   "abbr": "IL",
+   "state": "Illinois",
+   "careers": 541,
+   "index": 0.0094,
+   "share_above": 0.5638,
+   "top_in": 5
+  },
+  {
+   "abbr": "ME",
+   "state": "Maine",
+   "careers": 388,
+   "index": 0.0064,
+   "share_above": 0.482,
+   "top_in": 2
+  },
+  {
+   "abbr": "AZ",
+   "state": "Arizona",
+   "careers": 491,
+   "index": -0.0016,
+   "share_above": 0.3849,
+   "top_in": 0
+  },
+  {
+   "abbr": "ND",
+   "state": "North Dakota",
+   "careers": 344,
+   "index": -0.0022,
+   "share_above": 0.4564,
+   "top_in": 6
+  },
+  {
+   "abbr": "VA",
+   "state": "Virginia",
+   "careers": 545,
+   "index": -0.0046,
+   "share_above": 0.4826,
+   "top_in": 1
+  },
+  {
+   "abbr": "WI",
+   "state": "Wisconsin",
+   "careers": 555,
+   "index": -0.0065,
+   "share_above": 0.4559,
+   "top_in": 3
+  },
+  {
+   "abbr": "NV",
+   "state": "Nevada",
+   "careers": 413,
+   "index": -0.0204,
+   "share_above": 0.477,
+   "top_in": 2
+  },
+  {
+   "abbr": "PA",
+   "state": "Pennsylvania",
+   "careers": 587,
+   "index": -0.0217,
+   "share_above": 0.3339,
+   "top_in": 0
+  },
+  {
+   "abbr": "MI",
+   "state": "Michigan",
+   "careers": 577,
+   "index": -0.0333,
+   "share_above": 0.3085,
+   "top_in": 1
+  },
+  {
+   "abbr": "MT",
+   "state": "Montana",
+   "careers": 378,
+   "index": -0.0365,
+   "share_above": 0.3254,
+   "top_in": 1
+  },
+  {
+   "abbr": "UT",
+   "state": "Utah",
+   "careers": 485,
+   "index": -0.0399,
+   "share_above": 0.3485,
+   "top_in": 5
+  },
+  {
+   "abbr": "IN",
+   "state": "Indiana",
+   "careers": 565,
+   "index": -0.0402,
+   "share_above": 0.2301,
+   "top_in": 1
+  },
+  {
+   "abbr": "OH",
+   "state": "Ohio",
+   "careers": 594,
+   "index": -0.0435,
+   "share_above": 0.2542,
+   "top_in": 0
+  },
+  {
+   "abbr": "WY",
+   "state": "Wyoming",
+   "careers": 290,
+   "index": -0.0475,
+   "share_above": 0.2862,
+   "top_in": 10
+  },
+  {
+   "abbr": "ID",
+   "state": "Idaho",
+   "careers": 406,
+   "index": -0.0478,
+   "share_above": 0.234,
+   "top_in": 0
+  },
+  {
+   "abbr": "GA",
+   "state": "Georgia",
+   "careers": 543,
+   "index": -0.0515,
+   "share_above": 0.221,
+   "top_in": 1
+  },
+  {
+   "abbr": "IA",
+   "state": "Iowa",
+   "careers": 504,
+   "index": -0.0516,
+   "share_above": 0.2599,
+   "top_in": 2
+  },
+  {
+   "abbr": "FL",
+   "state": "Florida",
+   "careers": 575,
+   "index": -0.0517,
+   "share_above": 0.1513,
+   "top_in": 1
+  },
+  {
+   "abbr": "NE",
+   "state": "Nebraska",
+   "careers": 451,
+   "index": -0.0535,
+   "share_above": 0.2173,
+   "top_in": 0
+  },
+  {
+   "abbr": "MO",
+   "state": "Missouri",
+   "careers": 521,
+   "index": -0.0597,
+   "share_above": 0.2035,
+   "top_in": 0
+  },
+  {
+   "abbr": "NC",
+   "state": "North Carolina",
+   "careers": 568,
+   "index": -0.0613,
+   "share_above": 0.169,
+   "top_in": 1
+  },
+  {
+   "abbr": "NM",
+   "state": "New Mexico",
+   "careers": 422,
+   "index": -0.0634,
+   "share_above": 0.2725,
+   "top_in": 5
+  },
+  {
+   "abbr": "TX",
+   "state": "Texas",
+   "careers": 624,
+   "index": -0.0669,
+   "share_above": 0.2244,
+   "top_in": 1
+  },
+  {
+   "abbr": "SD",
+   "state": "South Dakota",
+   "careers": 381,
+   "index": -0.0771,
+   "share_above": 0.2205,
+   "top_in": 3
+  },
+  {
+   "abbr": "KS",
+   "state": "Kansas",
+   "careers": 468,
+   "index": -0.0807,
+   "share_above": 0.1667,
+   "top_in": 2
+  },
+  {
+   "abbr": "TN",
+   "state": "Tennessee",
+   "careers": 541,
+   "index": -0.0848,
+   "share_above": 0.1201,
+   "top_in": 0
+  },
+  {
+   "abbr": "SC",
+   "state": "South Carolina",
+   "careers": 520,
+   "index": -0.0978,
+   "share_above": 0.1462,
+   "top_in": 0
+  },
+  {
+   "abbr": "KY",
+   "state": "Kentucky",
+   "careers": 493,
+   "index": -0.1096,
+   "share_above": 0.1582,
+   "top_in": 0
+  },
+  {
+   "abbr": "AL",
+   "state": "Alabama",
+   "careers": 496,
+   "index": -0.1398,
+   "share_above": 0.1069,
+   "top_in": 0
+  },
+  {
+   "abbr": "OK",
+   "state": "Oklahoma",
+   "careers": 500,
+   "index": -0.145,
+   "share_above": 0.092,
+   "top_in": 3
+  },
+  {
+   "abbr": "WV",
+   "state": "West Virginia",
+   "careers": 409,
+   "index": -0.1637,
+   "share_above": 0.1027,
+   "top_in": 2
+  },
+  {
+   "abbr": "LA",
+   "state": "Louisiana",
+   "careers": 457,
+   "index": -0.1662,
+   "share_above": 0.1575,
+   "top_in": 3
+  },
+  {
+   "abbr": "AR",
+   "state": "Arkansas",
+   "careers": 472,
+   "index": -0.1734,
+   "share_above": 0.0678,
+   "top_in": 0
+  },
+  {
+   "abbr": "MS",
+   "state": "Mississippi",
+   "careers": 478,
+   "index": -0.1912,
+   "share_above": 0.0607,
+   "top_in": 0
+  }
+ ]
+}

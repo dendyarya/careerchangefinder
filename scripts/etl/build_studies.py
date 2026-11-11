@@ -10,7 +10,18 @@ career-change matches (data/processed/transitions, the same lists the site shows
 A job "has a better-paying move" when at least one match qualifies. "Closest" = the qualifying match with the
 highest match score (the list order). Shares are of jobs (careers) and of workers (BLS employment).
 Every number is recomputed from the processed files by scripts/etl/verify_studies.py.
+
+same-job-different-pay: "How much does the state change the pay for the same job?" Careers with their own
+national BLS median (no broader-group wage, not top-coded). A state figure is used only when BLS publishes a
+median and an employment estimate of at least 100 with a relative standard error of 25% or less (reliable rows).
+- Per career, with reliable figures in at least 30 states: the highest and lowest state median and the gap
+  (highest / lowest - 1).
+- Per state: the same-job pay index, the employment-weighted median (state employment) of state median /
+  national median - 1 over every career with a reliable figure in that state; the share of those careers that pay
+  above the national median; and the number of careers (30+ states) where the state pays the most.
+Also writes public/research/same-job-different-pay-*.csv for reuse.
 """
+import csv
 import json
 import pathlib
 import statistics
@@ -92,6 +103,90 @@ def area(occ, tr, pay_of):
     }, per_job
 
 
+MIN_EMP, MAX_RSE, MIN_STATES = 100, 25, 30
+
+
+def reliable(s):
+    return bool(s.get("median")) and (s.get("employment") or 0) >= MIN_EMP and s.get("emp_rse") is not None and s["emp_rse"] <= MAX_RSE
+
+
+def weighted_median(pairs):
+    """pairs: (value, weight). Smallest value at which the running weight reaches half the total."""
+    pairs = sorted(pairs)
+    total = sum(w for _, w in pairs)
+    run = 0
+    for v, w in pairs:
+        run += w
+        if run * 2 >= total:
+            return v
+    return None
+
+
+def same_job_pay(occ):
+    careers, by_state, names = [], {}, {}
+    for f in sorted((P / "wages").glob("*.json")):
+        o = occ.get(f.stem)
+        if not o or o["thin"]:
+            continue
+        w = own_wage(o)
+        if not w or w.get("top_coded"):
+            continue
+        rows = [s for s in json.loads(f.read_text())["states"] if reliable(s)]
+        for r in rows:
+            names[r["abbr"]] = r["state"]
+            by_state.setdefault(r["abbr"], []).append((r["median"] / w["median"], r["employment"], f.stem))
+        if len(rows) >= MIN_STATES:
+            hi = max(rows, key=lambda r: (r["median"], r["abbr"]))
+            lo = min(rows, key=lambda r: (r["median"], r["abbr"]))
+            careers.append({"slug": f.stem, "title": o["title"], "median": w["median"], "employment": w["employment"],
+                            "states": len(rows), "high": {"abbr": hi["abbr"], "state": hi["state"], "median": hi["median"]},
+                            "low": {"abbr": lo["abbr"], "state": lo["state"], "median": lo["median"]},
+                            "gap": round(hi["median"] / lo["median"] - 1, 4)})
+    tops = {}
+    for c in careers:
+        tops[c["high"]["abbr"]] = tops.get(c["high"]["abbr"], 0) + 1
+    states = []
+    for a, v in by_state.items():
+        states.append({"abbr": a, "state": names[a], "careers": len(v),
+                       "index": round(weighted_median([(r, e) for r, e, _ in v]) - 1, 4),
+                       "share_above": round(sum(1 for r, _, _ in v if r > 1) / len(v), 4),
+                       "top_in": tops.get(a, 0)})
+    states.sort(key=lambda r: (-r["index"], r["state"]))
+    gaps = [c["gap"] for c in careers]
+    workers = sum(c["employment"] for c in careers)
+    dbl = [c for c in careers if c["gap"] >= 1]
+    national = {"careers": len(careers), "workers": workers, "median_gap": round(statistics.median(gaps), 4),
+                "careers_double": len(dbl), "share_double": round(len(dbl) / len(careers), 4),
+                "workers_double": sum(c["employment"] for c in dbl),
+                "share_workers_double": round(sum(c["employment"] for c in dbl) / workers, 4),
+                "careers_50": sum(1 for g in gaps if g >= 0.5), "share_50": round(sum(1 for g in gaps if g >= 0.5) / len(careers), 4)}
+    largest = sorted(careers, key=lambda c: (-c["employment"], c["slug"]))[:12]
+    widest = sorted(careers, key=lambda c: (-c["gap"], c["slug"]))[:12]
+    narrowest = sorted(careers, key=lambda c: (c["gap"], c["slug"]))[:5]
+    out = {"slug": "same-job-different-pay",
+           "rules": {"min_employment": MIN_EMP, "max_rse": MAX_RSE, "min_states": MIN_STATES},
+           "national": national, "largest": largest, "widest": widest, "narrowest": narrowest, "states": states}
+    (OUT / "same-job-different-pay.json").write_text(json.dumps(out, indent=1, ensure_ascii=False))
+    pub = ROOT / "public" / "research"
+    pub.mkdir(parents=True, exist_ok=True)
+    with open(pub / "same-job-different-pay-careers.csv", "w", newline="") as fh:
+        wr = csv.writer(fh)
+        wr.writerow(["career", "soc_code", "us_median_pay", "us_employment", "states_with_data", "highest_state",
+                     "highest_state_median", "lowest_state", "lowest_state_median", "gap_pct"])
+        for c in sorted(careers, key=lambda c: (-c["gap"], c["slug"])):
+            wr.writerow([c["title"], occ[c["slug"]]["code"], c["median"], c["employment"], c["states"], c["high"]["state"],
+                         c["high"]["median"], c["low"]["state"], c["low"]["median"], round((c["high"]["median"] / c["low"]["median"] - 1) * 100, 1)])
+    with open(pub / "same-job-different-pay-states.csv", "w", newline="") as fh:
+        wr = csv.writer(fh)
+        wr.writerow(["rank", "state", "same_job_pay_index_pct", "careers_compared", "share_paying_above_us_median_pct",
+                     "careers_where_state_pays_most"])
+        for i, r in enumerate(states, 1):
+            wr.writerow([i, r["state"], round(r["index"] * 100, 1), r["careers"], round(r["share_above"] * 100, 1), r["top_in"]])
+    print(f"same-job-different-pay: {len(careers)} careers, median gap {national['median_gap']:.1%}, "
+          f"{national['share_double']:.1%} double; top {states[0]['state']} {states[0]['index']:+.1%}, "
+          f"bottom {states[-1]['state']} {states[-1]['index']:+.1%}")
+
+
 def main():
     occ, tr, states = load()
     OUT.mkdir(parents=True, exist_ok=True)
@@ -138,6 +233,7 @@ def main():
     n = national
     print(f"better-paying-careers: {n['jobs_with_move']}/{n['jobs']} jobs ({n['share_jobs']:.1%}), "
           f"{n['share_workers']:.1%} of workers, median closest raise {n['median_closest_raise']:.1%}; {len(state_rows)} states")
+    same_job_pay(occ)
 
 
 if __name__ == "__main__":
