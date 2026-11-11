@@ -5,17 +5,18 @@ Two sites on the same VPS, deployed by `.github/workflows/deploy.yml`:
 | Branch | Site | Port | Notes |
 |---|---|---|---|
 | `staging` | https://staging.careerchangefinder.com | 3101 | password, `noindex`, `SITE_ENV=staging` |
-| `main` | https://careerchangefinder.com | 3100 | `SITE_ENV=production`; manual only: Actions → Deploy → Run workflow on `main` |
+| `main` | https://careerchangefinder.com | 3100 | `SITE_ENV=production`; deployed automatically on every push to `main` (since Nov 11, 2026) |
 
 Each run: `npm ci`, `npm audit`, type check, lint, unit tests → download O*NET and re-check all data →
 `next build` → `npm run qa` → on-demand pages and sitemaps checked on a read-only build → release with
 `MANIFEST.sha256` → rsync to the VPS → `activate` (checksums, read-only, switch, PM2 restart, health check,
 automatic rollback).
 
-**Day to day:** changes go to `staging` first (deployed automatically). After they are checked there, `main`
-is fast-forwarded to `staging`, and the live site is updated only when someone clicks Actions → Deploy →
-Run workflow on `main`. (Required reviewers are not available for private repos on a free GitHub plan,
-so the manual run is the approval step.)
+**Day to day:** every push to `main` deploys the live site, and every push to `staging` deploys staging.
+Code changes are checked locally (`npm run check`, `npm run qa`, `check_sitemaps.py`) before they are pushed
+to both branches together. The site owner chose automatic production deploys on Nov 11, 2026 so the daily
+news task (docs/news-automation.md) can publish on its own; before that the manual "Run workflow" on `main`
+was the approval step. A manual run still works for a redeploy.
 
 ## On the VPS
 

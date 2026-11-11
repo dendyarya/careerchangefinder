@@ -1,13 +1,14 @@
 # Deploy careerchangefinder.com (docs/deploy.md).
 #   push to "staging"                  -> staging.careerchangefinder.com (password-protected, noindex)
-#   Actions > Deploy > Run workflow on "main" -> careerchangefinder.com (manual only: pushing to main
-#   never changes the live site by itself; the "production" environment only accepts the main branch)
+#   push to "main"                     -> careerchangefinder.com (automatic since Nov 11, 2026, so the daily
+#   news task can publish; Actions > Deploy > Run workflow on "main" still works for a manual redeploy;
+#   the "production" environment only accepts the main branch)
 # Actions are pinned to commit SHAs (runbook: Keamanan website, part 2).
 name: Deploy
 
 on:
   push:
-    branches: [staging]
+    branches: [staging, main]
   workflow_dispatch:
 
 permissions:
