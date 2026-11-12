@@ -1,0 +1,27 @@
+{
+  "kicker": "Weekly jobless claims, released Nov. 12, 2026",
+  "title": "Initial jobless claims rose to 200,000, still below a year ago",
+  "subtitle": "Initial unemployment insurance claims, seasonally adjusted, in thousands",
+  "unit": "thousands",
+  "bars": [
+    {
+      "label": "Week ending Nov. 7, 2026 (advance)",
+      "value": 200,
+      "highlight": true
+    },
+    {
+      "label": "Week ending Oct. 31, 2026 (revised)",
+      "value": 191
+    },
+    {
+      "label": "4-week average to Nov. 7",
+      "value": 195.25
+    },
+    {
+      "label": "Same week a year earlier",
+      "value": 228
+    }
+  ],
+  "source": "Chart: Career Change Finder. Data: U.S. Department of Labor, Unemployment Insurance Weekly Claims (released Nov. 12, 2026).",
+  "note": "Values are thousands of initial claims filed in the week."
+}
